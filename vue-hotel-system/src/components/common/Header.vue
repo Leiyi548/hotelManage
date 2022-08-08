@@ -46,7 +46,7 @@
                         <el-form-item label='新密码' prop='newPassword1'>
                             <el-input v-model='form.newPassword1' clearable></el-input>
                         </el-form-item>
-                        <el-form-item label='再次确认' prop='newPassword2'>
+                        <el-form-item label='再次确认' prop='newPassword2' @keyup.enter.nat.native='saveModify'>
                             <el-input v-model='form.newPassword2' clearable></el-input>
                         </el-form-item>
                     </el-form>
@@ -171,9 +171,8 @@ export default {
         saveModify() {
             this.$refs['form'].validate((valid) => {
                 if (valid) {
-                    // post 请求是更改请求
                     this.$http
-                        .post('http://localhost:8082/updateBackgroundPwd?' +
+                        .put('http://localhost:8082/updateBackgroundPwd?' +
                             'backId=' + this.form.name
                             + '&password=' + this.form.oldPassword
                             + '&newBackId=' + this.form.name

@@ -55,7 +55,7 @@
                         <el-input v-model='form.password' maxlength='16' minlength='6' clearable
                                   auto-complete='false'></el-input>
                     </el-form-item>
-                    <el-form-item label='联系电话' prop='phone' @keyup.enter.native='saveEdit()'>
+                    <el-form-item label='联系电话' prop='phone' @keyup.enter.native='saveEdit'>
                         <el-input v-model='form.phone' clearable></el-input>
                     </el-form-item>
                 </el-form>
