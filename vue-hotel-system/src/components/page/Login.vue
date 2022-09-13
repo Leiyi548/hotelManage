@@ -1,7 +1,7 @@
 <template>
     <div class="login-wrap">
         <div class="ms-login">
-            <div class="ms-title">酒店信息管理系统</div>
+            <div class="ms-title">酒店管理系统</div>
             <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
                 <el-form-item prop="username">
                     <el-input v-model="param.username" placeholder="username">
@@ -48,7 +48,7 @@ export default {
          //   console.log(this.param.username);
             let state = this.param.username;
             if (state === 'admin') {
-                this.$http.post('http://localhost/backgroundLogin?backId=' + this.param.username + '&password=' + this.param.password).then(res => {
+                this.$http.post('http://localhost:8082:8082/backgroundLogin?backId=' + this.param.username + '&password=' + this.param.password).then(res => {
                     console.log(res);
                     if (res.data.code === 200) {
                         console.log(res.data.data);
@@ -65,7 +65,7 @@ export default {
                 });
             } else {
 
-                this.$http.post('http://localhost/frontLogin?frontId=' + this.param.username + '&password=' + this.param.password).then(res => {
+                this.$http.post('http://localhost:8082:8082/frontLogin?frontId=' + this.param.username + '&password=' + this.param.password).then(res => {
                 //    console.log(res);
                     if (res.data.code === 200) {
                         console.log(res.data.data);

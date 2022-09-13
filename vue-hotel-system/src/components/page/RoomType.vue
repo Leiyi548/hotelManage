@@ -186,7 +186,7 @@ export default {
     methods: {
 
         getAllRooms () {
-            this.$http.get('http://localhost/getAllRooms').then((res) => {
+            this.$http.get('http://localhost:8082/getAllRooms').then((res) => {
                 //console.log(res);
                 this.tableData = res.data.data.rooms;
             });
@@ -199,7 +199,7 @@ export default {
                     type: 'warning'
                 })
                     .then(() => {
-                        this.$http.delete('  http://localhost//deleteRoom?id=' + roomId).then((res) => {
+                        this.$http.delete('  http://localhost:8082//deleteRoom?id=' + roomId).then((res) => {
                             // console.log(res);
                             if (res.data.code === 200) {
                                 this.$message.success('删除成功');
@@ -232,7 +232,7 @@ export default {
         saveRoomType () {
             if (this.form.maxNum > 0 && this.form.earnest > 0 && this.form.rent > 0 && this.form.size > 0) {
                 //console.log(this.form);
-                this.$http.post('http://localhost/addRoom?earnest=' + this.form.earnest + '&roomId=' + this.form.roomId + '&maxNum=' + this.form.maxNum + '&rank=' + this.form.rank + '&rent=' + this.form.rent + '&size=' + this.form.size + '&position=' + this.form.position).then(res => {
+                this.$http.post('http://localhost:8082/addRoom?earnest=' + this.form.earnest + '&roomId=' + this.form.roomId + '&maxNum=' + this.form.maxNum + '&rank=' + this.form.rank + '&rent=' + this.form.rent + '&size=' + this.form.size + '&position=' + this.form.position).then(res => {
                     //console.log(res);
                     if (res.data.code === 200) {
                         //1.提示成功
@@ -266,7 +266,7 @@ export default {
         //编辑房间级别信息
         saveEdit () {
             //console.log(this.form);
-            this.$http.post('http://localhost/addRoom?earnest=' + this.form.earnest + '&roomId=' + this.form.roomId + '&maxNum=' + this.form.maxNum + '&rank=' + this.form.rank + '&rent=' + this.form.rent + '&size=' + this.form.size + '&position=' + this.form.position).then(res => {
+            this.$http.post('http://localhost:8082/addRoom?earnest=' + this.form.earnest + '&roomId=' + this.form.roomId + '&maxNum=' + this.form.maxNum + '&rank=' + this.form.rank + '&rent=' + this.form.rent + '&size=' + this.form.size + '&position=' + this.form.position).then(res => {
                 //console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功

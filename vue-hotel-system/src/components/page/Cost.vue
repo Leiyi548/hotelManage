@@ -151,7 +151,7 @@ export default {
 
         //获取所有消费信息
         getAllCostType () {
-            this.$http.get('http://localhost/getAllCostType').then((res) => {
+            this.$http.get('http://localhost:8082/getAllCostType').then((res) => {
                 //console.log(res);
                 this.tableData = res.data.data.costTypes;
             });
@@ -160,7 +160,7 @@ export default {
         // 编辑
         saveCostEdit () {
             //console.log(this.form);
-            this.$http.post('http://localhost/addCostType?id=' + this.form.id + '&money=' + this.form.money + '&name=' + this.form.name).then(res => {
+            this.$http.post('http://localhost:8082/addCostType?id=' + this.form.id + '&money=' + this.form.money + '&name=' + this.form.name).then(res => {
                 // console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -181,7 +181,7 @@ export default {
         // 添加
         saveCost () {
             // console.log(this.form);
-            this.$http.post('http://localhost/addCostType?id=0' + '&money=' + this.form.money + '&name=' + this.form.name).then(res => {
+            this.$http.post('http://localhost:8082/addCostType?id=0' + '&money=' + this.form.money + '&name=' + this.form.name).then(res => {
                 //console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -207,7 +207,7 @@ export default {
                     type: 'warning'
                 })
                     .then(() => {
-                        this.$http.delete('http://localhost//deleteCostType?id=' + costId).then((res) => {
+                        this.$http.delete('http://localhost:8082//deleteCostType?id=' + costId).then((res) => {
                             if (res.data.code === 200) {
                                 this.$message.success('删除成功');
                                 this.tableData.splice(index, 1);
@@ -240,7 +240,7 @@ export default {
         //添加消费信息
         saveBook () {
             //console.log(this.form);
-            this.$http.post('http://localhost/addCostType?id=' + this.form.id + '&money=' + this.form.money + '&name=' + this.form.name).then(res => {
+            this.$http.post('http://localhost:8082/addCostType?id=' + this.form.id + '&money=' + this.form.money + '&name=' + this.form.name).then(res => {
                 //console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -271,7 +271,7 @@ export default {
         // 搜索功能
         handleSearch () {
             //console.log(this.costTypes.name);
-            this.$http.get('http://localhost/getCostTypeByName?name=' + this.costTypes.name).then(res => {
+            this.$http.get('http://localhost:8082/getCostTypeByName?name=' + this.costTypes.name).then(res => {
                 //console.log(res.data);
                 if (res.data.code === 200) {
                     this.tableData = res.data.data.costTypes;

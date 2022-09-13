@@ -201,15 +201,15 @@ export default {
         // 搜索功能
         handleSearch () {
             console.log(this.search);
-            this.$http.get('http://localhost//getGuestByContact?contact=' + this.search).then(res => {
+            this.$http.get('http://localhost:8082//getGuestByContact?contact=' + this.search).then(res => {
                 if (res.data.code === 200) {
                     this.tableData = res.data.data.guestMsgs;
                 } else {
-                    this.$http.get('http://localhost//getGuestByIdCard?idCard=' + this.search).then(res => {
+                    this.$http.get('http://localhost:8082//getGuestByIdCard?idCard=' + this.search).then(res => {
                         if (res.data.code === 200) {
                             this.tableData = res.data.data.guestMsgs;
                         } else {
-                            this.$http.get('http://localhost//getGuestByName?name=' + this.search).then(res => {
+                            this.$http.get('http://localhost:8082//getGuestByName?name=' + this.search).then(res => {
                                 if (res.data.code === 200) {
                                     this.tableData = res.data.data.guestMsgs;
                                 } else {
@@ -226,7 +226,7 @@ export default {
         //获取全部用户操作
         getAllGuest () {
             //console.log('token: ' + localStorage.getItem('token'));
-            this.$http.get('http://localhost/getAllGuest').then((res) => {
+            this.$http.get('http://localhost:8082/getAllGuest').then((res) => {
                 this.tableData = res.data.data.guestMsgs;
                 // console.log(res.data.data.guestMsgs);
                 // console.log('getAllGuest方法执行完毕');
@@ -242,7 +242,7 @@ export default {
         //添加用户
         saveGuest () {
             //console.log(this.form);
-            this.$http.post('http://localhost/addGuest?contact=' + this.form.contact + '&idCard=' + this.form.idCard + '&name=' + this.form.name).then(res => {
+            this.$http.post('http://localhost:8082/addGuest?contact=' + this.form.contact + '&idCard=' + this.form.idCard + '&name=' + this.form.name).then(res => {
                 //console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -269,7 +269,7 @@ export default {
         // 保存编辑
         saveEdit () {
             //console.log(this.form);
-            this.$http.post('http://localhost/addGuest?contact=' + this.form.contact + '&idCard=' + this.form.idCard + '&name=' + this.form.name).then(res => {
+            this.$http.post('http://localhost:8082/addGuest?contact=' + this.form.contact + '&idCard=' + this.form.idCard + '&name=' + this.form.name).then(res => {
                 //console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -295,7 +295,7 @@ export default {
             })
                 .then(() => {
                     //console.log(userid);
-                    this.$http.delete('http://localhost//deleteGuest?idCard=' + userid).then((res) => {
+                    this.$http.delete('http://localhost:8082//deleteGuest?idCard=' + userid).then((res) => {
                         if (res.data.code === 200) {
                             this.$message.success('删除成功');
                             this.tableData.splice(index, 1);

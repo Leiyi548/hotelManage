@@ -122,7 +122,7 @@ import { fetchData2 } from '../../api/index';
 
 
 /*
-http://localhost/getAllFront
+http://localhost:8082/getAllFront
 fronts
 */
 
@@ -157,7 +157,7 @@ export default {
 
         //获取所有前台
         getAllFront () {
-            this.$http.get('http://localhost/getAllFront').then((res) => {
+            this.$http.get('http://localhost:8082/getAllFront').then((res) => {
                 //console.log(res);
                 this.tableData = res.data.data.fronts;
             });
@@ -171,7 +171,7 @@ export default {
                     type: 'warning'
                 })
                     .then(() => {
-                        this.$http.delete('http://localhost//deleteFront?id=' + typeId).then((res) => {
+                        this.$http.delete('http://localhost:8082//deleteFront?id=' + typeId).then((res) => {
                             console.log(res);
                             if (res.data.code === 200) {
                                 this.$message.success('删除成功');
@@ -203,7 +203,7 @@ export default {
         //添加前台
         saveFront () {
             //console.log(this.form);
-            this.$http.post('http://localhost/addFront?frontId=' + this.form.frontId + '&name=' + this.form.name + '&password=' + this.form.password + '&phone=' + this.form.phone).then(res => {
+            this.$http.post('http://localhost:8082/addFront?frontId=' + this.form.frontId + '&name=' + this.form.name + '&password=' + this.form.password + '&phone=' + this.form.phone).then(res => {
                 //console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -234,7 +234,7 @@ export default {
         //编辑前台
         saveEdit () {
             //console.log(this.form);
-            this.$http.post('http://localhost/addFront?frontId=' + this.form.frontId + '&name=' + this.form.name + '&password=' + this.form.password + '&phone=' + this.form.phone).then(res => {
+            this.$http.post('http://localhost:8082/addFront?frontId=' + this.form.frontId + '&name=' + this.form.name + '&password=' + this.form.password + '&phone=' + this.form.phone).then(res => {
                 //console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功

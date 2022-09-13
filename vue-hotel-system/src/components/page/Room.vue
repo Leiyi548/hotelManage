@@ -333,7 +333,7 @@ export default {
         sureCost (costTypesId) {
             console.log('costTypesId: ' + costTypesId);
             console.log('serviceNeedRooId: ' + this.costTypes.serviceNeedRooId);
-            this.$http.post('http://localhost/addCost?costTypeId=' + costTypesId + '&id=0&roomId=' + this.costTypes.serviceNeedRooId).then(res => {
+            this.$http.post('http://localhost:8082/addCost?costTypeId=' + costTypesId + '&id=0&roomId=' + this.costTypes.serviceNeedRooId).then(res => {
                 console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -347,7 +347,7 @@ export default {
 
         //获取所有消费信息
         getAllCostType () {
-            this.$http.get('http://localhost/getAllCostType').then((res) => {
+            this.$http.get('http://localhost:8082/getAllCostType').then((res) => {
                 //console.log(res);
                 this.serviceData = res.data.data.costTypes;
             });
@@ -363,7 +363,7 @@ export default {
         //确认支付
         surePay () {
             console.log(this.form.roomIdPay);
-            this.$http.post('http://localhost/settleCostByRoomId?roomId=' + this.form.roomIdPay).then(res => {
+            this.$http.post('http://localhost:8082/settleCostByRoomId?roomId=' + this.form.roomIdPay).then(res => {
                 console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -380,7 +380,7 @@ export default {
         inspect (roomId) {
             this.form.roomIdPay = roomId;
             this.inspectVisible = true;
-            this.$http.post('http://localhost/getCostByRoomId?roomId=' + roomId).then(res => {
+            this.$http.post('http://localhost:8082/getCostByRoomId?roomId=' + roomId).then(res => {
                 //console.log(res);
                 this.form.hasSettle = res.data.data.hasSettle;
                 this.form.toll = res.data.data.toll;
@@ -391,7 +391,7 @@ export default {
         //退房
         checkOut (checkroomId) {
             //console.log(this.form);
-            this.$http.post('http://localhost/checkOut?roomId=' + checkroomId).then(res => {
+            this.$http.post('http://localhost:8082/checkOut?roomId=' + checkroomId).then(res => {
                 console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -408,7 +408,7 @@ export default {
         },
 
         getAllRooms () {
-            this.$http.get('http://localhost/getAllRooms').then((res) => {
+            this.$http.get('http://localhost:8082/getAllRooms').then((res) => {
                 //console.log(res);
                 this.tableData = res.data.data.roomMsgs;
             });
@@ -418,7 +418,7 @@ export default {
         saveRoomEdit () {
             //console.log(this.form);
             if (this.form.maxNum > 0 && this.form.earnest > 0 && this.form.rent > 0 && this.form.size > 0) {
-                this.$http.post('http://localhost/addRoom?earnest=' + this.form.earnest + '&roomId=' + this.form.roomId + '&maxNum=' + this.form.maxNum + '&rank=' + this.form.rank + '&rent=' + this.form.rent + '&size=' + this.form.size + '&position=' + this.form.position).then(res => {
+                this.$http.post('http://localhost:8082/addRoom?earnest=' + this.form.earnest + '&roomId=' + this.form.roomId + '&maxNum=' + this.form.maxNum + '&rank=' + this.form.rank + '&rent=' + this.form.rent + '&size=' + this.form.size + '&position=' + this.form.position).then(res => {
                     //console.log(res);
                     if (res.data.code === 200) {
                         //1.提示成功
@@ -443,7 +443,7 @@ export default {
         saveRoom () {
             if (this.form.maxNum > 0 && this.form.earnest > 0 && this.form.rent > 0 && this.form.size > 0) {
                 //console.log(this.form);
-                this.$http.post('http://localhost/addRoom?earnest=' + this.form.earnest + '&roomId=' + this.form.roomId + '&maxNum=' + this.form.maxNum + '&rank=' + this.form.rank + '&rent=' + this.form.rent + '&size=' + this.form.size + '&position=' + this.form.position).then(res => {
+                this.$http.post('http://localhost:8082/addRoom?earnest=' + this.form.earnest + '&roomId=' + this.form.roomId + '&maxNum=' + this.form.maxNum + '&rank=' + this.form.rank + '&rent=' + this.form.rent + '&size=' + this.form.size + '&position=' + this.form.position).then(res => {
                     //console.log(res);
                     if (res.data.code === 200) {
                         //1.提示成功
@@ -472,7 +472,7 @@ export default {
                     type: 'warning'
                 })
                     .then(() => {
-                        this.$http.delete('http://localhost//deleteRoom?id=' + roomId).then((res) => {
+                        this.$http.delete('http://localhost:8082//deleteRoom?id=' + roomId).then((res) => {
                             if (res.data.code === 200) {
                                 this.$message.success('删除成功');
                                 this.tableData.splice(index, 1);
@@ -505,7 +505,7 @@ export default {
         //添加预定信息    待处理！！！！！！！！！！！！！！！
         saveBook () {
             //console.log(this.form);
-            this.$http.post('http://localhost/addGuest?contact=' + this.form.contact + '&idCard=' + this.form.idCard + '&name=' + this.form.name).then(res => {
+            this.$http.post('http://localhost:8082/addGuest?contact=' + this.form.contact + '&idCard=' + this.form.idCard + '&name=' + this.form.name).then(res => {
                 //console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -535,7 +535,7 @@ export default {
 
         // 搜索功能
         handleSearch () {
-            this.$http.get('http://localhost/getRoomById?id=' + this.roomMsgs.roomId).then(res => {
+            this.$http.get('http://localhost:8082/getRoomById?id=' + this.roomMsgs.roomId).then(res => {
                 //console.log(res.data);
                 if (res.data.code === 200) {
                     let array = [];
@@ -549,7 +549,7 @@ export default {
 
         //获取空房间
         getNUllRooms () {
-            this.$http.get('http://localhost/getNullRooms').then(res => {
+            this.$http.get('http://localhost:8082/getNullRooms').then(res => {
                 //  console.log(res);
                 if (res.data.data === null) {
                     this.$message.info('没有剩余房间了');
@@ -562,7 +562,7 @@ export default {
 
         //获取已经预定的房间
         getHasBookedRoom () {
-            this.$http.get('http://localhost/getHasBookedRoom').then(res => {
+            this.$http.get('http://localhost:8082/getHasBookedRoom').then(res => {
                 if (res.data.data === null) {
                     this.$message.info('已预订房间为空');
                 } else {
@@ -574,7 +574,7 @@ export default {
 
         //获取已经入住的房间
         getHasCheckedRoom () {
-            this.$http.get('http://localhost/getHasCheckedRoom').then(res => {
+            this.$http.get('http://localhost:8082/getHasCheckedRoom').then(res => {
                 if (res.data.data === null) {
                     this.$message.info('已入住房间为空');
                 } else {

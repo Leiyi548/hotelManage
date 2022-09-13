@@ -366,7 +366,7 @@ export default {
 
         //获取空房间
         getNUllRooms () {
-            this.$http.get('http://localhost/getNullRooms').then(res => {
+            this.$http.get('http://localhost:8082/getNullRooms').then(res => {
                 //  console.log(res);
                 // console.log(res);
                 this.options = res.data.data.nullRooms;
@@ -376,14 +376,14 @@ export default {
 
         //获取所有预定信息
         getAllBookMsgs () {
-            this.$http.get('http://localhost/getAllBookMsgs').then((res) => {
+            this.$http.get('http://localhost:8082/getAllBookMsgs').then((res) => {
                 // console.log(res);
                 this.tableData = res.data.data.bookMsgs;
             });
         },
 
         gerAllRooms () {
-            this.$http.get('http://localhost/getAllRooms').then(res => {
+            this.$http.get('http://localhost:8082/getAllRooms').then(res => {
                 //console.log(res);
                 this.roomTypeData = res.data.data.roomMsgs;
             });
@@ -391,7 +391,7 @@ export default {
 
         //获取所有级别信息
         getAllClass () {
-            this.$http.get('http://localhost/getAllRooms').then(res => {
+            this.$http.get('http://localhost:8082/getAllRooms').then(res => {
                 //利用set去重
                 const result = new Set();
                 for (let i = 0; i < res.data.data.roomMsgs.length; i++) {
@@ -415,7 +415,7 @@ export default {
                 type: 'warning'
             })
                 .then(() => {
-                    this.$http.delete('http://localhost//deleteBookMsg?id=' + bookid).then((res) => {
+                    this.$http.delete('http://localhost:8082//deleteBookMsg?id=' + bookid).then((res) => {
                         if (res.data.code === 200) {
                             this.$message.success('删除成功');
                             this.tableData.splice(index, 1);
@@ -443,7 +443,7 @@ export default {
             console.log('formTime: ' + fromTime);
             console.log('toTime: ' + toTime);
             if (days >= 1) {
-                this.$http.post('http://localhost/addBookMsg?contact=' + this.form.contact + '&fromTime=' + fromTime + '&id=0&idCard=' + this.form.idCard + '&name=' + this.form.name + '&toTime=' + toTime + '&rank=' + this.form.rank).then(res => {
+                this.$http.post('http://localhost:8082/addBookMsg?contact=' + this.form.contact + '&fromTime=' + fromTime + '&id=0&idCard=' + this.form.idCard + '&name=' + this.form.name + '&toTime=' + toTime + '&rank=' + this.form.rank).then(res => {
                     //console.log(res);
                     if (res.data.code === 200) {
                         //1.提示成功
@@ -478,7 +478,7 @@ export default {
             toTime = toTime + 43200000;
             const days = Math.floor((toTime - fromTime) / (24 * 3600 * 1000));
             if (days >= 1) {
-                this.$http.put('http://localhost//updateBookMsg?fromTime=' + fromTime + '&id=' + this.form.id + '&rank=' + this.form.rank + '&toTime=' + toTime).then(res => {
+                this.$http.put('http://localhost:8082//updateBookMsg?fromTime=' + fromTime + '&id=' + this.form.id + '&rank=' + this.form.rank + '&toTime=' + toTime).then(res => {
                     //console.log(res);
                     if (res.data.code === 200) {
                         //1.提示成功
@@ -511,7 +511,7 @@ export default {
             toTime = toTime + 43200000;
             const days = Math.floor((toTime - fromTime) / (24 * 3600 * 1000));
             if (days >= 1) {
-                this.$http.post('http://localhost/checkIn?contact=' + this.form.contact + '&fromTime=' + fromTime + '&idCard=' + this.form.idCard + '&name=' + this.form.name + '&toTime=' + toTime + '&roomId=' + this.form.resultRoom).then(res => {
+                this.$http.post('http://localhost:8082/checkIn?contact=' + this.form.contact + '&fromTime=' + fromTime + '&idCard=' + this.form.idCard + '&name=' + this.form.name + '&toTime=' + toTime + '&roomId=' + this.form.resultRoom).then(res => {
                     //console.log(res);
                     if (res.data.code === 200) {
                         //1.提示成功
@@ -539,7 +539,7 @@ export default {
             const toTime = new Date(this.form.toTime.replace(new RegExp('-', 'gm'), '/')).getTime();
             console.log('formTime: ' + fromTime);
             console.log('toTime: ' + toTime);
-            this.$http.get('http://localhost//getNullRoomsByRank?fromTime=' + fromTime + '&rank=' + this.form.rank + '&toTime=' + toTime).then(res => {
+            this.$http.get('http://localhost:8082//getNullRoomsByRank?fromTime=' + fromTime + '&rank=' + this.form.rank + '&toTime=' + toTime).then(res => {
                 //console.log(res.data);
                 this.optionsByClass = res.data.data.nullRooms;
             });
@@ -549,7 +549,7 @@ export default {
         //处理分配房间问题
         solveRoomId () {
             //resultRoom
-            this.$http.put('http://localhost//assignment?bookMsgId=' + this.form.id + '&roomId=' + this.form.resultRoom).then(res => {
+            this.$http.put('http://localhost:8082//assignment?bookMsgId=' + this.form.id + '&roomId=' + this.form.resultRoom).then(res => {
                 console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -569,7 +569,7 @@ export default {
 
         //入住
         handleIn (bookId) {
-            this.$http.post('http://localhost/bookCheckIn?bookMsgId=' + bookId).then(res => {
+            this.$http.post('http://localhost:8082/bookCheckIn?bookMsgId=' + bookId).then(res => {
                 //console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -589,7 +589,7 @@ export default {
         // 搜索功能
         handleSearch () {
             //console.log(this.bookMsgs.guestIdCard);
-            this.$http.get('http://localhost/getBookMsgByIdCard?idCard=' + this.bookMsgs.guestIdCard).then(res => {
+            this.$http.get('http://localhost:8082/getBookMsgByIdCard?idCard=' + this.bookMsgs.guestIdCard).then(res => {
                 console.log(res.data);
                 if (res.data.code === 200) {
                     console.log(res.data.data.bookMsgs);

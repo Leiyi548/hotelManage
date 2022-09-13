@@ -8,8 +8,8 @@ spring:
     cache: false
   datasource:
     username: root
-    password: 981028
-    url: jdbc:mysql://localhost:3309/guest?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    password: root
+    url: jdbc:mysql://localhost:3306/hotel?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
 #    url: jdbc:mysql://10.0.0.3:3306/guest?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
@@ -67,7 +67,7 @@ server:
   #max-http-header-size: 65546
   servlet:
     context-path: /
-  port: 80
+  port: 8082
   tomcat:
     uri-encoding: UTF-8
 

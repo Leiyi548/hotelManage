@@ -180,7 +180,7 @@ export default {
 
         //获取所有预定信息
         getAllRooms () {
-            this.$http.get('http://localhost/getAllRooms').then((res) => {
+            this.$http.get('http://localhost:8082/getAllRooms').then((res) => {
                 //console.log(res);
                 this.tableData = res.data.data.rooms;
             });
@@ -189,7 +189,7 @@ export default {
         // 编辑
         saveRoomEdit () {
             //console.log(this.form);
-            this.$http.post('http://localhost/addRoom?position=' + this.form.position + '&roomId=' + this.form.roomId + '&typeId=' + this.form.typeId).then(res => {
+            this.$http.post('http://localhost:8082/addRoom?position=' + this.form.position + '&roomId=' + this.form.roomId + '&typeId=' + this.form.typeId).then(res => {
                 console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -210,7 +210,7 @@ export default {
         // 添加
         saveRoom () {
             // console.log(this.form);
-            this.$http.post('http://localhost/addRoom?position=' + this.form.position + '&roomId=' + this.form.roomId + '&typeId=' + this.form.typeId).then(res => {
+            this.$http.post('http://localhost:8082/addRoom?position=' + this.form.position + '&roomId=' + this.form.roomId + '&typeId=' + this.form.typeId).then(res => {
                 //console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -236,7 +236,7 @@ export default {
                     type: 'warning'
                 })
                     .then(() => {
-                        this.$http.delete('http://localhost//deleteRoom?id=' + roomId).then((res) => {
+                        this.$http.delete('http://localhost:8082//deleteRoom?id=' + roomId).then((res) => {
                             if (res.data.code === 200) {
                                 this.$message.success('删除成功');
                                 this.tableData.splice(index, 1);
@@ -269,7 +269,7 @@ export default {
         //添加预定信息    待处理！！！！！！！！！！！！！！！
         saveBook () {
             //console.log(this.form);
-            this.$http.post('http://localhost/addGuest?contact=' + this.form.contact + '&idCard=' + this.form.idCard + '&name=' + this.form.name).then(res => {
+            this.$http.post('http://localhost:8082/addGuest?contact=' + this.form.contact + '&idCard=' + this.form.idCard + '&name=' + this.form.name).then(res => {
                 //console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -299,7 +299,7 @@ export default {
 
         // 搜索功能
         handleSearch () {
-            this.$http.get('http://localhost/getRoomById?id=' + this.rooms.roomId).then(res => {
+            this.$http.get('http://localhost:8082/getRoomById?id=' + this.rooms.roomId).then(res => {
                 //console.log(res.data);
                 if (res.data.code === 200) {
                     let array = [];
@@ -313,7 +313,7 @@ export default {
 
         //获取空房间
         getNUllRooms () {
-            this.$http.get('http://localhost/getNullRooms').then(res => {
+            this.$http.get('http://localhost:8082/getNullRooms').then(res => {
                 //  console.log(res);
                 if (res.data.data === null) {
                     this.$message.info('没有剩余房间了');
@@ -326,7 +326,7 @@ export default {
 
         //获取已经预定的房间
         getHasBookedRoom () {
-            this.$http.get('http://localhost/getHasBookedRoom').then(res => {
+            this.$http.get('http://localhost:8082/getHasBookedRoom').then(res => {
                 if (res.data.data === null) {
                     this.$message.info('已预订房间为空');
                 } else {
@@ -338,7 +338,7 @@ export default {
 
         //获取已经入住的房间
         getHasCheckedRoom () {
-            this.$http.get('http://localhost/getHasCheckedRoom').then(res => {
+            this.$http.get('http://localhost:8082/getHasCheckedRoom').then(res => {
                 if (res.data.data === null) {
                     this.$message.info('已入住房间为空');
                 } else {
