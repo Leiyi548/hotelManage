@@ -92,20 +92,26 @@ npm run serve
 |  X-ftp   | Linux 文件传输工具 | https://www.netsarang.com/zh/all-downloads/ |
 | Navicat  |   数据库连接工具   |         https://www.navicat.com.cn/         |
 
-## 6. TODO
+## 6. 项目要求
 
-- [ ] 系统管理员账号信息以及密码修改
+![img](../hotelManage/img/03.jpeg)
+
+## 7. TODO
+
+- [-] 系统管理员账号信息以及密码修改
+  - [x] 管理员可以修改普通用户
+  - [ ] 管理员修改自身密码
 - [ ] 客房管理：客房预定管理
 - [ ] 客户管理：订单管理
 - [ ] 特色菜品介绍：经济消费报表；财务报表
 - [ ] 餐桌预定管理、餐饮消费管理
+- [ ] 消费页面，添加消费时间，消费人员，房间号
 
 1. 系统功能的完善
 2. 当数据量过大的时候，访问会很慢，采用 Nginx
    以及多服务的想法，将整个系统进行优化。
 
-## 7.致谢
+## 8. bug
 
-- 实验室小伙伴 zhangxueping：https://github.com/zhangxueping21
-
-- vue-manage-system：https://github.com/looniink/vue-manage-system
+- [ ] 房间列表数据无法在前端更新，后端是有用的。
+- [ ] 客户列表数据下边栏不会更新
