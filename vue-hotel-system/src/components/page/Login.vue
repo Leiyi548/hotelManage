@@ -9,12 +9,7 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input
-                        type="password"
-                        placeholder="password"
-                        v-model="param.password"
-                        @keyup.enter.native="submitForm ()"
-                    >
+                    <el-input type="password" placeholder="password" v-model="param.password" @keyup.enter.native="submitForm()">
                         <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
                     </el-input>
                 </el-form-item>
@@ -31,7 +26,7 @@
 import { mapMutations } from 'vuex';
 
 export default {
-    data: function() {
+    data: function () {
         return {
             param: {
                 username: '',
@@ -44,52 +39,50 @@ export default {
         };
     },
     methods: {
-        submitForm () {
-         //   console.log(this.param.username);
+        submitForm() {
+            //   console.log(this.param.username);
             let state = this.param.username;
             if (state === 'admin') {
-                this.$http.post('http://localhost:8082:8082/backgroundLogin?backId=' + this.param.username + '&password=' + this.param.password).then(res => {
-                    console.log(res);
-                    if (res.data.code === 200) {
-                        console.log(res.data.data);
-                        this.$message.success('登录成功');
-                        // 将用户token保存到vuex中
-                        localStorage.setItem('token', res.data.data);
-                        localStorage.setItem('ms_username', this.param.username);
-                        this.$router.push('/');
-                    } else {
-                        this.$message.error('请输入正确的账号和密码');
-                        console.log('error submit!!');
-                        return false;
-                    }
-                });
+                this.$http
+                    .post('http://localhost:8082/backgroundLogin?backId=' + this.param.username + '&password=' + this.param.password)
+                    .then((res) => {
+                        console.log(res);
+                        if (res.data.code === 200) {
+                            console.log(res.data.data);
+                            this.$message.success('登录成功');
+                            // 将用户token保存到vuex中
+                            localStorage.setItem('token', res.data.data);
+                            localStorage.setItem('ms_username', this.param.username);
+                            this.$router.push('/');
+                        } else {
+                            this.$message.error('请输入正确的账号和密码');
+                            console.log('error submit!!');
+                            return false;
+                        }
+                    });
             } else {
+                this.$http
+                    .post('http://localhost:8082:8082/frontLogin?frontId=' + this.param.username + '&password=' + this.param.password)
+                    .then((res) => {
+                        //    console.log(res);
+                        if (res.data.code === 200) {
+                            console.log(res.data.data);
+                            this.$message.success('登录成功');
 
-                this.$http.post('http://localhost:8082:8082/frontLogin?frontId=' + this.param.username + '&password=' + this.param.password).then(res => {
-                //    console.log(res);
-                    if (res.data.code === 200) {
-                        console.log(res.data.data);
-                        this.$message.success('登录成功');
-
-                        // 将用户token保存到vuex中
-                        localStorage.setItem('token', res.data.data);
-                        localStorage.setItem('ms_username', this.param.username);
-                        this.$router.push('/');
-                    } else {
-                        this.$message.error('请输入正确的账号和密码');
-                        console.log('error submit!!');
-                        return false;
-                    }
-                });
+                            // 将用户token保存到vuex中
+                            localStorage.setItem('token', res.data.data);
+                            localStorage.setItem('ms_username', this.param.username);
+                            this.$router.push('/');
+                        } else {
+                            this.$message.error('请输入正确的账号和密码');
+                            console.log('error submit!!');
+                            return false;
+                        }
+                    });
             }
         }
-
-
-
     }
 };
-
-
 </script>
 
 <style scoped>
