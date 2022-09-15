@@ -184,22 +184,15 @@ CREATE TABLE `cost_type`  (
 -- ----------------------------
 -- Records of cost_type
 -- ----------------------------
-INSERT INTO `cost_type` VALUES (3, '0001房间定金', -200);
-INSERT INTO `cost_type` VALUES (4, '0001房间租金', 300);
-INSERT INTO `cost_type` VALUES (5, '0002房间定金', -200);
-INSERT INTO `cost_type` VALUES (6, '0002房间租金', 500);
-INSERT INTO `cost_type` VALUES (7, '0003房间定金', -200);
-INSERT INTO `cost_type` VALUES (8, '0003房间租金', 500);
-INSERT INTO `cost_type` VALUES (9, '0004房间定金', -100);
-INSERT INTO `cost_type` VALUES (10, '0004房间租金', 500);
-INSERT INTO `cost_type` VALUES (13, '0005房间定金', 520);
-INSERT INTO `cost_type` VALUES (14, '0005房间租金', 501);
 INSERT INTO `cost_type` VALUES (15, '早餐', 50);
 INSERT INTO `cost_type` VALUES (16, '晚餐', 50);
-INSERT INTO `cost_type` VALUES (35, '0006房间定金', -2);
-INSERT INTO `cost_type` VALUES (36, '0006房间租金', 2);
-INSERT INTO `cost_type` VALUES (37, '1房间定金', -22);
-INSERT INTO `cost_type` VALUES (38, '1房间租金', 22);
+INSERT INTO `cost_type` VALUES (17, '午餐', 50);
+INSERT INTO `cost_type` VALUES (10, '3号房定金', 50);
+INSERT INTO `cost_type` VALUES (13, '2号房租金', 90);
+INSERT INTO `cost_type` VALUES (14, '2号房定金', 30);
+INSERT INTO `cost_type` VALUES (18, '打扫房间', 20);
+INSERT INTO `cost_type` VALUES (37, '1号房租金', 80);
+INSERT INTO `cost_type` VALUES (38, '1号房定金', 20);
 
 -- ----------------------------
 -- Table structure for front
