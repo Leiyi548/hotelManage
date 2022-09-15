@@ -127,7 +127,7 @@ public class GuestController {
                     if(checkIns != null && checkIns.size()>0 && checkIns.get(0).getState() == 1){
                         guestMsg.setState(1);
                         guestMsg.setRoomId(checkIns.get(0).getRoomId());
-                    }else if(bookMsgs != null && bookMsgs.size()>0 && bookMsgs.get(0).getState() != 11){
+                    }else if(bookMsgs != null && bookMsgs.size()>0 && bookMsgs.get(0).getState() != 11 && bookMsgs.get(0).getState() != 110){
                         guestMsg.setState(0);
                         guestMsg.setRoomId(bookMsgs.get(0).getResultRoom());
                     }else if(checkIns != null && checkIns.size()>0 && checkIns.get(0).getState() == 0){
@@ -171,7 +171,7 @@ public class GuestController {
                     if(checkIns != null && checkIns.size()>0 && checkIns.get(0).getState() == 1){
                         guestMsg.setState(1);
                         guestMsg.setRoomId(checkIns.get(0).getRoomId());
-                    }else if(bookMsgs != null && bookMsgs.size()>0 && bookMsgs.get(0).getState() != 11){
+                    }else if(bookMsgs != null && bookMsgs.size()>0 && bookMsgs.get(0).getState() != 11 && bookMsgs.get(0).getState() != 110){
                         guestMsg.setState(0);
                         guestMsg.setRoomId(bookMsgs.get(0).getResultRoom());
                     }else if(checkIns != null && checkIns.size()>0 && checkIns.get(0).getState() == 0){
@@ -215,7 +215,7 @@ public class GuestController {
                     if(checkIns != null && checkIns.size()>0 && checkIns.get(0).getState() == 1){
                         guestMsg.setState(1);
                         guestMsg.setRoomId(checkIns.get(0).getRoomId());
-                    }else if(bookMsgs != null && bookMsgs.size()>0 && bookMsgs.get(0).getState() != 11){
+                    }else if(bookMsgs != null && bookMsgs.size()>0 && bookMsgs.get(0).getState() != 11 && bookMsgs.get(0).getState() != 110){
                         guestMsg.setState(0);
                         guestMsg.setRoomId(bookMsgs.get(0).getResultRoom());
                     }else if(checkIns != null && checkIns.size()>0 && checkIns.get(0).getState() == 0){
@@ -259,7 +259,7 @@ public class GuestController {
                     if(checkIns != null && checkIns.size()>0 && checkIns.get(0).getState() == 1){
                         guestMsg.setState(1);
                         guestMsg.setRoomId(checkIns.get(0).getRoomId());
-                    }else if(bookMsgs != null && bookMsgs.size()>0 && bookMsgs.get(0).getState() != 11){
+                    }else if(bookMsgs != null && bookMsgs.size()>0 && bookMsgs.get(0).getState() != 11 && bookMsgs.get(0).getState() != 110){
                         guestMsg.setState(0);
                         guestMsg.setRoomId(bookMsgs.get(0).getResultRoom());
                     }else if(checkIns != null && checkIns.size()>0 && checkIns.get(0).getState() == 0){
