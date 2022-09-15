@@ -2,7 +2,7 @@
     <div>
         <el-row :gutter="20">
             <el-col :span="8">
-                <el-card shadow="hover" class="mgb20" style="height:252px;">
+                <el-card shadow="hover" class="mgb20" style="height: 252px">
                     <div class="user-info">
                         <img src="../../assets/img/people.gif" class="user-avator" alt />
                         <div class="user-info-cont">
@@ -12,11 +12,11 @@
                     </div>
                     <div class="user-info-list">
                         登录地点：
-                        <span>    成都</span>
+                        <span> 南昌</span>
                     </div>
                     <div class="user-info-list">
                         上次登录时间：
-                        <span>2021-1-12</span>
+                        <span>2022-9-20</span>
                     </div>
                 </el-card>
                 <!--
@@ -122,7 +122,7 @@ import bus from '../common/bus';
 
 export default {
     name: 'dashboard',
-    data () {
+    data() {
         return {
             name: localStorage.getItem('ms_username'),
             todoList: [
@@ -230,7 +230,7 @@ export default {
         Schart
     },
     computed: {
-        role () {
+        role() {
             return this.name === 'admin' ? '超级管理员' : '前台管理员';
         }
     },
@@ -246,7 +246,7 @@ export default {
     //     bus.$off('collapse', this.handleBus);
     // },
     methods: {
-        changeDate () {
+        changeDate() {
             const now = new Date().getTime();
             this.data.forEach((item, index) => {
                 const date = new Date(now - (6 - index) * 86400000);
@@ -270,7 +270,6 @@ export default {
     }
 };
 </script>
-
 
 <style scoped>
 .el-row {
