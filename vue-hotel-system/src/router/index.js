@@ -44,6 +44,18 @@ export default new Router({
                     path: '/permission',
                     component: () => import(/* webpackChunkName: "permission" */ '../components/page/Permission.vue'),
                     meta: { title: '前台管理', permission: true }
+                },
+                {
+                    // 经济消费报表页面
+                    path: '/economy',
+                    component: () => import(/* webpackChunkName: "permission" */ '../components/page/Economy.vue'),
+                    meta: { title: '经济消费报表', permission: true }
+                },
+                {
+                    // 财务报表页面
+                    path: '/finance',
+                    component: () => import(/* webpackChunkName: "permission" */ '../components/page/Finance.vue'),
+                    meta: { title: '财务报表', permission: true }
                 }
             ]
         },

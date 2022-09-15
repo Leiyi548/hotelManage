@@ -1,4 +1,5 @@
 <template>
+    <!-- element-plus-collapse https://element-plus.gitee.io/en-US/component/menu.html#collapse -->
     <div class="sidebar">
         <el-menu
             class="sidebar-el-menu"
@@ -45,6 +46,8 @@ import bus from '../common/bus';
 export default {
     data() {
         return {
+            // 默认是收缩的
+            // 更多el-icon 图片去这个网站去搜索 https://cloud.tencent.com/developer/section/1489867
             collapse: false,
             items: [
                 {
@@ -76,6 +79,16 @@ export default {
                     icon: 'el-icon-lx-profile',
                     index: 'permission',
                     title: '前台管理'
+                },
+                {
+                    icon: 'el-icon-document',
+                    index: 'economy',
+                    title: '经济消费报表'
+                },
+                {
+                    icon: 'el-icon-document',
+                    index: 'finance',
+                    title: '财务报表'
                 }
             ]
         };
@@ -87,7 +100,7 @@ export default {
     },
     created() {
         // 通过 Event Bus 进行组件间通信，来折叠侧边栏
-        bus.$on('collapse', (msg) => {
+        bus.$on('collapse', msg => {
             this.collapse = msg;
             bus.$emit('collapse-content', msg);
         });

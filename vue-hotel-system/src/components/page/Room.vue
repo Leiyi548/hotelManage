@@ -289,7 +289,7 @@ export default {
             console.log('serviceNeedRooId: ' + this.costTypes.serviceNeedRooId);
             this.$http
                 .post('http://localhost:8082/addCost?costTypeId=' + costTypesId + '&id=0&roomId=' + this.costTypes.serviceNeedRooId)
-                .then((res) => {
+                .then(res => {
                     console.log(res);
                     if (res.data.code === 200) {
                         //1.提示成功
@@ -302,7 +302,7 @@ export default {
 
         //获取所有消费信息
         getAllCostType() {
-            this.$http.get('http://localhost:8082/getAllCostType').then((res) => {
+            this.$http.get('http://localhost:8082/getAllCostType').then(res => {
                 //console.log(res);
                 this.serviceData = res.data.data.costTypes;
             });
@@ -318,7 +318,7 @@ export default {
         //确认支付
         surePay() {
             console.log(this.form.roomIdPay);
-            this.$http.post('http://localhost:8082/settleCostByRoomId?roomId=' + this.form.roomIdPay).then((res) => {
+            this.$http.post('http://localhost:8082/settleCostByRoomId?roomId=' + this.form.roomIdPay).then(res => {
                 console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -335,7 +335,7 @@ export default {
         inspect(roomId) {
             this.form.roomIdPay = roomId;
             this.inspectVisible = true;
-            this.$http.post('http://localhost:8082/getCostByRoomId?roomId=' + roomId).then((res) => {
+            this.$http.post('http://localhost:8082/getCostByRoomId?roomId=' + roomId).then(res => {
                 //console.log(res);
                 this.form.hasSettle = res.data.data.hasSettle;
                 this.form.toll = res.data.data.toll;
@@ -346,7 +346,7 @@ export default {
         //退房
         checkOut(checkroomId) {
             //console.log(this.form);
-            this.$http.post('http://localhost:8082/checkOut?roomId=' + checkroomId).then((res) => {
+            this.$http.post('http://localhost:8082/checkOut?roomId=' + checkroomId).then(res => {
                 console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -363,7 +363,7 @@ export default {
         },
 
         getAllRooms() {
-            this.$http.get('http://localhost:8082/getAllRooms').then((res) => {
+            this.$http.get('http://localhost:8082/getAllRooms').then(res => {
                 //console.log(res);
                 this.tableData = res.data.data.roomMsgs;
             });
@@ -390,7 +390,7 @@ export default {
                             '&position=' +
                             this.form.position
                     )
-                    .then((res) => {
+                    .then(res => {
                         //console.log(res);
                         if (res.data.code === 200) {
                             //1.提示成功
@@ -431,7 +431,7 @@ export default {
                             '&position=' +
                             this.form.position
                     )
-                    .then((res) => {
+                    .then(res => {
                         //console.log(res);
                         if (res.data.code === 200) {
                             //1.提示成功
@@ -459,7 +459,7 @@ export default {
                     type: 'warning'
                 })
                     .then(() => {
-                        this.$http.delete('http://localhost:8082//deleteRoom?id=' + roomId).then((res) => {
+                        this.$http.delete('http://localhost:8082//deleteRoom?id=' + roomId).then(res => {
                             if (res.data.code === 200) {
                                 this.$message.success('删除成功');
                                 this.tableData.splice(index, 1);
@@ -497,7 +497,7 @@ export default {
                         '&name=' +
                         this.form.name
                 )
-                .then((res) => {
+                .then(res => {
                     //console.log(res);
                     if (res.data.code === 200) {
                         //1.提示成功
@@ -530,7 +530,7 @@ export default {
             if (this.roomMsgs.roomId == '') {
                 tableData = this.getAllRooms();
             } else {
-                this.$http.get('http://localhost:8082/getRoomById?id=' + this.roomMsgs.roomId).then((res) => {
+                this.$http.get('http://localhost:8082/getRoomById?id=' + this.roomMsgs.roomId).then(res => {
                     //console.log(res.data);
                     if (res.data.code === 200) {
                         let array = [];
@@ -545,7 +545,7 @@ export default {
 
         //获取空房间
         getNUllRooms() {
-            this.$http.get('http://localhost:8082/getNullRooms').then((res) => {
+            this.$http.get('http://localhost:8082/getNullRooms').then(res => {
                 //  console.log(res);
                 if (res.data.data === null) {
                     this.$message.info('没有剩余房间了');
@@ -558,7 +558,7 @@ export default {
 
         //获取已经预定的房间
         getHasBookedRoom() {
-            this.$http.get('http://localhost:8082/getHasBookedRoom').then((res) => {
+            this.$http.get('http://localhost:8082/getHasBookedRoom').then(res => {
                 if (res.data.data === null) {
                     this.$message.info('已预订房间为空');
                 } else {
@@ -570,7 +570,7 @@ export default {
 
         //获取已经入住的房间
         getHasCheckedRoom() {
-            this.$http.get('http://localhost:8082/getHasCheckedRoom').then((res) => {
+            this.$http.get('http://localhost:8082/getHasCheckedRoom').then(res => {
                 if (res.data.data === null) {
                     this.$message.info('已入住房间为空');
                 } else {
