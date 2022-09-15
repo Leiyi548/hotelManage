@@ -1,6 +1,7 @@
 package com.guest.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.guest.pojo.po.*;
 import com.guest.pojo.vo.Response;
 import com.guest.pojo.vo.ResponseMsg;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
+import java.sql.Wrapper;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -69,7 +71,7 @@ public class CheckInController {
 	})
 	public Response bookCheckIn(HttpServletRequest request, int bookMsgId) {
 		String num = (String) request.getAttribute("num");
-		if (frontService.getById(num) != null) {
+//		if (frontService.getById(num) != null) {
 			BookMsg bookMsg = bookMsgService.getById(bookMsgId);
 			CheckIn checkIn = new CheckIn(0, bookMsg.getGuestIdCard()
 					, bookMsg.getResultRoom(), bookMsg.getFromTime()
@@ -97,8 +99,8 @@ public class CheckInController {
 				return (new Response()).success(token);
 			}
 			return new Response(ResponseMsg.FAIL);
-		}
-		return new Response(ResponseMsg.ILLEGAL_OPERATION);
+//		}
+//		return new Response(ResponseMsg.ILLEGAL_OPERATION);
 	}
 
 	/**
@@ -125,7 +127,7 @@ public class CheckInController {
 	})
 	public Response checkIn(HttpServletRequest request, Long fromTime, Long toTime, String contact, String idCard, String name, String roomId) {
 		String num = (String) request.getAttribute("num");
-		if (frontService.getById(num) != null) {
+//		if (frontService.getById(num) != null) {
 			CheckIn checkIn = new CheckIn(0, idCard, roomId, new Timestamp(fromTime), new Timestamp(toTime), 1);
 			Guest guest = new Guest(idCard, name, contact);
 			guestService.saveOrUpdate(guest);
@@ -156,8 +158,8 @@ public class CheckInController {
 				return (new Response()).success(token);
 			}
 			return new Response(ResponseMsg.FAIL);
-		}
-		return new Response(ResponseMsg.ILLEGAL_OPERATION);
+//		}
+//		return new Response(ResponseMsg.ILLEGAL_OPERATION);
 	}
 
 	/**
@@ -180,24 +182,42 @@ public class CheckInController {
 	})
 	public Response checkOut(HttpServletRequest request, String roomId) {
 		String num = (String) request.getAttribute("num");
-		if (frontService.getById(num) != null) {
+//		if (frontService.getById(num) != null) {
 			int costNum = costService.getNotCostNum(roomId);
 			if (costNum == 0) {
 				costService.settleCostByRoomId(roomId);
-				Timestamp now = new Timestamp(LocalDateTime.now().toInstant(ZoneOffset.of("+0")).toEpochMilli());
-				List<CheckIn> checkIns = checkInService.getValidCheckIns(now, now);
-				if (checkIns != null && checkIns.size() > 0) {
-					for (CheckIn checkIn : checkIns) {
-						checkIn.setState(0);
-						checkInService.saveOrUpdate(checkIn);
-					}
-					String token = jwtUtill.updateJwt(num);
+//				Timestamp now = new Timestamp(LocalDateTime.now().toInstant(ZoneOffset.of("+0")).toEpochMilli());
+//				List<CheckIn> checkIns = checkInService.getValidCheckIns(now, now);
+//				if (checkIns != null && checkIns.size() > 0) {
+//					for (CheckIn checkIn : checkIns) {
+//						checkIn.setState(0);
+//						checkInService.saveOrUpdate(checkIn);
+//					}
+				//直接退房
+				QueryWrapper<CheckIn> wrapper = new QueryWrapper<>();
+				wrapper.eq("room_id",roomId);
+				wrapper.eq("state",1);
+				CheckIn checkIn = checkInService.getOne(wrapper);
+				checkIn.setState(0);
+				checkInService.saveOrUpdate(checkIn);
+
+				// 根据rooid 和 state 找到预定信息 然后修改状态码 改为已退房(110)
+				QueryWrapper<BookMsg> wrapper1 = new QueryWrapper<>();
+				wrapper1.eq("result_room",roomId);
+				wrapper1.eq("state",11);
+				BookMsg bookMsg = bookMsgService.getOne(wrapper1);
+				if (bookMsg !=null) {
+					bookMsg.setState(110);
+					bookMsgService.saveOrUpdate(bookMsg);
+				}
+				String token = jwtUtill.updateJwt(num);
 					return (new Response()).success(token);
 				}
-			}
+//			}
 			return new Response(ResponseMsg.FAIL);
-		}
-		return new Response(ResponseMsg.ILLEGAL_OPERATION);
+//		}
+//		return new Response(ResponseMsg.ILLEGAL_OPERATION);
 	}
+
 }
 

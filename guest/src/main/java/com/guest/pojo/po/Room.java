@@ -1,5 +1,6 @@
 package com.guest.pojo.po;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,7 @@ public class Room extends Model<Room> {
     /**
      * 级别，分A,B,C,D级，级别依次降低
      */
+    @TableField("`rank`")
     private String rank;
 
     /**

@@ -13,10 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -54,13 +51,13 @@ public class CostController {
     })
     public Response addCost(HttpServletRequest request, int id,int costTypeId,String roomId){
         String num = (String) request.getAttribute("num");
-        if(frontService.getById(num) != null){
+//        if(frontService.getById(num) != null){
             Cost cost = new Cost(id,costTypeId,roomId,1,0);
             costService.saveOrUpdate(cost);
             String token = jwtUtill.updateJwt(num);
             return (new Response()).success(token);
-        }
-        return new Response(ResponseMsg.ILLEGAL_OPERATION);
+//        }
+//        return new Response(ResponseMsg.ILLEGAL_OPERATION);
     }
 
 
@@ -77,12 +74,12 @@ public class CostController {
     })
     public Response deleteCost(HttpServletRequest request,Integer id){
         String num = (String) request.getAttribute("num");
-        if(frontService.getById(num) != null){
+//        if(frontService.getById(num) != null){
             costService.removeById(id);
             String token = jwtUtill.updateJwt(num);
             return (new Response()).success(token);
-        }
-        return new Response(ResponseMsg.ILLEGAL_OPERATION);
+//        }
+//        return new Response(ResponseMsg.ILLEGAL_OPERATION);
     }
 
     @GetMapping("/getCostById")
@@ -130,7 +127,7 @@ public class CostController {
     })
     public Response getCostByRoomId(HttpServletRequest request,String roomId){
         String num = (String) request.getAttribute("num");
-        if( frontService.getById(num) != null){
+//        if( frontService.getById(num) != null){
             List<Cost> costs = costService.getCostByRoomId(roomId);
             List<Cost> costs1 = new ArrayList<>();
             if(costs != null && costs.size()>0){
@@ -156,8 +153,8 @@ public class CostController {
                 return (new Response()).success(resultMap);
             }
             return new Response(ResponseMsg.NO_TARGET);
-        }
-        return new Response(ResponseMsg.ILLEGAL_OPERATION);
+//        }
+//        return new Response(ResponseMsg.ILLEGAL_OPERATION);
     }
     /**
      * 根据roomId结算
@@ -176,13 +173,13 @@ public class CostController {
     })
     public Response settleCostByRoomId(HttpServletRequest request,String roomId){
         String num = (String) request.getAttribute("num");
-        if(frontService.getById(num) != null){
+//        if(frontService.getById(num) != null){
             //将未结算的设置成已结算的
             costService.settleCostByRoomId(roomId);
             String token = jwtUtill.updateJwt(num);
             return (new Response()).success(token);
-        }
-        return new Response(ResponseMsg.ILLEGAL_OPERATION);
+//        }
+//        return new Response(ResponseMsg.ILLEGAL_OPERATION);
     }
 
 
@@ -204,17 +201,18 @@ public class CostController {
     })
     public Response settleCostById(HttpServletRequest request,int id){
         String num = (String) request.getAttribute("num");
-        if(frontService.getById(num) != null){
+//        if(frontService.getById(num) != null){
             Cost cost = costService.getById(id);
             if(cost != null){
                 cost.setState(1);
                 costService.saveOrUpdate(cost);
                 String token = jwtUtill.updateJwt(num);
                 return (new Response()).success(token);
+
             }
             return new Response(ResponseMsg.NO_TARGET);
-        }
-        return new Response(ResponseMsg.ILLEGAL_OPERATION);
+//        }
+//        return new Response(ResponseMsg.ILLEGAL_OPERATION);
     }
 }
 

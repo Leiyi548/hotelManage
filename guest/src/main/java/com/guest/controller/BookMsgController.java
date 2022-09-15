@@ -63,15 +63,15 @@ public class BookMsgController {
     })
     public Response addBookMsg(HttpServletRequest request, Long fromTime,Long toTime,String contact,String idCard,String name,String rank){
         String num = (String) request.getAttribute("num");
-        if(frontService.getById(num) != null){
+//        if(frontService.getById(num) != null){
             Guest guest = new Guest(idCard,name,contact);
             guestService.saveOrUpdate(guest);
             BookMsg bookMsg = new BookMsg(0,new Timestamp(fromTime),new Timestamp(toTime),idCard,rank,0,null);
             bookMsgService.saveOrUpdate(bookMsg);
             String token = jwtUtill.updateJwt(num);
             return (new Response()).success(token);
-        }
-        return new Response(ResponseMsg.ILLEGAL_OPERATION);
+//        }
+//        return new Response(ResponseMsg.ILLEGAL_OPERATION);
     }
 
     @PutMapping("/updateBookMsg")
@@ -89,7 +89,7 @@ public class BookMsgController {
     })
     public Response updateBookMsg(HttpServletRequest request,int id, Long fromTime,Long toTime,String rank){
         String num = (String) request.getAttribute("num");
-        if(frontService.getById(num) != null){
+//        if(frontService.getById(num) != null){
             BookMsg bookMsg = bookMsgService.getById(id);
             bookMsg.setState(0);
             bookMsg.setResultRoom("");
@@ -99,8 +99,8 @@ public class BookMsgController {
             bookMsgService.saveOrUpdate(bookMsg);
             String token = jwtUtill.updateJwt(num);
             return (new Response()).success(token);
-        }
-        return new Response(ResponseMsg.ILLEGAL_OPERATION);
+//        }
+//        return new Response(ResponseMsg.ILLEGAL_OPERATION);
     }
 
     /**
@@ -124,7 +124,7 @@ public class BookMsgController {
     })
     public Response assignment(HttpServletRequest request, int bookMsgId,String roomId){
         String num = (String) request.getAttribute("num");
-        if(frontService.getById(num) != null){
+//        if(frontService.getById(num) != null){
             BookMsg bookMsg = bookMsgService.getById(bookMsgId);
             //获取当前的预定信息
             List<BookMsg> bookMsgs = bookMsgService.getBookMsgByTime(bookMsg.getFromTime(),bookMsg.getToTime());
@@ -152,7 +152,7 @@ public class BookMsgController {
                 String token = jwtUtill.updateJwt(num);
                 return (new Response()).success(token);
             }
-        }
+//        }
         return new Response(ResponseMsg.ILLEGAL_OPERATION);
     }
 
@@ -168,12 +168,12 @@ public class BookMsgController {
     })
     public Response deleteBookMsg(HttpServletRequest request,int id){
         String num = (String) request.getAttribute("num");
-        if(frontService.getById(num) != null){
+//        if(frontService.getById(num) != null){
             bookMsgService.removeById(id);
             String token = jwtUtill.updateJwt(num);
             return (new Response()).success(token);
-        }
-        return new Response(ResponseMsg.ILLEGAL_OPERATION);
+//        }
+//        return new Response(ResponseMsg.ILLEGAL_OPERATION);
     }
 
     @GetMapping("/getAllBookMsgs")
@@ -188,22 +188,22 @@ public class BookMsgController {
     })
     public Response getAllBookMsgs (HttpServletRequest request){
         String num = (String) request.getAttribute("num");
-        if(frontService.getById(num) != null){
+//        if(frontService.getById(num) != null){
             List<BookMsg> bookMsgs = bookMsgService.list();
             return getResponse(num, bookMsgs);
-        }
-        return new Response(ResponseMsg.ILLEGAL_OPERATION);
+//        }
+//        return new Response(ResponseMsg.ILLEGAL_OPERATION);
     }
 
     private Response getResponse(String num, List<BookMsg> bookMsgs) {
-        if(bookMsgs != null && bookMsgs.size()>0){
+//        if(bookMsgs != null && bookMsgs.size()>0){
             Map<String,Object> resultMap = new HashMap<>();
             String token = jwtUtill.updateJwt(num);
             resultMap.put("bookMsgs",bookMsgs);
             resultMap.put("token",token);
             return (new Response()).success(resultMap);
-        }
-        return new Response(ResponseMsg.NO_TARGET);
+//        }
+//        return new Response(ResponseMsg.NO_TARGET);
     }
 
 
@@ -220,11 +220,11 @@ public class BookMsgController {
     })
     public Response getBookMsgByIdCard(HttpServletRequest request,String idCard){
         String num = (String) request.getAttribute("num");
-        if(frontService.getById(num) != null){
+//        if(frontService.getById(num) != null){
             List<BookMsg> bookMsgs = bookMsgService.getBookMsgByIdCard(idCard);
             return getResponse(num, bookMsgs);
-        }
-        return new Response(ResponseMsg.ILLEGAL_OPERATION);
+//        }
+//        return new Response(ResponseMsg.ILLEGAL_OPERATION);
     }
 
 

@@ -234,7 +234,7 @@ public class GuestController {
     }
 
     @GetMapping("/getGuestByName")
-    @ApiOperation(value="通过联系方式获取客户信息,包括入住情况，模糊查询")
+    @ApiOperation(value="通过客户姓名获取客户信息,包括入住情况，模糊查询")
     @ApiImplicitParams({
             @ApiImplicitParam(name="Authorization",value="后/前台管理员的token",required=true),
             @ApiImplicitParam(name="name",value="客户的姓名",required=true),
