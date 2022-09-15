@@ -1,26 +1,17 @@
 <template>
-
     <div>
         <!--  客户列表文字  -->
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>
-                    <i class="el-icon-lx-friend"></i> 客户列表
-                </el-breadcrumb-item>
+                <el-breadcrumb-item> <i class="el-icon-lx-friend"></i> 客户列表 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
 
         <!--  头部容器      -->
         <div class="container">
             <div class="handle-box">
-                <el-button
-                    round
-                    plain
-                    type="primary"
-                    icon="el-icon-delete"
-                    class="handle-del mr10"
-                    @click="delAllSelection"
-                >批量删除
+                <el-button round plain type="primary" icon="el-icon-delete" class="handle-del mr10" @click="delAllSelection"
+                    >批量删除
                 </el-button>
                 <el-button type="primary" round plain icon="el-icon-plus" @click="handGuest">添加客户</el-button>
                 &nbsp; &nbsp;
@@ -35,9 +26,7 @@
                     @keydown.enter.native="handleSearch"
                 >
                 </el-input>
-
             </div>
-
 
             <!--   主列表    -->
             <el-table
@@ -46,8 +35,8 @@
                 class="table"
                 header-cell-class-name="table-header"
                 @selection-change="handleSelectionChange"
-                style="width: 100%">
-
+                style="width: 100%"
+            >
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="name" label="用户名" align="center"></el-table-column>
                 <el-table-column prop="roomId" label="房间号" align="center"></el-table-column>
@@ -57,19 +46,19 @@
                     <template slot-scope="scope">
                         <!--已入住1 绿色,未处理0 红色,已退房-1 蓝色-->
                         <el-tag
-                            v-if="scope.row.state===1"
-                            :type="scope.row.state=== 1?'success':(scope.row.state===0?'danger':'')"
-                        >已入住
+                            v-if="scope.row.state === 1"
+                            :type="scope.row.state === 1 ? 'success' : scope.row.state === 0 ? 'danger' : ''"
+                            >已入住
                         </el-tag>
                         <el-tag
-                            v-if="scope.row.state===-1"
-                            :type="scope.row.state=== 11?'success':(scope.row.state===0?'danger':'')"
-                        >已退房
+                            v-if="scope.row.state === -1"
+                            :type="scope.row.state === 11 ? 'success' : scope.row.state === 0 ? 'danger' : ''"
+                            >已退房
                         </el-tag>
                         <el-tag
-                            v-if="scope.row.state===0"
-                            :type="scope.row.state=== 11?'success':(scope.row.state===0?'danger':'')"
-                        >未处理
+                            v-if="scope.row.state === 0"
+                            :type="scope.row.state === 11 ? 'success' : scope.row.state === 0 ? 'danger' : ''"
+                            >未处理
                         </el-tag>
                     </template>
                 </el-table-column>
@@ -79,8 +68,8 @@
                         <el-button
                             size="mini"
                             icon="el-icon-edit"
-                            @click="handleEdit(scope.$index, scope.row,scope.row.name, scope.row.idCard,scope.row.contact)"
-                        >编辑
+                            @click="handleEdit(scope.$index, scope.row, scope.row.name, scope.row.idCard, scope.row.contact)"
+                            >编辑
                         </el-button>
 
                         <el-button
@@ -88,8 +77,8 @@
                             size="mini"
                             type="danger"
                             icon="el-icon-delete"
-                            @click="handleDelete(scope.$index, scope.row,scope.row.idCard)"
-                        >删除
+                            @click="handleDelete(scope.$index, scope.row, scope.row.idCard)"
+                            >删除
                         </el-button>
                     </template>
                 </el-table-column>
@@ -102,7 +91,7 @@
                     layout="total, prev, pager, next"
                     :current-page="guestMsgs.pageIndex"
                     :page-size="guestMsgs.pageSize"
-                    :total="pageTotal"
+                    :total="tableData.length"
                     @current-change="handlePageChange"
                 ></el-pagination>
             </div>
@@ -145,10 +134,7 @@
                 <el-button type="primary" @click="saveGuest">确 定</el-button>
             </span>
         </el-dialog>
-
     </div>
-
-
 </template>
 
 <script>
@@ -156,7 +142,7 @@ import { fetchData } from '../../api/index';
 
 export default {
     name: 'BaseTable',
-    data () {
+    data() {
         return {
             guestMsgs: {
                 idCard: '',
@@ -164,20 +150,20 @@ export default {
                 contact: '',
                 state: '',
                 roomId: '',
-                pageIndex: 1,       //当前在第几页
-                pageSize: 10        //每页展示多少条数据
+                pageIndex: 1, //当前在第几页
+                pageSize: 50 //每页展示多少条数据
             },
 
             search: '',
             tableData: [],
             multipleSelection: [],
             delList: [],
-            pageTotal: 50,      //总共有多少条数据
+            pageTotal: 50, //总共有多少条数据
             idx: -1,
             id: -1,
 
-            editVisible: false,         //编辑框显示控制
-            addVisible: false,          //添加框显示控制
+            editVisible: false, //编辑框显示控制
+            addVisible: false, //添加框显示控制
             form: {
                 idCard: '',
                 name: '',
@@ -185,7 +171,7 @@ export default {
             }
         };
     },
-    created () {
+    created() {
         this.getAllGuest();
         //this.getData();
     },
@@ -199,17 +185,17 @@ export default {
                });
            },*/
         // 搜索功能
-        handleSearch () {
+        handleSearch() {
             console.log(this.search);
-            this.$http.get('http://localhost:8082//getGuestByContact?contact=' + this.search).then(res => {
+            this.$http.get('http://localhost:8082//getGuestByContact?contact=' + this.search).then((res) => {
                 if (res.data.code === 200) {
                     this.tableData = res.data.data.guestMsgs;
                 } else {
-                    this.$http.get('http://localhost:8082//getGuestByIdCard?idCard=' + this.search).then(res => {
+                    this.$http.get('http://localhost:8082//getGuestByIdCard?idCard=' + this.search).then((res) => {
                         if (res.data.code === 200) {
                             this.tableData = res.data.data.guestMsgs;
                         } else {
-                            this.$http.get('http://localhost:8082//getGuestByName?name=' + this.search).then(res => {
+                            this.$http.get('http://localhost:8082//getGuestByName?name=' + this.search).then((res) => {
                                 if (res.data.code === 200) {
                                     this.tableData = res.data.data.guestMsgs;
                                 } else {
@@ -222,9 +208,8 @@ export default {
             });
         },
 
-
         //获取全部用户操作
-        getAllGuest () {
+        getAllGuest() {
             //console.log('token: ' + localStorage.getItem('token'));
             this.$http.get('http://localhost:8082/getAllGuest').then((res) => {
                 this.tableData = res.data.data.guestMsgs;
@@ -234,61 +219,78 @@ export default {
         },
 
         //添加用户框
-        handGuest () {
+        handGuest() {
             this.addVisible = true;
             this.form = {};
         },
 
         //添加用户
-        saveGuest () {
+        saveGuest() {
             //console.log(this.form);
-            this.$http.post('http://localhost:8082/addGuest?contact=' + this.form.contact + '&idCard=' + this.form.idCard + '&name=' + this.form.name).then(res => {
-                //console.log(res);
-                if (res.data.code === 200) {
-                    //1.提示成功
-                    this.$message.success(`添加成功`);
-                    //2.关闭对话框
-                    this.addVisible = false;
-                    //3.更新视图
-                    this.getAllGuest();
-                    //4.清空输入文本框
-                    this.form = {};
-                } else {
-                    this.$message.warning('添加失败');
-                }
-            });
+            this.$http
+                .post(
+                    'http://localhost:8082/addGuest?contact=' +
+                        this.form.contact +
+                        '&idCard=' +
+                        this.form.idCard +
+                        '&name=' +
+                        this.form.name
+                )
+                .then((res) => {
+                    //console.log(res);
+                    if (res.data.code === 200) {
+                        //1.提示成功
+                        this.$message.success(`添加成功`);
+                        //2.关闭对话框
+                        this.addVisible = false;
+                        //3.更新视图
+                        this.getAllGuest();
+                        //4.清空输入文本框
+                        this.form = {};
+                    } else {
+                        this.$message.warning('添加失败');
+                    }
+                });
         },
 
         // 编辑用户框
-        handleEdit (index, row) {
+        handleEdit(index, row) {
             this.idx = index;
             this.form = row;
             this.editVisible = true;
         },
 
         // 保存编辑
-        saveEdit () {
+        saveEdit() {
             //console.log(this.form);
-            this.$http.post('http://localhost:8082/addGuest?contact=' + this.form.contact + '&idCard=' + this.form.idCard + '&name=' + this.form.name).then(res => {
-                //console.log(res);
-                if (res.data.code === 200) {
-                    //1.提示成功
-                    this.$message.success(`修改成功`);
-                    //2.关闭对话框
-                    this.editVisible = false;
-                    //3.更新视图
-                    this.getAllGuest();
-                    //4.清空输入文本框
-                    this.form = {};
-                } else {
-                    this.$message.warning('修改失败');
-                }
-            });
+            this.$http
+                .post(
+                    'http://localhost:8082/addGuest?contact=' +
+                        this.form.contact +
+                        '&idCard=' +
+                        this.form.idCard +
+                        '&name=' +
+                        this.form.name
+                )
+                .then((res) => {
+                    //console.log(res);
+                    if (res.data.code === 200) {
+                        //1.提示成功
+                        this.$message.success(`修改成功`);
+                        //2.关闭对话框
+                        this.editVisible = false;
+                        //3.更新视图
+                        this.getAllGuest();
+                        //4.清空输入文本框
+                        this.form = {};
+                    } else {
+                        this.$message.warning('修改失败');
+                    }
+                });
         },
 
-
         // 删除用户
-        handleDelete (index, row, userid) {
+        handleDelete(index, row, userid) {
             // 二次确认删除
             this.$confirm('确定要删除吗？', '提示', {
                 type: 'warning'
@@ -305,19 +307,14 @@ export default {
                         }
                     });
                 })
-                .catch(() => {
-                });
+                .catch(() => {});
         },
-
-
-
-
 
         // 多选操作
-        handleSelectionChange (val) {
+        handleSelectionChange(val) {
             this.multipleSelection = val;
         },
-        delAllSelection () {
+        delAllSelection() {
             const length = this.multipleSelection.length;
             let str = '';
             this.delList = this.delList.concat(this.multipleSelection);
@@ -329,14 +326,13 @@ export default {
         },
 
         // 分页导航
-        handlePageChange (val) {
+        handlePageChange(val) {
             this.$set(this.guestMsgs, 'pageIndex', val);
             this.getData();
         }
     }
 };
 </script>
-
 
 <style scoped>
 .handle-box {

@@ -9,7 +9,13 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input type="password" placeholder="password" v-model="param.password" @keyup.enter.native="submitForm()">
+                    <el-input
+                        type="password"
+                        show-password
+                        placeholder="password"
+                        v-model="param.password"
+                        @keyup.enter.native="submitForm()"
+                    >
                         <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
                     </el-input>
                 </el-form-item>

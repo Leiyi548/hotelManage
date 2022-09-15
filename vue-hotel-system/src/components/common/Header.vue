@@ -5,12 +5,12 @@
             <i v-if="!collapse" class="el-icon-s-fold"></i>
             <i v-else class="el-icon-s-unfold"></i>
         </div>
-        <div class="logo">客房信息管理系统</div>
+        <div class="logo">酒店管理系统</div>
         <div class="header-right">
             <div class="header-user-con">
                 <!-- 全屏显示 -->
                 <div class="btn-fullscreen" @click="handleFullScreen">
-                    <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
+                    <el-tooltip effect="dark" :content="fullscreen ? `取消全屏` : `全屏`" placement="bottom">
                         <i class="el-icon-rank"></i>
                     </el-tooltip>
                 </div>
@@ -26,7 +26,7 @@
                     </span>
 
                     <el-dropdown-menu slot="dropdown">
-<!--                        <el-dropdown-item>个人信息</el-dropdown-item>-->
+                        <!--                        <el-dropdown-item>个人信息</el-dropdown-item>-->
                         <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -38,7 +38,7 @@
 import bus from '../common/bus';
 
 export default {
-    data () {
+    data() {
         return {
             collapse: false,
             fullscreen: false,
@@ -46,27 +46,26 @@ export default {
         };
     },
     computed: {
-        username () {
+        username() {
             let username = localStorage.getItem('ms_username');
             return username ? username : this.name;
         }
     },
     methods: {
-
         // 用户名下拉菜单选择事件
-        handleCommand (command) {
+        handleCommand(command) {
             if (command == 'loginout') {
                 localStorage.removeItem('ms_username');
                 this.$router.push('/login');
             }
         },
         // 侧边栏折叠
-        collapseChage () {
+        collapseChage() {
             this.collapse = !this.collapse;
             bus.$emit('collapse', this.collapse);
         },
         // 全屏事件
-        handleFullScreen () {
+        handleFullScreen() {
             let element = document.documentElement;
             if (this.fullscreen) {
                 if (document.exitFullscreen) {
@@ -93,7 +92,7 @@ export default {
             this.fullscreen = !this.fullscreen;
         }
     },
-    mounted () {
+    mounted() {
         if (document.body.clientWidth < 1500) {
             this.collapseChage();
         }

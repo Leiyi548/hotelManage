@@ -18,9 +18,9 @@ Vue.use(ElementUI, {
     size: 'small'
 });
 const i18n = new VueI18n({
-                             locale: 'zh',
-                             messages
-                         });
+    locale: 'zh',
+    messages
+});
 
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
@@ -31,8 +31,8 @@ router.beforeEach((to, from, next) => {
     } else if (to.meta.permission) {
         // 如果是管理员权限则可进入，这里只是简单的模拟管理员权限而已
         role === 'admin' ? next() : next('/403');
-    } else if (role === 'admin' && to.path === '/reserve') {
-        next('/403');
+        // } else if (role === 'admin' && to.path === '/reserve') {
+        //     next('/403');
     } else {
         // 简单的判断IE10及以下不进入富文本编辑器，该组件不兼容
         if (navigator.userAgent.indexOf('MSIE') > -1 && to.path === '/editor') {
@@ -46,20 +46,17 @@ router.beforeEach((to, from, next) => {
 });
 
 new Vue({
-            router,
-            i18n,
-            render: h => h(App)
-        }).$mount('#app');
-
+    router,
+    i18n,
+    render: (h) => h(App)
+}).$mount('#app');
 
 /*统一添加token*/
-axios.interceptors.request.use(
-    (config) => {
-        let token = localStorage.getItem('token');//这个是登录时存进本地环境的token
-        //console.log('mainjs\'s token : ' + token);
-        config.headers = {
-            Authorization: token
-        };
-        return config;
-    }
-);
+axios.interceptors.request.use((config) => {
+    let token = localStorage.getItem('token'); //这个是登录时存进本地环境的token
+    //console.log('mainjs\'s token : ' + token);
+    config.headers = {
+        Authorization: token
+    };
+    return config;
+});

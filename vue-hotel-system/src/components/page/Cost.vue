@@ -1,26 +1,17 @@
 <template>
-
     <div>
         <!--  客户列表文字  -->
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>
-                    <i class="el-icon-school"></i> 房间列表
-                </el-breadcrumb-item>
+                <el-breadcrumb-item> <i class="el-icon-school"></i> 房间列表 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
 
         <!--  头部容器      -->
         <div class="container">
             <div class="handle-box">
-                <el-button
-                    round
-                    plain
-                    type="primary"
-                    icon="el-icon-delete"
-                    class="handle-del mr10"
-                    @click="delAllSelection"
-                >批量删除
+                <el-button round plain type="primary" icon="el-icon-delete" class="handle-del mr10" @click="delAllSelection"
+                    >批量删除
                 </el-button>
                 <el-button plain round type="primary" icon="el-icon-plus" @click="handBook">添加项目</el-button>
                 &nbsp;
@@ -35,41 +26,28 @@
                     @keydown.enter.native="handleSearch"
                 >
                 </el-input>
-
             </div>
 
             <!-- 主列表 -->
-            <el-table
-                :data="tableData"
-                style="width: 100%"
-                border
-            >
-
-
+            <el-table :data="tableData" style="width: 100%" border>
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="name" label="消费项目" align="center"></el-table-column>
                 <el-table-column prop="money" label="消费金额" align="center"></el-table-column>
 
-
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
-                        <el-button
-                            size="mini"
-                            icon="el-icon-edit"
-                            @click="handleEdit(scope.$index, scope.row)">编辑
-                        </el-button>
+                        <el-button size="mini" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑 </el-button>
                         <el-button
                             plain
                             size="mini"
                             type="danger"
                             icon="el-icon-delete"
-                            @click="handleDelete(scope.$index, scope.row,scope.row.id)">删除
+                            @click="handleDelete(scope.$index, scope.row, scope.row.id)"
+                            >删除
                         </el-button>
                     </template>
                 </el-table-column>
-
             </el-table>
-
 
             <!-- 编辑弹出框 -->
             <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
@@ -82,8 +60,8 @@
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
-                <el-button @click="editVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveCostEdit">确 定</el-button>
+                    <el-button @click="editVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="saveCostEdit">确 定</el-button>
                 </span>
             </el-dialog>
 
@@ -98,8 +76,8 @@
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
-                <el-button @click="addVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveCost">确 定</el-button>
+                    <el-button @click="addVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="saveCost">确 定</el-button>
                 </span>
             </el-dialog>
 
@@ -110,7 +88,7 @@
                     layout="total, prev, pager, next"
                     :current-page="costTypes.pageIndex"
                     :page-size="costTypes.pageSize"
-                    :total="pageTotal"
+                    :total="tableData.length"
                     @current-change="handlePageChange"
                 ></el-pagination>
             </div>
@@ -119,17 +97,16 @@
 </template>
 
 <script>
-
 export default {
     name: 'Cost',
-    data () {
+    data() {
         return {
             costTypes: {
                 id: '',
                 name: '',
-                money: ''
+                money: '',
+                pageSize: 50
             },
-
 
             value: '',
             tableData: [],
@@ -138,19 +115,18 @@ export default {
             switchValue: true,
             editVisible: false,
             addVisible: false,
-            pageTotal: 50,      //总共有多少条数据
+            pageTotal: 50, //总共有多少条数据
             form: {},
             idx: -1,
             id: -1
         };
     },
-    created () {
+    created() {
         this.getAllCostType();
     },
     methods: {
-
         //获取所有消费信息
-        getAllCostType () {
+        getAllCostType() {
             this.$http.get('http://localhost:8082/getAllCostType').then((res) => {
                 //console.log(res);
                 this.tableData = res.data.data.costTypes;
@@ -158,49 +134,51 @@ export default {
         },
 
         // 编辑
-        saveCostEdit () {
+        saveCostEdit() {
             //console.log(this.form);
-            this.$http.post('http://localhost:8082/addCostType?id=' + this.form.id + '&money=' + this.form.money + '&name=' + this.form.name).then(res => {
-                // console.log(res);
-                if (res.data.code === 200) {
-                    //1.提示成功
-                    this.$message.success(`修改成功`);
-                    //2.关闭对话框
-                    this.editVisible = false;
-                    //3.更新视图
-                    this.getAllCostType();
-                    //4.清空输入文本框
-                    this.form = {};
-                } else {
-                    this.$message.warning('修改失败');
-                }
-            });
+            this.$http
+                .post('http://localhost:8082/addCostType?id=' + this.form.id + '&money=' + this.form.money + '&name=' + this.form.name)
+                .then((res) => {
+                    // console.log(res);
+                    if (res.data.code === 200) {
+                        //1.提示成功
+                        this.$message.success(`修改成功`);
+                        //2.关闭对话框
+                        this.editVisible = false;
+                        //3.更新视图
+                        this.getAllCostType();
+                        //4.清空输入文本框
+                        this.form = {};
+                    } else {
+                        this.$message.warning('修改失败');
+                    }
+                });
         },
-
 
         // 添加
-        saveCost () {
+        saveCost() {
             // console.log(this.form);
-            this.$http.post('http://localhost:8082/addCostType?id=0' + '&money=' + this.form.money + '&name=' + this.form.name).then(res => {
-                //console.log(res);
-                if (res.data.code === 200) {
-                    //1.提示成功
-                    this.$message.success(`添加成功`);
-                    //2.关闭对话框
-                    this.addVisible = false;
-                    //3.更新视图
-                    this.getAllCostType();
-                    //4.清空输入文本框
-                    this.form = {};
-                } else {
-                    this.$message.warning('添加失败');
-                }
-            });
+            this.$http
+                .post('http://localhost:8082/addCostType?id=0' + '&money=' + this.form.money + '&name=' + this.form.name)
+                .then((res) => {
+                    //console.log(res);
+                    if (res.data.code === 200) {
+                        //1.提示成功
+                        this.$message.success(`添加成功`);
+                        //2.关闭对话框
+                        this.addVisible = false;
+                        //3.更新视图
+                        this.getAllCostType();
+                        //4.清空输入文本框
+                        this.form = {};
+                    } else {
+                        this.$message.warning('添加失败');
+                    }
+                });
         },
 
-
         //删除预定信息
-        handleDelete (index, row, costId) {
+        handleDelete(index, row, costId) {
             if (localStorage.getItem('ms_username') === 'admin') {
                 // 二次确认删除
                 this.$confirm('确定要删除吗？', '提示', {
@@ -217,17 +195,14 @@ export default {
                             }
                         });
                     })
-                    .catch(() => {
-                    });
+                    .catch(() => {});
             } else {
                 this.$message.error('抱歉您没有该权限');
             }
-
         },
 
-
         //添加消费信息框
-        handBook () {
+        handBook() {
             if (localStorage.getItem('ms_username') === 'admin') {
                 this.addVisible = true;
                 this.form = {};
@@ -236,29 +211,30 @@ export default {
             }
         },
 
-
         //添加消费信息
-        saveBook () {
+        saveBook() {
             //console.log(this.form);
-            this.$http.post('http://localhost:8082/addCostType?id=' + this.form.id + '&money=' + this.form.money + '&name=' + this.form.name).then(res => {
-                //console.log(res);
-                if (res.data.code === 200) {
-                    //1.提示成功
-                    this.$message.success(`添加成功`);
-                    //2.关闭对话框
-                    this.addVisible = false;
-                    //3.更新视图
-                    this.getAllCostType();
-                    //4.清空输入文本框
-                    this.form = {};
-                } else {
-                    this.$message.warning('添加失败');
-                }
-            });
+            this.$http
+                .post('http://localhost:8082/addCostType?id=' + this.form.id + '&money=' + this.form.money + '&name=' + this.form.name)
+                .then((res) => {
+                    //console.log(res);
+                    if (res.data.code === 200) {
+                        //1.提示成功
+                        this.$message.success(`添加成功`);
+                        //2.关闭对话框
+                        this.addVisible = false;
+                        //3.更新视图
+                        this.getAllCostType();
+                        //4.清空输入文本框
+                        this.form = {};
+                    } else {
+                        this.$message.warning('添加失败');
+                    }
+                });
         },
 
         // 编辑操作
-        handleEdit (index, row) {
+        handleEdit(index, row) {
             if (localStorage.getItem('ms_username') === 'admin') {
                 this.idx = index;
                 this.form = row;
@@ -269,9 +245,9 @@ export default {
         },
 
         // 搜索功能
-        handleSearch () {
+        handleSearch() {
             //console.log(this.costTypes.name);
-            this.$http.get('http://localhost:8082/getCostTypeByName?name=' + this.costTypes.name).then(res => {
+            this.$http.get('http://localhost:8082/getCostTypeByName?name=' + this.costTypes.name).then((res) => {
                 //console.log(res.data);
                 if (res.data.code === 200) {
                     this.tableData = res.data.data.costTypes;
@@ -282,11 +258,11 @@ export default {
         },
 
         // 多选操作
-        handleSelectionChange (val) {
+        handleSelectionChange(val) {
             this.multipleSelection = val;
         },
 
-        delAllSelection () {
+        delAllSelection() {
             const length = this.multipleSelection.length;
             let str = '';
             this.delList = this.delList.concat(this.multipleSelection);
@@ -298,14 +274,13 @@ export default {
         },
 
         // 分页导航
-        handlePageChange (val) {
+        handlePageChange(val) {
             this.$set(this.costTypes, 'pageIndex', val);
             this.getAllCostType();
         }
     }
 };
 </script>
-
 
 <style scoped>
 .handle-box {

@@ -1,12 +1,9 @@
 <template>
-
     <div>
         <!--  客户列表文字  -->
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>
-                    <i class="el-icon-school"></i> 房间列表
-                </el-breadcrumb-item>
+                <el-breadcrumb-item> <i class="el-icon-school"></i> 房间列表 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
 
@@ -16,20 +13,13 @@
                 <el-button plain round type="primary" icon="el-icon-s-promotion" @click="getAllRooms">所有房间</el-button>
                 &nbsp;
                 <el-dropdown>
-                    <el-button
-                        type="primary"
-                        round
-                        plain
-                    >
-                        更多操作<i class="el-icon-arrow-down el-icon--right"></i>
-                    </el-button>
+                    <el-button type="primary" round plain> 更多操作<i class="el-icon-arrow-down el-icon--right"></i> </el-button>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item @click.native="getHasBookedRoom">已预定房间</el-dropdown-item>
                         <el-dropdown-item @click.native="getHasCheckedRoom">已入住房间</el-dropdown-item>
                         <el-dropdown-item @click.native="getNUllRooms">剩余空房间</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
-
 
                 &nbsp;&nbsp;
                 <el-input
@@ -47,11 +37,7 @@
             </div>
 
             <!-- 主列表 -->
-            <el-table
-                :data="tableData"
-                style="width: 100%"
-                border
-            >
+            <el-table :data="tableData" style="width: 100%" border>
                 <el-table-column prop="roomId" label="房间号" align="center" width="150"></el-table-column>
                 <el-table-column prop="rank" label="房间级别" align="center" width="150"></el-table-column>
                 <el-table-column prop="size" label="房间大小" align="center" width="150"></el-table-column>
@@ -63,86 +49,75 @@
                 <el-table-column label="房间状态" align="center" width="100">
                     <template slot-scope="scope">
                         <el-tag
-                            v-if="scope.row.state===1"
-                            :type="scope.row.state=== 1?'success':(scope.row.state===0?'danger':'')"
-                        >已入住
+                            v-if="scope.row.state === 1"
+                            :type="scope.row.state === 1 ? 'success' : scope.row.state === 0 ? 'danger' : ''"
+                            >已入住
                         </el-tag>
                         <el-tag
-                            v-if="scope.row.state===-1"
-                            :type="scope.row.state=== 11?'success':(scope.row.state===-1?'danger':'')"
-                        >空房
+                            v-if="scope.row.state === -1"
+                            :type="scope.row.state === 11 ? 'success' : scope.row.state === -1 ? 'danger' : ''"
+                            >空房
                         </el-tag>
                         <el-tag
-                            v-if="scope.row.state===0"
-                            :type="scope.row.state=== 11?'success':(scope.row.state===9?'danger':'')"
-                        >已预订
+                            v-if="scope.row.state === 0"
+                            :type="scope.row.state === 11 ? 'success' : scope.row.state === 9 ? 'danger' : ''"
+                            >已预订
                         </el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    label="时间"
-                    width="180"
-                    align="center"
-                >
+                <el-table-column label="时间" width="180" align="center">
                     <template slot-scope="scope">
                         <i class="el-icon-time"></i>
                         <span style="margin-left: 10px">{{ scope.row.time }}</span>
                     </template>
                 </el-table-column>
 
-
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
-                        <el-button
-                            size="mini"
-                            icon="el-icon-edit"
-                            v-if="name==='admin'"
-                            @click="handleEdit(scope.$index, scope.row)">编辑
+                        <el-button size="mini" icon="el-icon-edit" v-if="name === 'admin'" @click="handleEdit(scope.$index, scope.row)"
+                            >编辑
                         </el-button>
                         <el-button
                             plain
                             size="mini"
                             type="danger"
                             icon="el-icon-delete"
-                            v-if="name==='admin'"
-                            @click="handleDelete(scope.$index, scope.row,scope.row.roomId)">删除
+                            v-if="name === 'admin'"
+                            @click="handleDelete(scope.$index, scope.row, scope.row.roomId)"
+                            >删除
                         </el-button>
                         <el-button
                             plain
                             size="mini"
                             icon="el-icon-coffee-cup"
-                            v-if="name!=='admin'"
-                            @click="handleService(scope.row.roomId)">消费
+                            v-if="name === 'admin'"
+                            @click="handleService(scope.row.roomId)"
+                            >消费
                         </el-button>
                         <el-button
                             plain
                             size="mini"
                             type="success"
                             icon="el-icon-chat-round"
-                            v-if="name!=='admin'"
-                            @click="inspect(scope.row.roomId)">结算
+                            v-if="name === 'admin'"
+                            @click="inspect(scope.row.roomId)"
+                            >结算
                         </el-button>
-                        <el-button
-                            plain
-                            icon="el-icon-lx-exit"
-                            type="primary"
-                            v-if="name!=='admin'"
-                            @click="checkOut(scope.row.roomId)">退房
+                        <el-button plain icon="el-icon-lx-exit" type="primary" v-if="name === 'admin'" @click="checkOut(scope.row.roomId)"
+                            >退房
                         </el-button>
                     </template>
                 </el-table-column>
-
             </el-table>
-
 
             <!-- 编辑弹出框 -->
             <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
                 <el-form ref="form" :model="form" label-width="80px" :rules="rules">
                     <el-form-item label="房间号" prop="roomId">
-                        <el-input v-model="form.roomId"></el-input>
+                        <el-input v-model="form.roomId" placeholder="请输入房间编号"></el-input>
                     </el-form-item>
                     <el-form-item label="房间级别">
-                        <el-input v-model="form.rank"></el-input>
+                        <el-input v-model="form.rank" placeholder="分为A,B,C,D级"></el-input>
                     </el-form-item>
                     <el-form-item label="房间大小" prop="size">
                         <el-input v-model="form.size" placeholder="请输入正整数"></el-input>
@@ -161,8 +136,8 @@
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
-                <el-button @click="editVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveRoomEdit">确 定</el-button>
+                    <el-button @click="editVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="saveRoomEdit">确 定</el-button>
                 </span>
             </el-dialog>
 
@@ -188,12 +163,12 @@
                         <el-input v-model="form.earnest" placeholder="请输入正整数"></el-input>
                     </el-form-item>
                     <el-form-item label="房间位置">
-                        <el-input v-model="form.position"></el-input>
+                        <el-input v-model="form.position" placeholder="请输入房间位置"></el-input>
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
-                <el-button @click="addVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveRoom">确 定</el-button>
+                    <el-button @click="addVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="saveRoom">确 定</el-button>
                 </span>
             </el-dialog>
 
@@ -211,37 +186,27 @@
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
-                <el-button @click="inspectVisible = false">取消支付</el-button>
-                <el-button type="primary" @click="surePay">确认支付</el-button>
+                    <el-button @click="inspectVisible = false">取消支付</el-button>
+                    <el-button type="primary" @click="surePay">确认支付</el-button>
                 </span>
             </el-dialog>
 
             <!-- 服务弹出框-->
-            <el-dialog title="服务列表" :visible.sync="serviceVisible" width="30%">
-                <el-table
-                    :data="serviceData"
-                    style="width: 100%"
-                    border
-                >
+            <el-dialog title="消费列表" :visible.sync="serviceVisible" width="30%">
+                <el-table :data="serviceData" style="width: 100%" border>
                     <el-table-column prop="id" label="消费编号" align="center"></el-table-column>
                     <el-table-column prop="name" label="消费名称" align="center"></el-table-column>
                     <el-table-column prop="money" label="消费金额" align="center"></el-table-column>
                     <el-table-column label="操作" align="center">
                         <template slot-scope="scope">
-                            <el-button
-                                plain
-                                size="mini"
-                                icon="el-icon-coffee-cup"
-                                @click="sureCost(scope.row.id)">订购
-                            </el-button>
+                            <el-button plain size="mini" icon="el-icon-coffee-cup" @click="sureCost(scope.row.id)">订购 </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
                 <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="serviceVisible = false">订购完成</el-button>
+                    <el-button type="primary" @click="serviceVisible = false">订购完成</el-button>
                 </span>
             </el-dialog>
-
 
             <!--  分页角标设置   -->
             <div class="pagination">
@@ -250,7 +215,7 @@
                     layout="total, prev, pager, next"
                     :current-page="roomMsgs.pageIndex"
                     :page-size="roomMsgs.pageSize"
-                    :total="pageTotal"
+                    :total="tableData.length"
                     @current-change="handlePageChange"
                 ></el-pagination>
             </div>
@@ -259,10 +224,9 @@
 </template>
 
 <script>
-
 export default {
     name: 'Room',
-    data () {
+    data() {
         return {
             name: localStorage.getItem('ms_username'),
             roomMsgs: {
@@ -274,11 +238,9 @@ export default {
                 maxNum: '',
                 position: '',
                 time: '',
-                pageIndex: 1,       //当前在第几页
-                pageSize: 10        //每页展示多少条数据
+                pageIndex: 1, //当前在第几页
+                pageSize: 50 //每页展示多少条数据
             },
-
-
 
             costTypes: {
                 id: '',
@@ -288,7 +250,7 @@ export default {
             },
 
             value: '',
-            serviceData: [],    //服务数据
+            serviceData: [], //服务数据
             tableData: [],
             multipleSelection: [],
             delList: [],
@@ -298,55 +260,48 @@ export default {
             addVisible: false,
             inspectVisible: false,
             serviceVisible: false,
-            pageTotal: 50,      //总共有多少条数据
+            pageTotal: 50, //总共有多少条数据
             form: {
                 roomIdPay: '',
-                hasSettle: '',      //已支付
-                toll: '',           //总消费
-                needSettle: ''      //尚需
+                hasSettle: '', //已支付
+                toll: '', //总消费
+                needSettle: '' //尚需
             },
             idx: -1,
             id: -1,
 
             rules: {
-                size: [
-                    { required: true, message: '请输入正整数', trigger: 'blur' }
-                ],
-                maxNum: [
-                    { required: true, message: '请输入正整数', trigger: 'blur' }
-                ],
-                earnest: [
-                    { required: true, message: '请输入正整数', trigger: 'blur' }
-                ],
-                rent: [
-                    { required: true, message: '请输入正整数', trigger: 'blur' }
-                ]
+                roomId: [{ required: true, message: '请输入房间编号', trigger: 'blur' }],
+                size: [{ required: true, message: '请输入正整数', trigger: 'blur' }],
+                maxNum: [{ required: true, message: '请输入正整数', trigger: 'blur' }],
+                earnest: [{ required: true, message: '请输入正整数', trigger: 'blur' }],
+                rent: [{ required: true, message: '请输入正整数', trigger: 'blur' }]
             }
         };
     },
-    created () {
+    created() {
         this.getAllRooms();
     },
     methods: {
-
         //订购消费
-        sureCost (costTypesId) {
+        sureCost(costTypesId) {
             console.log('costTypesId: ' + costTypesId);
             console.log('serviceNeedRooId: ' + this.costTypes.serviceNeedRooId);
-            this.$http.post('http://localhost:8082/addCost?costTypeId=' + costTypesId + '&id=0&roomId=' + this.costTypes.serviceNeedRooId).then(res => {
-                console.log(res);
-                if (res.data.code === 200) {
-                    //1.提示成功
-                    this.$message.success(`订购成功！`);
-                } else {
-                    this.$message.error('订购失败');
-                }
-            });
-
+            this.$http
+                .post('http://localhost:8082/addCost?costTypeId=' + costTypesId + '&id=0&roomId=' + this.costTypes.serviceNeedRooId)
+                .then((res) => {
+                    console.log(res);
+                    if (res.data.code === 200) {
+                        //1.提示成功
+                        this.$message.success(`订购成功！`);
+                    } else {
+                        this.$message.error('订购失败');
+                    }
+                });
         },
 
         //获取所有消费信息
-        getAllCostType () {
+        getAllCostType() {
             this.$http.get('http://localhost:8082/getAllCostType').then((res) => {
                 //console.log(res);
                 this.serviceData = res.data.data.costTypes;
@@ -354,16 +309,16 @@ export default {
         },
 
         //服务添加
-        handleService (serviceNeedRooId) {
+        handleService(serviceNeedRooId) {
             this.costTypes.serviceNeedRooId = serviceNeedRooId;
             this.serviceVisible = true;
             this.getAllCostType();
         },
 
         //确认支付
-        surePay () {
+        surePay() {
             console.log(this.form.roomIdPay);
-            this.$http.post('http://localhost:8082/settleCostByRoomId?roomId=' + this.form.roomIdPay).then(res => {
+            this.$http.post('http://localhost:8082/settleCostByRoomId?roomId=' + this.form.roomIdPay).then((res) => {
                 console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -377,10 +332,10 @@ export default {
         },
 
         //查看当前消费
-        inspect (roomId) {
+        inspect(roomId) {
             this.form.roomIdPay = roomId;
             this.inspectVisible = true;
-            this.$http.post('http://localhost:8082/getCostByRoomId?roomId=' + roomId).then(res => {
+            this.$http.post('http://localhost:8082/getCostByRoomId?roomId=' + roomId).then((res) => {
                 //console.log(res);
                 this.form.hasSettle = res.data.data.hasSettle;
                 this.form.toll = res.data.data.toll;
@@ -389,9 +344,9 @@ export default {
         },
 
         //退房
-        checkOut (checkroomId) {
+        checkOut(checkroomId) {
             //console.log(this.form);
-            this.$http.post('http://localhost:8082/checkOut?roomId=' + checkroomId).then(res => {
+            this.$http.post('http://localhost:8082/checkOut?roomId=' + checkroomId).then((res) => {
                 console.log(res);
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -407,7 +362,7 @@ export default {
             });
         },
 
-        getAllRooms () {
+        getAllRooms() {
             this.$http.get('http://localhost:8082/getAllRooms').then((res) => {
                 //console.log(res);
                 this.tableData = res.data.data.roomMsgs;
@@ -415,57 +370,89 @@ export default {
         },
 
         // 编辑
-        saveRoomEdit () {
+        saveRoomEdit() {
             //console.log(this.form);
             if (this.form.maxNum > 0 && this.form.earnest > 0 && this.form.rent > 0 && this.form.size > 0) {
-                this.$http.post('http://localhost:8082/addRoom?earnest=' + this.form.earnest + '&roomId=' + this.form.roomId + '&maxNum=' + this.form.maxNum + '&rank=' + this.form.rank + '&rent=' + this.form.rent + '&size=' + this.form.size + '&position=' + this.form.position).then(res => {
-                    //console.log(res);
-                    if (res.data.code === 200) {
-                        //1.提示成功
-                        this.$message.success(`修改成功`);
-                        //2.关闭对话框
-                        this.editVisible = false;
-                        //3.更新视图
-                        this.getAllRooms();
-                        //4.清空输入文本框
-                        this.form = {};
-                    } else {
-                        this.$message.warning('修改失败');
-                    }
-                });
+                this.$http
+                    .post(
+                        'http://localhost:8082/addRoom?earnest=' +
+                            this.form.earnest +
+                            '&roomId=' +
+                            this.form.roomId +
+                            '&maxNum=' +
+                            this.form.maxNum +
+                            '&rank=' +
+                            this.form.rank +
+                            '&rent=' +
+                            this.form.rent +
+                            '&size=' +
+                            this.form.size +
+                            '&position=' +
+                            this.form.position
+                    )
+                    .then((res) => {
+                        //console.log(res);
+                        if (res.data.code === 200) {
+                            //1.提示成功
+                            this.$message.success(`修改成功`);
+                            //2.关闭对话框
+                            this.editVisible = false;
+                            //3.更新视图
+                            this.getAllRooms();
+                            //4.清空输入文本框
+                            this.form = {};
+                        } else {
+                            this.$message.warning('修改失败');
+                        }
+                    });
             } else {
                 this.$message.warning('请检查输入数值是否正确');
             }
         },
-
 
         // 添加
-        saveRoom () {
+        saveRoom() {
             if (this.form.maxNum > 0 && this.form.earnest > 0 && this.form.rent > 0 && this.form.size > 0) {
                 //console.log(this.form);
-                this.$http.post('http://localhost:8082/addRoom?earnest=' + this.form.earnest + '&roomId=' + this.form.roomId + '&maxNum=' + this.form.maxNum + '&rank=' + this.form.rank + '&rent=' + this.form.rent + '&size=' + this.form.size + '&position=' + this.form.position).then(res => {
-                    //console.log(res);
-                    if (res.data.code === 200) {
-                        //1.提示成功
-                        this.$message.success(`添加成功`);
-                        //2.关闭对话框
-                        this.addVisible = false;
-                        //3.更新视图
-                        this.getAllRooms();
-                        //4.清空输入文本框
-                        this.form = {};
-                    } else {
-                        this.$message.warning('添加失败');
-                    }
-                });
+                this.$http
+                    .post(
+                        'http://localhost:8082/addRoom?earnest=' +
+                            this.form.earnest +
+                            '&roomId=' +
+                            this.form.roomId +
+                            '&maxNum=' +
+                            this.form.maxNum +
+                            '&rank=' +
+                            this.form.rank +
+                            '&rent=' +
+                            this.form.rent +
+                            '&size=' +
+                            this.form.size +
+                            '&position=' +
+                            this.form.position
+                    )
+                    .then((res) => {
+                        //console.log(res);
+                        if (res.data.code === 200) {
+                            //1.提示成功
+                            this.$message.success(`添加成功`);
+                            //2.关闭对话框
+                            this.addVisible = false;
+                            //3.更新视图
+                            this.getAllRooms();
+                            //4.清空输入文本框
+                            this.form = {};
+                        } else {
+                            this.$message.warning('添加失败');
+                        }
+                    });
             } else {
                 this.$message.warning('请检查输入数值是否正确');
             }
         },
 
-
         //删除预定信息
-        handleDelete (index, row, roomId) {
+        handleDelete(index, row, roomId) {
             if (localStorage.getItem('ms_username') === 'admin') {
                 // 二次确认删除
                 this.$confirm('确定要删除吗？', '提示', {
@@ -482,17 +469,14 @@ export default {
                             }
                         });
                     })
-                    .catch(() => {
-                    });
+                    .catch(() => {});
             } else {
                 this.$message.error('抱歉您没有该权限');
             }
-
         },
 
-
         //添加预定信息框
-        handBook () {
+        handBook() {
             if (localStorage.getItem('ms_username') === 'admin') {
                 this.addVisible = true;
                 this.form = {};
@@ -501,29 +485,37 @@ export default {
             }
         },
 
-
         //添加预定信息    待处理！！！！！！！！！！！！！！！
-        saveBook () {
+        saveBook() {
             //console.log(this.form);
-            this.$http.post('http://localhost:8082/addGuest?contact=' + this.form.contact + '&idCard=' + this.form.idCard + '&name=' + this.form.name).then(res => {
-                //console.log(res);
-                if (res.data.code === 200) {
-                    //1.提示成功
-                    this.$message.success(`添加成功`);
-                    //2.关闭对话框
-                    this.addVisible = false;
-                    //3.更新视图
-                    this.getAllRooms();
-                    //4.清空输入文本框
-                    this.form = {};
-                } else {
-                    this.$message.warning('添加失败');
-                }
-            });
+            this.$http
+                .post(
+                    'http://localhost:8082/addGuest?contact=' +
+                        this.form.contact +
+                        '&idCard=' +
+                        this.form.idCard +
+                        '&name=' +
+                        this.form.name
+                )
+                .then((res) => {
+                    //console.log(res);
+                    if (res.data.code === 200) {
+                        //1.提示成功
+                        this.$message.success(`添加成功`);
+                        //2.关闭对话框
+                        this.addVisible = false;
+                        //3.更新视图
+                        this.getAllRooms();
+                        //4.清空输入文本框
+                        this.form = {};
+                    } else {
+                        this.$message.warning('添加失败');
+                    }
+                });
         },
 
         // 编辑操作
-        handleEdit (index, row) {
+        handleEdit(index, row) {
             if (localStorage.getItem('ms_username') === 'admin') {
                 this.idx = index;
                 this.form = row;
@@ -534,22 +526,26 @@ export default {
         },
 
         // 搜索功能
-        handleSearch () {
-            this.$http.get('http://localhost:8082/getRoomById?id=' + this.roomMsgs.roomId).then(res => {
-                //console.log(res.data);
-                if (res.data.code === 200) {
-                    let array = [];
-                    array.push(res.data.data.room);
-                    this.tableData = array;
-                } else {
-                    this.$message.error('抱歉没有该数据');
-                }
-            });
+        handleSearch() {
+            if (this.roomMsgs.roomId == '') {
+                tableData = this.getAllRooms();
+            } else {
+                this.$http.get('http://localhost:8082/getRoomById?id=' + this.roomMsgs.roomId).then((res) => {
+                    //console.log(res.data);
+                    if (res.data.code === 200) {
+                        let array = [];
+                        array.push(res.data.data.roomMsg);
+                        this.tableData = array;
+                    } else {
+                        this.$message.error('抱歉没有该数据');
+                    }
+                });
+            }
         },
 
         //获取空房间
-        getNUllRooms () {
-            this.$http.get('http://localhost:8082/getNullRooms').then(res => {
+        getNUllRooms() {
+            this.$http.get('http://localhost:8082/getNullRooms').then((res) => {
                 //  console.log(res);
                 if (res.data.data === null) {
                     this.$message.info('没有剩余房间了');
@@ -561,8 +557,8 @@ export default {
         },
 
         //获取已经预定的房间
-        getHasBookedRoom () {
-            this.$http.get('http://localhost:8082/getHasBookedRoom').then(res => {
+        getHasBookedRoom() {
+            this.$http.get('http://localhost:8082/getHasBookedRoom').then((res) => {
                 if (res.data.data === null) {
                     this.$message.info('已预订房间为空');
                 } else {
@@ -573,8 +569,8 @@ export default {
         },
 
         //获取已经入住的房间
-        getHasCheckedRoom () {
-            this.$http.get('http://localhost:8082/getHasCheckedRoom').then(res => {
+        getHasCheckedRoom() {
+            this.$http.get('http://localhost:8082/getHasCheckedRoom').then((res) => {
                 if (res.data.data === null) {
                     this.$message.info('已入住房间为空');
                 } else {
@@ -585,11 +581,11 @@ export default {
         },
 
         // 多选操作
-        handleSelectionChange (val) {
+        handleSelectionChange(val) {
             this.multipleSelection = val;
         },
 
-        delAllSelection () {
+        delAllSelection() {
             const length = this.multipleSelection.length;
             let str = '';
             this.delList = this.delList.concat(this.multipleSelection);
@@ -601,14 +597,13 @@ export default {
         },
 
         // 分页导航
-        handlePageChange (val) {
+        handlePageChange(val) {
             this.$set(this.roomMsgs, 'pageIndex', val);
             this.getAllRooms();
         }
     }
 };
 </script>
-
 
 <style scoped>
 .handle-box {
