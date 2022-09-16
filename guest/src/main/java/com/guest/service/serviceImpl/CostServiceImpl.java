@@ -2,6 +2,7 @@ package com.guest.service.serviceImpl;
 
 import com.guest.pojo.po.Cost;
 import com.guest.mapper.CostMapper;
+import com.guest.pojo.vo.MoneyTable;
 import com.guest.service.CostService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,10 @@ public class CostServiceImpl extends ServiceImpl<CostMapper, Cost> implements Co
     @Override
     public boolean removeByCostTypeId(Integer id) {
         return costMapper.removeByCostTypeId(id);
+    }
+
+    @Override
+    public List<MoneyTable> getFinancialStatement() {
+        return  costMapper.getFinancialStatement();
     }
 }

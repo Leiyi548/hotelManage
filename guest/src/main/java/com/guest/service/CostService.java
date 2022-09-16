@@ -2,6 +2,7 @@ package com.guest.service;
 
 import com.guest.pojo.po.Cost;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.guest.pojo.vo.MoneyTable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,4 +27,6 @@ public interface CostService extends IService<Cost> {
     int getNotCostNum(String roomId);
 
     boolean removeByCostTypeId(Integer id);
+
+    List<MoneyTable> getFinancialStatement();
 }

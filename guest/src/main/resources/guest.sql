@@ -258,3 +258,35 @@ INSERT INTO `room` VALUES ('0006', 2, 'A', 2, 2, 2, '2');
 INSERT INTO `room` VALUES ('1', 22, 'C', 22, 22, 22, '二楼');
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+
+-- 创建时间时间映射表
+-- ----------------------------
+DROP TABLE IF EXISTS `cost_time`;
+CREATE TABLE `cost_time`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `cost_id` int(0) NULL DEFAULT NULL COMMENT 'cost表id',
+  `time` datetime(0) NULL DEFAULT NULL COMMENT '时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+
+
+-- 创建拦截器
+
+CREATE TRIGGER cost_time_trigger AFTER INSERT ON cost 
+FOR EACH ROW
+BEGIN
+INSERT INTO cost_time VALUES(null,NEW.id , NOW());
+END
+
+create trigger cost_time_trigger2
+before DELETE  on cost
+for EACH row
+begin
+delete from cost_time where cost_id = old.id;
+end
+
+show triggers

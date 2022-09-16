@@ -2,6 +2,7 @@ package com.guest.mapper;
 
 import com.guest.pojo.po.Cost;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.guest.pojo.vo.MoneyTable;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -23,4 +24,5 @@ public interface CostMapper extends BaseMapper<Cost> {
     boolean removeByRoomId(String roomId);
     int getNotCostNum(String roomId);
     boolean removeByCostTypeId(Integer id);
+    List<MoneyTable> getFinancialStatement();
 }

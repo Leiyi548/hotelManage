@@ -3,8 +3,7 @@ package com.guest.controller;
 
 import com.guest.pojo.po.Cost;
 import com.guest.pojo.po.CostType;
-import com.guest.pojo.vo.Response;
-import com.guest.pojo.vo.ResponseMsg;
+import com.guest.pojo.vo.*;
 import com.guest.service.*;
 import com.guest.utils.JwtUtill;
 import io.swagger.annotations.*;
@@ -13,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -213,6 +214,88 @@ public class CostController {
             return new Response(ResponseMsg.NO_TARGET);
 //        }
 //        return new Response(ResponseMsg.ILLEGAL_OPERATION);
+    }
+
+
+
+    /*
+           输出消费报表
+     */
+    @RequestMapping("/financialStatement")
+    @ApiOperation("消费报表")
+    @ApiResponses({
+            @ApiResponse(code=200,message="请求成功"),
+            @ApiResponse(code=40002,message="数据不存在"),
+            @ApiResponse(code=40104,message="非法操作, 试图操作不属于自己的数据")
+    })
+    public Response financialStatement() {
+        List<MoneyTable> financialStatements = costService.getFinancialStatement();
+        // 计算总金额
+        Double total = 0D;
+        for (MoneyTable financialStatement : financialStatements) {
+            total+=financialStatement.getMoney() * financialStatement.getNum();
+        }
+        Map resultMap = new HashMap();
+        resultMap.put("total",total);
+        resultMap.put("list",financialStatements);
+        return new Response().success(resultMap);
+    }
+
+
+
+    /*
+           输出财务报表
+     */
+    @RequestMapping("/financialStatement2")
+    @ApiOperation("财务报表")
+    @ApiResponses({
+            @ApiResponse(code=200,message="请求成功"),
+            @ApiResponse(code=40002,message="数据不存在"),
+            @ApiResponse(code=40104,message="非法操作, 试图操作不属于自己的数据")
+    })
+    public Response financialStatement2() {
+        List<MoneyTable> financialStatements = costService.getFinancialStatement();
+
+        // 记录月vo
+        List<FinancialStatement> mfs = new ArrayList<>();
+        // 记录年total
+        Map<Integer,Double> yearMap = new HashMap<>();
+
+        boolean mflag ;
+        for (MoneyTable financialStatement : financialStatements) {
+            mflag = false;
+            // 转换为日历类型 防止Date废弃方法(getYear getMonth)错误 +1900
+            Calendar  calendar = Calendar.getInstance();
+            calendar.setTime(financialStatement.getTime());
+            // 算月金额和年金额
+            for (FinancialStatement f : mfs) {
+
+                if(f.getYear() ==  calendar.get(Calendar.YEAR) && f.getMonth() == calendar.get(Calendar.MONTH)){
+                    mflag = true;
+                    f.setMoneyTotal(f.getMoneyTotal()+(financialStatement.getMoney() * financialStatement.getNum()));
+                    yearMap.put(f.getYear(),yearMap.get(calendar.get(Calendar.YEAR)) + (financialStatement.getMoney() * financialStatement.getNum()) );
+                }
+            }
+            if(!mflag) {
+                mfs.add(new FinancialStatement(calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        (financialStatement.getMoney() * financialStatement.getNum())));
+
+                if (!yearMap.containsKey(calendar.get(Calendar.YEAR))){
+                    yearMap.put(calendar.get(Calendar.YEAR),
+                            (financialStatement.getMoney() * financialStatement.getNum()));
+                }else  {
+                    yearMap.put(calendar.get(Calendar.YEAR),yearMap.get(calendar.get(Calendar.YEAR)) + (financialStatement.getMoney() * financialStatement.getNum()));
+                }
+
+            }
+    }
+
+
+        Map resultMap = new HashMap();
+        resultMap.put("mvo",mfs);
+        resultMap.put("ymap",yearMap);
+        return new Response().success(resultMap);
     }
 }
 
