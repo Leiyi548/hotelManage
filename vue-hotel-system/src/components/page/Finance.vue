@@ -26,41 +26,12 @@
 
             <!-- 主列表 -->
             <el-table :data="tableData" style="width: 100%" border>
-                <el-table-column prop="name" label="月份" align="center"></el-table-column>
-                <el-table-column prop="money" label="消费金额" align="center"></el-table-column>
+                <el-table-column prop="year" label="年份" align="center"></el-table-column>
+                <el-table-column prop="month" label="月份" align="center"></el-table-column>
+                <el-table-column prop="moneyTotal" label="收入" align="center"></el-table-column>
             </el-table>
-
-            <!-- 编辑弹出框 -->
-            <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-                <el-form ref="form" :model="form" label-width="70px">
-                    <el-form-item label="消费项目">
-                        <el-input v-model="form.name"></el-input>
-                    </el-form-item>
-                    <el-form-item label="消费金额">
-                        <el-input v-model="form.money"></el-input>
-                    </el-form-item>
-                </el-form>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="editVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="saveCostEdit">确 定</el-button>
-                </span>
-            </el-dialog>
-
-            <!-- 添加弹出框 -->
-            <el-dialog title="添加" :visible.sync="addVisible" width="30%">
-                <el-form ref="form" :model="form" label-width="70px">
-                    <el-form-item label="消费项目">
-                        <el-input v-model="form.name"></el-input>
-                    </el-form-item>
-                    <el-form-item label="消费金额">
-                        <el-input v-model="form.money"></el-input>
-                    </el-form-item>
-                </el-form>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="addVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="saveCost">确 定</el-button>
-                </span>
-            </el-dialog>
+            <p>2021年共收入{{ this.tableData2[2021] }}</p>
+            <p>2022年共收入{{ this.tableData2[2022] }}</p>
 
             <!--  分页角标设置   -->
             <div class="pagination">
@@ -91,6 +62,7 @@ export default {
 
             value: '',
             tableData: [],
+            tableData2: [],
             multipleSelection: [],
             delList: [],
             switchValue: true,
@@ -103,7 +75,7 @@ export default {
         };
     },
     created() {
-        this.getAllCostType();
+        this.getAllfinancialStatement2();
     },
     methods: {
         //获取所有消费信息
@@ -111,6 +83,16 @@ export default {
             this.$http.get('http://localhost:8082/getAllCostType').then(res => {
                 //console.log(res);
                 this.tableData = res.data.data.costTypes;
+            });
+        },
+
+        getAllfinancialStatement2() {
+            this.$http.get('http://localhost:8082/financialStatement2').then(res => {
+                this.tableData = res.data.data.mvo;
+                this.tableData2 = res.data.data.ymap;
+                // this.tableData2 = [res.data.data.ymap];
+                console.log(this.tableData2[2021]);
+                console.log(this.tableData2[2022]);
             });
         },
 
