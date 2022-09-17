@@ -21,4 +21,11 @@
     <delete id="removeByRoomId" parameterType="string">
         delete from cost where room_id = #{id};
     </delete>
+    
+      <select id="getFinancialStatement" resultType="com.guest.pojo.vo.MoneyTable">
+
+ select `name`,money,num,state,`time`,room_id from cost left join cost_type
+        on cost_type.id = cost.cost_type_id
+        left join cost_time on cost_time.cost_id = cost.id
+    </select>
 </mapper>

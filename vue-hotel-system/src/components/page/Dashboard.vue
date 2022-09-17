@@ -12,7 +12,7 @@
                     </div>
                     <div class="user-info-list">
                         登录地点：
-                        <span> 南昌</span>
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 南昌</span>
                     </div>
                     <div class="user-info-list">
                         上次登录时间：

@@ -3,27 +3,12 @@
         <!--  客户列表文字  -->
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item> <i class="el-icon-school"></i> 财务报表 </el-breadcrumb-item>
+                <readcrumb-item> <i class="el-icon-school"></i> 消费报表 </readcrumb-item>
             </el-breadcrumb>
         </div>
 
         <!--  头部容器      -->
         <div class="container">
-            <div class="handle-box">
-                &nbsp;
-                <el-input
-                    round
-                    v-model="costTypes.name"
-                    placeholder="请输入想要搜索的月份,直接回车即可"
-                    class="handle-input mr10"
-                    clearable
-                    prefix-icon="el-icon-search"
-                    @clear="handleSearch"
-                    @keydown.enter.native="handleSearch"
-                >
-                </el-input>
-            </div>
-
             <!-- 主列表 -->
             <el-table :data="tableData" style="width: 100%" border>
                 <el-table-column prop="name" label="消费项目" align="center"></el-table-column>
@@ -71,7 +56,7 @@ export default {
         };
     },
     created() {
-        this.getAllCostType();
+        this.getAllfinancialStatement();
     },
     methods: {
         //获取所有消费信息
@@ -79,6 +64,12 @@ export default {
             this.$http.get('http://localhost:8082/getAllCostType').then(res => {
                 //console.log(res);
                 this.tableData = res.data.data.costTypes;
+            });
+        },
+        getAllfinancialStatement() {
+            this.$http.get('http://localhost:8082/financialStatement').then(res => {
+                console.log(res);
+                this.tableData = res.data.data.list;
             });
         },
 

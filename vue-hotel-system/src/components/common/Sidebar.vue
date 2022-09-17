@@ -81,12 +81,12 @@ export default {
                     title: '前台管理'
                 },
                 {
-                    icon: 'el-icon-document',
+                    icon: 'el-icon-s-check',
                     index: 'economy',
                     title: '经济消费报表'
                 },
                 {
-                    icon: 'el-icon-document',
+                    icon: 'el-icon-s-claim',
                     index: 'finance',
                     title: '财务报表'
                 }

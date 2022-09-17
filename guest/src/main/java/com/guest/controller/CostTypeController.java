@@ -152,7 +152,11 @@ public class CostTypeController {
     public Response getCostTypeByName(HttpServletRequest request,String name){
         String num = (String) request.getAttribute("num");
         if(backgroundService.getById(num) != null || frontService.getById(num) != null){
-            List<CostType> costTypes = costTypeService.getCostTypeByName(name);
+              // 模糊查询
+            QueryWrapper queryWrapper = new QueryWrapper();
+            queryWrapper.like("name",name);
+            List<CostType> costTypes = costTypeService.list(queryWrapper);
+            
             if(costTypes != null ){
                 Map<String,Object> resultMap = new HashMap<>();
                 String token = jwtUtill.updateJwt(num);
