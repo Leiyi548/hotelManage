@@ -9,9 +9,11 @@ import com.guest.utils.JwtUtill;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -53,6 +55,45 @@ public class BackgroundController {
 			return new Response(ResponseMsg.PASSWORD_WRONG);
 		}
 		return new Response(ResponseMsg.NO_SUCH_USER);
+	}
+	@PutMapping("/updateBackgroundPwd")
+	@ApiOperation (value = "修改管理员账号密码")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "Authorization", value = "token，在这个请求中不填", required = false),
+			@ApiImplicitParam(name = "backId", value = "后台管理员的工号", required = true),
+			@ApiImplicitParam(name = "password", value = "后台管理员的密码", required = true)
+	})
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "请求成功"),
+			@ApiResponse(code = 40105, message = "密码错误,请核对后重新输入"),
+	})
+	public Response updateBackground(HttpServletRequest request,String backId,String password,String newBackId,String newPassword){
+		String num=(String)request.getAttribute("num");
+		Background background=backgroundService.getById(backId);
+		background.setBackId(newBackId);
+		background.setPassword(newPassword);
+		backgroundService.saveOrUpdate(background);
+		String token=jwtUtill.updateJwt(num);
+		return (new Response()).success(token);
+	}
+	@GetMapping("getBackground")
+	@ApiOperation(value="获取管理员信息")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name="Authorization",value="管理员的token",required=true),
+	})
+	@ApiResponses({
+			@ApiResponse(code=200,message="请求成功"),
+			@ApiResponse(code=40002,message="数据不存在"),
+			@ApiResponse(code=40104,message="非法操作, 试图操作不属于自己的数据")
+	})
+	public Response getBackground(HttpServletRequest request){
+		String num=(String) request.getAttribute("num");
+		Background background=backgroundService.getById(num);
+		Map<String,Object> resultMap=new HashMap<>();
+		resultMap.put("background",background);
+		String token= jwtUtill.updateJwt(num);
+		resultMap.put("token",token);
+		return (new Response().success(resultMap));
 	}
 }
 
