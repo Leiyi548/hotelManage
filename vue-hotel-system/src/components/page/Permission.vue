@@ -103,6 +103,7 @@
 
 <script>
 import { fetchData2 } from '../../api/index';
+import { createLogger } from 'vuex';
 
 /*
 http://localhost:8082/getAllFront
@@ -141,7 +142,11 @@ export default {
         getAllFront() {
             this.$http.get('http://localhost:8082/getAllFront').then(res => {
                 //console.log(res);
-                this.tableData = res.data.data.fronts;
+                if (res.data.data == null) {
+                    this.tableData = [];
+                } else {
+                    this.tableData = res.data.data.fronts;
+                }
             });
         },
 
@@ -261,43 +266,45 @@ export default {
         // 多选操作
         handleSelectionChange(val) {
             this.multipleSelection = val;
-            // console.log(val);
-            console.log('===获得信息===');
-            // console.log(val.length);
             this.delList = [];
             for (let i = 0; i < val.length; i++) {
                 this.delList.push(val[i].frontId);
             }
-            console.log(this.delList);
         },
+
         delAllSelection() {
             const length = this.multipleSelection.length;
-            if (length == 0){
-                this.$message.error("你还有选择内容");
+            var i = 0;
+            if (length == 0) {
+                this.$message.error('你还有选择内容');
                 return;
             }
             let str = '';
             // this.delList = this.delList.concat(this.multipleSelection);
             // 获得被删除的人名总和
-            for (let i = 0; i < length; i++) {
-                str += this.multipleSelection[i].name + '\n';
-            }
-            for (let i = 0; i < this.delList.length; i++) {
+            // for (let i = 0; i < length; i++) {
+            //     str += this.multipleSelection[i].name;
+            // }
+            for (i; i < this.delList.length; i++) {
                 this.$http.delete('http://localhost:8082/deleteFront?id=' + this.delList[i]).then(res => {
                     if (res.data.code === 200) {
                         this.$message.success('删除成功');
                     } else {
                         this.$message.warning('删除失败');
+                        this.getAllFront();
+                        return;
                     }
                 });
             }
-            this.$message.error(`删除了 ${str}`);
+            // this.$message.error(`删除了 ${str}`);
             // 重制multipleSelection
             this.multipleSelection = [];
-            this.getAllFront();
-            // 立马刷新页面
-            location. reload()
-            this.$router.go(0)
+            // 更新删除后的数据
+            if (i == this.delList.length) {
+                this.tableData = [];
+            } else {
+                this.getAllFront();
+            }
         },
 
         // 分页导航
