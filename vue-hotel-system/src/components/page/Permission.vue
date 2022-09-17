@@ -59,7 +59,7 @@
                     </el-form-item>
                 </el-form>
                 <span slot='footer' class='dialog-footer'>
-                    <el-button @click='editVisible = false'>取 消</el-button>
+                    <el-button @click='cancelEdit'>取 消</el-button>
                     <el-button type='primary' @click='saveEdit'>确 定</el-button>
                 </span>
             </el-dialog>
@@ -74,14 +74,14 @@
                         <el-input v-model='form.name'></el-input>
                     </el-form-item>
                     <el-form-item label='前台密码'>
-                        <el-input v-model='form.password'></el-input>
+                        <el-input v-model='form.password' maxlength='16'></el-input>
                     </el-form-item>
                     <el-form-item label='联系电话'>
                         <el-input v-model='form.phone'></el-input>
                     </el-form-item>
                 </el-form>
                 <span slot='footer' class='dialog-footer'>
-                    <el-button @click='addVisible = false'>取 消</el-button>
+                    <el-button @click='cancelFront'>取 消</el-button>
                     <el-button type='primary' @click='saveFront'>确 定</el-button>
                 </span>
             </el-dialog>
@@ -221,6 +221,14 @@ export default {
                 });
         },
 
+        cancelFront() {
+            this.$message.info('取消添加');
+            // 1.关闭对话框
+            this.addVisible = false;
+            // 2.更新数据
+            this.getAllFront();
+        },
+
         // 编辑操作
         handleEdit(index, row) {
             if (localStorage.getItem('ms_username') === 'admin') {
@@ -263,6 +271,14 @@ export default {
                 });
         },
 
+        cancelEdit() {
+            this.$message.info('取消编辑');
+            // 1.关闭对话框
+            this.editVisible = false;
+            // 2.更新数据
+            this.getAllFront();
+        },
+
         // 多选操作
         handleSelectionChange(val) {
             this.multipleSelection = val;
@@ -272,14 +288,22 @@ export default {
             }
         },
 
+        getJsonLength() {
+            var length = 0;
+            for (var item in this.tableData) {
+                length++;
+            }
+            return length;
+        },
+
         delAllSelection() {
             const length = this.multipleSelection.length;
             var i = 0;
             if (length == 0) {
-                this.$message.error('你还有选择内容');
+                this.$message.error('未选择内容');
                 return;
             }
-            let str = '';
+            // let str = '';
             // this.delList = this.delList.concat(this.multipleSelection);
             // 获得被删除的人名总和
             // for (let i = 0; i < length; i++) {
@@ -300,7 +324,7 @@ export default {
             // 重制multipleSelection
             this.multipleSelection = [];
             // 更新删除后的数据
-            if (i == this.delList.length) {
+            if (this.getJsonLength() == this.delList.length) {
                 this.tableData = [];
             } else {
                 this.getAllFront();
