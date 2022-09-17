@@ -52,7 +52,7 @@
             </el-table>
 
             <!-- 编辑弹出框 -->
-            <el-dialog title='编辑' :visible.sync='editVisible' width='30%'>
+            <el-dialog title='编辑' :visible.sync='editVisible' width='30%' :before-close='handleClose'>
                 <el-form ref='form' :model='form' label-width='70px'>
                     <el-form-item label='消费项目'>
                         <el-input v-model='form.name'></el-input>
@@ -68,7 +68,7 @@
             </el-dialog>
 
             <!-- 添加弹出框 -->
-            <el-dialog title='添加' :visible.sync='addVisible' width='30%'>
+            <el-dialog title='添加' :visible.sync='addVisible' width='30%' :before-close='handleClose2'>
                 <el-form ref='form' :model='form' label-width='70px'>
                     <el-form-item label='消费项目'>
                         <el-input v-model='form.name'></el-input>
@@ -257,6 +257,20 @@ export default {
                 });
         },
 
+        // 关闭编辑操作
+        handleClose(done) {
+            this.$message.info('取消编辑');
+            this.getAllCostType();
+            done();
+        },
+
+        handleClose2(done) {
+            this.$message.info('取消添加');
+            this.getAllCostType();
+            done();
+        },
+
+
         // 编辑操作
         handleEdit(index, row) {
             if (localStorage.getItem('ms_username') === 'admin') {
@@ -316,10 +330,10 @@ export default {
                 this.$http.delete('http://localhost:8082/deleteCostType?id=' + this.delList[i]).then(res => {
                     if (res.data.code === 200) {
                         this.$message.success('删除成功');
+                        this.getAllCostType();
                     } else {
                         this.$message.warning('删除失败');
                         this.getAllCostType();
-                        return;
                     }
                 });
             }

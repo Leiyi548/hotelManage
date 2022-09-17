@@ -43,19 +43,19 @@
             </el-table>
 
             <!-- 编辑弹出框 -->
-            <el-dialog title='编辑' :visible.sync='editVisible' width='30%'>
+            <el-dialog title='编辑' :visible.sync='editVisible' width='30%' :before-close='handleClose'>
                 <el-form ref='form' :model='form' label-width='70px'>
                     <el-form-item label='前台工号'>
                         <el-input v-model='form.frontId' :disabled='true'></el-input>
                     </el-form-item>
                     <el-form-item label='前台姓名'>
-                        <el-input v-model='form.name'></el-input>
+                        <el-input v-model='form.name' clearable></el-input>
                     </el-form-item>
                     <el-form-item label='前台密码'>
-                        <el-input v-model='form.password'></el-input>
+                        <el-input v-model='form.password' maxlength='16' minlength='6' clearable></el-input>
                     </el-form-item>
                     <el-form-item label='联系电话'>
-                        <el-input v-model='form.phone'></el-input>
+                        <el-input v-model='form.phone' clearable></el-input>
                     </el-form-item>
                 </el-form>
                 <span slot='footer' class='dialog-footer'>
@@ -65,7 +65,7 @@
             </el-dialog>
 
             <!-- 添加弹出框 -->
-            <el-dialog title='添加' :visible.sync='addVisible' width='30%'>
+            <el-dialog title='添加' :visible.sync='addVisible' width='30%' :before-close='handleClose2'>
                 <el-form ref='form' :model='form' label-width='70px'>
                     <el-form-item label='前台工号'>
                         <el-input v-model='form.frontId'></el-input>
@@ -148,6 +148,18 @@ export default {
                     this.tableData = res.data.data.fronts;
                 }
             });
+        },
+
+        handleClose(done) {
+            this.$message.info('取消编辑');
+            this.getAllFront();
+            done();
+        },
+
+        handleClose2(done) {
+            this.$message.info('取消添加');
+            this.getAllFront();
+            done();
         },
 
         // getFrontLength(){
@@ -313,6 +325,7 @@ export default {
                 this.$http.delete('http://localhost:8082/deleteFront?id=' + this.delList[i]).then(res => {
                     if (res.data.code === 200) {
                         this.$message.success('删除成功');
+                        this.getAllFront();
                     } else {
                         this.$message.warning('删除失败');
                         this.getAllFront();

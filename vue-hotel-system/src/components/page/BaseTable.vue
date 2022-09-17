@@ -99,7 +99,7 @@
         </div>
 
         <!-- 编辑弹出框 -->
-        <el-dialog title='编辑' :visible.sync='editVisible' width='30%'>
+        <el-dialog title='编辑' :visible.sync='editVisible' width='30%' :before-close='handleClose'>
             <el-form ref='form' :model='form' label-width='70px'>
                 <el-form-item label='身份证号'>
                     <el-input v-model='form.idCard' :disabled='true'></el-input>
@@ -118,7 +118,7 @@
         </el-dialog>
 
         <!-- 添加弹出框 -->
-        <el-dialog title='添加用户' :visible.sync='addVisible' width='30%'>
+        <el-dialog title='添加用户' :visible.sync='addVisible' width='30%' :before-close='handleClose2'>
             <el-form ref='form' :model='form' label-width='70px'>
                 <el-form-item label='用户名'>
                     <el-input v-model='form.name'></el-input>
@@ -209,6 +209,7 @@ export default {
             });
         },
 
+
         //获取全部用户操作
         getAllGuest() {
             //console.log('token: ' + localStorage.getItem('token'));
@@ -221,6 +222,18 @@ export default {
                 // console.log(res.data.data.guestMsgs);
                 // console.log('getAllGuest方法执行完毕');
             });
+        },
+
+        handleClose(done) {
+            this.$message.info('取消编辑');
+            this.getAllGuest();
+            done();
+        },
+
+        handleClose2(done) {
+            this.$message.info('取消添加');
+            this.getAllGuest();
+            done();
         },
 
         //添加用户框
@@ -367,6 +380,7 @@ export default {
                 this.$http.delete('http://localhost:8082//deleteGuest?idCard=' + this.delList[i]).then(res => {
                     if (res.data.code === 200) {
                         this.$message.success('删除成功');
+                        this.getAllGuest();
                     } else {
                         this.$message.warning('删除失败');
                         this.getAllGuest();
