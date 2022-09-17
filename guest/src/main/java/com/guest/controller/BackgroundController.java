@@ -76,7 +76,7 @@ public class BackgroundController {
 		String token=jwtUtill.updateJwt(num);
 		return (new Response()).success(token);
 	}
-	@GetMapping("getBackground")
+	@GetMapping("/getBackground")
 	@ApiOperation(value="获取管理员信息")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name="Authorization",value="管理员的token",required=true),
