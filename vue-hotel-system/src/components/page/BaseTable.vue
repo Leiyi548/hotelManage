@@ -100,14 +100,14 @@
 
         <!-- 编辑弹出框 -->
         <el-dialog title='编辑' :visible.sync='editVisible' width='30%' :before-close='handleClose'>
-            <el-form ref='form' :model='form' label-width='70px'>
-                <el-form-item label='身份证号'>
+            <el-form ref='form' :model='form' :rules='rules' label-width='70px'>
+                <el-form-item label='身份证号' prop='idCard'>
                     <el-input v-model='form.idCard' :disabled='true'></el-input>
                 </el-form-item>
-                <el-form-item label='用户名'>
+                <el-form-item label='用户名' prop='name'>
                     <el-input v-model='form.name'></el-input>
                 </el-form-item>
-                <el-form-item label='联系电话'>
+                <el-form-item label='联系电话' prop='contact'>
                     <el-input v-model='form.contact'></el-input>
                 </el-form-item>
             </el-form>
@@ -119,14 +119,14 @@
 
         <!-- 添加弹出框 -->
         <el-dialog title='添加用户' :visible.sync='addVisible' width='30%' :before-close='handleClose2'>
-            <el-form ref='form' :model='form' label-width='70px'>
-                <el-form-item label='用户名'>
+            <el-form ref='form' :model='form' :rules='rules' label-width='70px'>
+                <el-form-item label='用户名' prop='name'>
                     <el-input v-model='form.name'></el-input>
                 </el-form-item>
-                <el-form-item label='身份证号'>
+                <el-form-item label='身份证号' prop='idCard'>
                     <el-input v-model='form.idCard'></el-input>
                 </el-form-item>
-                <el-form-item label='联系电话'>
+                <el-form-item label='联系电话' prop='contact'>
                     <el-input v-model='form.contact'></el-input>
                 </el-form-item>
             </el-form>
@@ -143,7 +143,56 @@ import { fetchData } from '../../api/index';
 
 export default {
     name: 'BaseTable',
+
     data() {
+
+        // 验证手机号码
+        const checkPhone = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('手机号不能为空'));
+            } else {
+                // 总结需要11位
+                // 第一位必须是1
+                // 其余任意一个数字
+                const reg = /^1[0-9]\d{9}$/;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    return callback(new Error('请输入正确的手机号(11位，开头为1)\n'));
+                }
+            }
+        };
+
+        const checkIdCard = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('身份证不能为空'));
+            } else {
+                // 身份证格式
+                // more information please see https://cloud.tencent.com/developer/article/1114323
+                const reg = /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    return callback(new Error('请输入正确的身份证号'));
+                }
+            }
+        };
+
+        // 验证姓名
+        const checkName = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('姓名不能为空'));
+            } else {
+                // 中文
+                const reg = /^[\u4e00-\u9fa5]{2,4}$/;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    return callback(new Error('请输入正确的姓名（中文2-4位）'));
+                }
+            }
+        };
+
         return {
             guestMsgs: {
                 idCard: '',
@@ -169,6 +218,12 @@ export default {
                 idCard: '',
                 name: '',
                 contact: ''
+            },
+            rules: {
+                idCard: [{ validator: checkIdCard, trigger: ['change', 'blur'] }],
+                name: [{ validator: checkName, trigger: ['change', 'blur'] }],
+                contact: [{ validator: checkPhone, trigger: ['change', 'blur'] }]
+                // contact: [{ validator: checkContact, trigger: ['change', 'blur'] }]
             }
         };
     },
@@ -252,31 +307,36 @@ export default {
 
         //添加用户
         saveGuest() {
-            //console.log(this.form);
-            this.$http
-                .post(
-                    'http://localhost:8082/addGuest?contact=' +
-                    this.form.contact +
-                    '&idCard=' +
-                    this.form.idCard +
-                    '&name=' +
-                    this.form.name
-                )
-                .then((res) => {
-                    //console.log(res);
-                    if (res.data.code === 200) {
-                        //1.提示成功
-                        this.$message.success(`添加成功`);
-                        //2.关闭对话框
-                        this.addVisible = false;
-                        //3.更新视图
-                        this.getAllGuest();
-                        //4.清空输入文本框
-                        this.form = {};
-                    } else {
-                        this.$message.warning('添加失败');
-                    }
-                });
+            this.$refs['form'].validate((valid) => {
+                if (valid) {
+                    this.$http
+                        .post(
+                            'http://localhost:8082/addGuest?contact=' +
+                            this.form.contact +
+                            '&idCard=' +
+                            this.form.idCard +
+                            '&name=' +
+                            this.form.name
+                        )
+                        .then((res) => {
+                            //console.log(res);
+                            if (res.data.code === 200) {
+                                //1.提示成功
+                                this.$message.success(`添加成功`);
+                                //2.关闭对话框
+                                this.addVisible = false;
+                                //3.更新视图
+                                this.getAllGuest();
+                                //4.清空输入文本框
+                                this.form = {};
+                            } else {
+                                this.$message.warning('添加失败');
+                            }
+                        });
+                } else {
+                    this.$message.warning('添加失败');
+                }
+            });
         },
 
         // 编辑用户框
@@ -296,30 +356,36 @@ export default {
         // 保存编辑
         saveEdit() {
             //console.log(this.form);
-            this.$http
-                .post(
-                    'http://localhost:8082/addGuest?contact=' +
-                    this.form.contact +
-                    '&idCard=' +
-                    this.form.idCard +
-                    '&name=' +
-                    this.form.name
-                )
-                .then((res) => {
-                    //console.log(res);
-                    if (res.data.code === 200) {
-                        //1.提示成功
-                        this.$message.success(`修改成功`);
-                        //2.关闭对话框
-                        this.editVisible = false;
-                        //3.更新视图
-                        this.getAllGuest();
-                        //4.清空输入文本框
-                        this.form = {};
-                    } else {
-                        this.$message.warning('修改失败');
-                    }
-                });
+            this.$refs['form'].validate((valid) => {
+                if (valid) {
+                    this.$http
+                        .post(
+                            'http://localhost:8082/addGuest?contact=' +
+                            this.form.contact +
+                            '&idCard=' +
+                            this.form.idCard +
+                            '&name=' +
+                            this.form.name
+                        )
+                        .then((res) => {
+                            //console.log(res);
+                            if (res.data.code === 200) {
+                                //1.提示成功
+                                this.$message.success(`编辑成功`);
+                                //2.关闭对话框
+                                this.editVisible = false;
+                                //3.更新视图
+                                this.getAllGuest();
+                                //4.清空输入文本框
+                                this.form = {};
+                            } else {
+                                this.$message.warning('编辑失败');
+                            }
+                        });
+                } else {
+                    this.$message.warning('编辑失败');
+                }
+            });
         },
 
         // 删除用户

@@ -44,17 +44,18 @@
 
             <!-- 编辑弹出框 -->
             <el-dialog title='编辑' :visible.sync='editVisible' width='30%' :before-close='handleClose'>
-                <el-form ref='form' :model='form' label-width='70px'>
+                <el-form ref='form' :model='form' :rules='rules' label-width='80px'>
                     <el-form-item label='前台工号'>
                         <el-input v-model='form.frontId' :disabled='true'></el-input>
                     </el-form-item>
-                    <el-form-item label='前台姓名'>
-                        <el-input v-model='form.name' clearable></el-input>
+                    <el-form-item label='前台姓名' prop='name'>
+                        <el-input v-model='form.name' clearable auto-complete='false'></el-input>
                     </el-form-item>
-                    <el-form-item label='前台密码'>
-                        <el-input v-model='form.password' maxlength='16' minlength='6' clearable></el-input>
+                    <el-form-item label='前台密码' prop='password'>
+                        <el-input v-model='form.password' maxlength='16' minlength='6' clearable
+                                  auto-complete='false'></el-input>
                     </el-form-item>
-                    <el-form-item label='联系电话'>
+                    <el-form-item label='联系电话' prop='phone' @keyup.enter.native='saveEdit()'>
                         <el-input v-model='form.phone' clearable></el-input>
                     </el-form-item>
                 </el-form>
@@ -66,23 +67,23 @@
 
             <!-- 添加弹出框 -->
             <el-dialog title='添加' :visible.sync='addVisible' width='30%' :before-close='handleClose2'>
-                <el-form ref='form' :model='form' label-width='70px'>
-                    <el-form-item label='前台工号'>
+                <el-form ref='form' :model='form' :rules='rules' label-width='70px'>
+                    <el-form-item label='前台工号' prop='frontId'>
                         <el-input v-model='form.frontId'></el-input>
                     </el-form-item>
-                    <el-form-item label='前台姓名'>
+                    <el-form-item label='前台姓名' prop='name'>
                         <el-input v-model='form.name'></el-input>
                     </el-form-item>
-                    <el-form-item label='前台密码'>
+                    <el-form-item label='前台密码' prop='password'>
                         <el-input v-model='form.password' maxlength='16'></el-input>
                     </el-form-item>
-                    <el-form-item label='联系电话'>
+                    <el-form-item label='联系电话' prop='phone' @keyup.enter.native='saveFront'>
                         <el-input v-model='form.phone'></el-input>
                     </el-form-item>
                 </el-form>
                 <span slot='footer' class='dialog-footer'>
                     <el-button @click='cancelFront'>取 消</el-button>
-                    <el-button type='primary' @click='saveFront'>确 定</el-button>
+                    <el-button type='primary' @click='saveFront()'>确 定</el-button>
                 </span>
             </el-dialog>
 
@@ -113,6 +114,70 @@ fronts
 export default {
     name: 'RoomType',
     data() {
+        // 验证前台id
+        const checkId = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('id号不能为空'));
+            } else {
+                // 6位数，数字
+                const reg = /^[0-9][0-9]{3}$/;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    return callback(new Error('请输入正确的id号(4位)'));
+                }
+            }
+        };
+        // 验证手机号码
+        const checkPhone = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('手机号不能为空'));
+            } else {
+                // 总结需要11位
+                // 第一位必须是1
+                // 第二个是34578
+                // 其余任意一个数字
+                const reg = /^1[0-9]\d{9}$/;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    return callback(new Error('请输入正确的手机号(11位，开头为1)'));
+                }
+            }
+        };
+
+        // 验证姓名
+        const checkName = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('姓名不能为空'));
+            } else {
+                // 中文
+                const reg = /^[\u4e00-\u9fa5]{2,4}$/;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    return callback(new Error('请输入正确的姓名（中文2-4位）'));
+                }
+            }
+        };
+
+        // 验证密码
+        const checkPassword = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('密码不能为空'));
+            } else {
+                // 密码必须为6-18位字母、数字、特殊符号的：
+                const reg1 = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+`\-={}:";'<>?,.\/]).{6,18}$/;
+                // 密码必须为6-18位字母、数字
+                const reg2 = /^(?![^a-zA-Z]+$)(?!\D+$)/;
+                if (reg2.test(value)) {
+                    callback();
+                } else {
+                    return callback(new Error('请输入正确的密码（6-18位字母、数字）'));
+                }
+            }
+        };
+
         return {
             fronts: {
                 frontId: '',
@@ -123,13 +188,29 @@ export default {
                 pageSize: 50 //每页展示多少条数据
             },
 
+            // form: {},
+            form: {
+                frontId: '',
+                name: '',
+                pageIndex: '',
+                password: '',
+                phone: ''
+            },
+            //
+            rules: {
+                phone: [{ validator: checkPhone, trigger: 'change' }],
+                password: [{ validator: checkPassword, trigger: 'change' }],
+                name: [{ validator: checkName, trigger: 'change' }],
+                frontId: [{ validator: checkId, trigger: 'change' }]
+                // password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+            },
+
             tableData: [],
             multipleSelection: [],
             delList: [],
             editVisible: false,
             addVisible: false,
             pageTotal: 50, //总共有多少条数据
-            form: {},
             idx: -1,
             id: -1
         };
@@ -149,6 +230,7 @@ export default {
                 }
             });
         },
+
 
         handleClose(done) {
             this.$message.info('取消编辑');
@@ -204,33 +286,44 @@ export default {
 
         //添加前台
         saveFront() {
+            this.$refs['form'].validate((valid) => {
+                if (valid) {
+                    // 验证成功要做的事
+                    this.$http
+                        .post(
+                            'http://localhost:8082/addFront?frontId=' +
+                            this.form.frontId +
+                            '&name=' +
+                            this.form.name +
+                            '&password=' +
+                            this.form.password +
+                            '&phone=' +
+                            this.form.phone
+                        )
+                        .then(res => {
+                            //console.log(res);
+                            if (res.data.code === 200) {
+                                //1.提示成功
+                                this.$message.success(`添加成功`);
+                                //2.关闭对话框
+                                this.addVisible = false;
+                                //3.更新视图
+                                this.getAllFront();
+                                //4.清空输入文本框
+                                this.form = {};
+                            } else {
+                                this.$message.warning('添加失败');
+                            }
+                        });
+                    this.editVisible = false;
+
+                } else {
+                    // 不成功出现显示
+                    this.$message.warning('添加失败');
+                    return false;
+                }
+            });
             //console.log(this.form);
-            this.$http
-                .post(
-                    'http://localhost:8082/addFront?frontId=' +
-                    this.form.frontId +
-                    '&name=' +
-                    this.form.name +
-                    '&password=' +
-                    this.form.password +
-                    '&phone=' +
-                    this.form.phone
-                )
-                .then(res => {
-                    //console.log(res);
-                    if (res.data.code === 200) {
-                        //1.提示成功
-                        this.$message.success(`添加成功`);
-                        //2.关闭对话框
-                        this.addVisible = false;
-                        //3.更新视图
-                        this.getAllFront();
-                        //4.清空输入文本框
-                        this.form = {};
-                    } else {
-                        this.$message.warning('添加失败');
-                    }
-                });
         },
 
         cancelFront() {
@@ -254,33 +347,38 @@ export default {
 
         //编辑前台
         saveEdit() {
-            //console.log(this.form);
-            this.$http
-                .post(
-                    'http://localhost:8082/addFront?frontId=' +
-                    this.form.frontId +
-                    '&name=' +
-                    this.form.name +
-                    '&password=' +
-                    this.form.password +
-                    '&phone=' +
-                    this.form.phone
-                )
-                .then(res => {
-                    //console.log(res);
-                    if (res.data.code === 200) {
-                        //1.提示成功
-                        this.$message.success(`编辑成功`);
-                        //2.关闭对话框
-                        this.editVisible = false;
-                        //3.更新视图
-                        this.getAllFront();
-                        //4.清空输入文本框
-                        this.form = {};
-                    } else {
-                        this.$message.warning('编辑失败');
-                    }
-                });
+            this.$refs['form'].validate((valid) => {
+                if (valid) {
+                    this.$http
+                        .post(
+                            'http://localhost:8082/addFront?frontId=' +
+                            this.form.frontId +
+                            '&name=' +
+                            this.form.name +
+                            '&password=' +
+                            this.form.password +
+                            '&phone=' +
+                            this.form.phone
+                        )
+                        .then(res => {
+                            //console.log(res);
+                            if (res.data.code === 200) {
+                                //1.提示成功
+                                this.$message.success(`编辑成功`);
+                                //2.关闭对话框
+                                this.editVisible = false;
+                                //3.更新视图
+                                this.getAllFront();
+                                //4.清空输入文本框
+                                this.form = {};
+                            } else {
+                                this.$message.warning('编辑失败');
+                            }
+                        });
+                } else {
+                    this.$message.warning('编辑失败');
+                }
+            });
         },
 
         cancelEdit() {

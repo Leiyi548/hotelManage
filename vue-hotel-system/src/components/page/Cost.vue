@@ -53,11 +53,11 @@
 
             <!-- 编辑弹出框 -->
             <el-dialog title='编辑' :visible.sync='editVisible' width='30%' :before-close='handleClose'>
-                <el-form ref='form' :model='form' label-width='70px'>
-                    <el-form-item label='消费项目'>
+                <el-form ref='form' :model='form' :rules='rules' label-width='70px'>
+                    <el-form-item label='消费项目' prop='name'>
                         <el-input v-model='form.name'></el-input>
                     </el-form-item>
-                    <el-form-item label='消费金额'>
+                    <el-form-item label='消费金额' prop='money' @keyup.enter.native='saveCostEdit'>
                         <el-input v-model='form.money'></el-input>
                     </el-form-item>
                 </el-form>
@@ -69,11 +69,11 @@
 
             <!-- 添加弹出框 -->
             <el-dialog title='添加' :visible.sync='addVisible' width='30%' :before-close='handleClose2'>
-                <el-form ref='form' :model='form' label-width='70px'>
-                    <el-form-item label='消费项目'>
+                <el-form ref='form' :model='form' :rules='rules' label-width='70px'>
+                    <el-form-item label='消费项目' prop='name'>
                         <el-input v-model='form.name'></el-input>
                     </el-form-item>
-                    <el-form-item label='消费金额'>
+                    <el-form-item label='消费金额' prop='money'>
                         <el-input v-model='form.money'></el-input>
                     </el-form-item>
                 </el-form>
@@ -104,6 +104,34 @@ import { createLogger } from 'vuex';
 export default {
     name: 'Cost',
     data() {
+        // 验证姓名
+        const checkName = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('姓名不能为空'));
+            } else {
+                // 中文
+                const reg = /^[\u4e00-\u9fa5]{2,4}$/;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    return callback(new Error('请输入正确的姓名（中文2-4位）'));
+                }
+            }
+        };
+
+        const checkMoney = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('价格不能为空'));
+            } else {
+                // 1-9 开头，后跟是 0-9，可以跟小数点，但小数点后要带上 1-2 位小数，类似 2,2.0,2.1,2.22 等
+                const reg = /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    return callback(new Error('请输入正确的价格（1-9 开头，后跟是 0-9，可以跟小数点，但小数点后要带上 1-2 位小数）'));
+                }
+            }
+        };
         return {
             costTypes: {
                 id: '',
@@ -120,9 +148,16 @@ export default {
             editVisible: false,
             addVisible: false,
             pageTotal: 50, //总共有多少条数据
-            form: {},
+            form: {
+                name: '',
+                money: ''
+            },
             idx: -1,
-            id: -1
+            id: -1,
+            rules: {
+                name: [{ validator: checkName, trigger: ['change', 'blur'] }],
+                money: [{ validator: checkMoney, trigger: ['change', 'blur'] }]
+            }
         };
     },
     created() {
@@ -150,24 +185,31 @@ export default {
 
         // 编辑
         saveCostEdit() {
-            //console.log(this.form);
-            this.$http
-                .post('http://localhost:8082/addCostType?id=' + this.form.id + '&money=' + this.form.money + '&name=' + this.form.name)
-                .then((res) => {
-                    // console.log(res);
-                    if (res.data.code === 200) {
-                        //1.提示成功
-                        this.$message.success(`修改成功`);
-                        //2.关闭对话框
-                        this.editVisible = false;
-                        //3.更新视图
-                        this.getAllCostType();
-                        //4.清空输入文本框
-                        this.form = {};
-                    } else {
-                        this.$message.warning('修改失败');
-                    }
-                });
+            this.$refs['form'].validate((valid) => {
+                if (valid) {
+                    this.$http
+                        .post('http://localhost:8082/addCostType?id=' + this.form.id + '&money=' + this.form.money + '&name=' + this.form.name)
+                        .then((res) => {
+                            // console.log(res);
+                            if (res.data.code === 200) {
+                                //1.提示成功
+                                this.$message.success(`编辑成功`);
+                                //2.关闭对话框
+                                this.editVisible = false;
+                                //3.更新视图
+                                this.getAllCostType();
+                                //4.清空输入文本框
+                                this.form = {};
+                            } else {
+                                this.$message.warning('编辑失败');
+                            }
+                        });
+                } else {
+                    // 不成功出现显示
+                    this.$message.warning('编辑失败');
+                    return false;
+                }
+            });
         },
 
         cancelCost() {
@@ -180,24 +222,30 @@ export default {
 
         // 添加
         saveCost() {
-            // console.log(this.form);
-            this.$http
-                .post('http://localhost:8082/addCostType?id=0' + '&money=' + this.form.money + '&name=' + this.form.name)
-                .then((res) => {
-                    //console.log(res);
-                    if (res.data.code === 200) {
-                        //1.提示成功
-                        this.$message.success(`添加成功`);
-                        //2.关闭对话框
-                        this.addVisible = false;
-                        //3.更新视图
-                        this.getAllCostType();
-                        //4.清空输入文本框
-                        this.form = {};
-                    } else {
-                        this.$message.warning('添加失败');
-                    }
-                });
+            this.$refs['form'].validate((valid) => {
+                if (valid) {
+                    this.$http
+                        .post('http://localhost:8082/addCostType?id=0' + '&money=' + this.form.money + '&name=' + this.form.name)
+                        .then((res) => {
+                            //console.log(res);
+                            if (res.data.code === 200) {
+                                //1.提示成功
+                                this.$message.success(`添加成功`);
+                                //2.关闭对话框
+                                this.addVisible = false;
+                                //3.更新视图
+                                this.getAllCostType();
+                                //4.清空输入文本框
+                                this.form = {};
+                            } else {
+                                this.$message.warning('添加失败');
+                            }
+                        });
+                } else {
+                    this.$message.warning('添加失败');
+                    return false;
+                }
+            });
         },
 
         //删除预定信息
