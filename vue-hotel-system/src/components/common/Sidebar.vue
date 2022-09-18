@@ -58,6 +58,12 @@ export default {
                     title: '个人信息'
                 },
                 {
+                    // icon: 'el-icon-lx-home',
+                    icon: 'el-icon-apple',
+                    index: 'dishes',
+                    title: '特色菜品'
+                },
+                {
                     icon: 'el-icon-lx-addressbook',
                     index: 'reserve',
                     title: '预定列表'

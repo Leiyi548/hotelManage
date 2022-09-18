@@ -20,6 +20,11 @@ export default new Router({
                     meta: { title: '个人信息' }
                 },
                 {
+                    path: '/dishes',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/dishes.vue'),
+                    meta: { title: '特色菜品' }
+                },
+                {
                     path: '/reserve',
                     component: () => import(/* webpackChunkName: "table" */ '../components/page/ReserveTable.vue'),
                     meta: { title: '预定列表' }
