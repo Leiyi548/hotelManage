@@ -199,10 +199,10 @@ export default {
             },
             //
             rules: {
-                phone: [{ validator: checkPhone, trigger: 'change' }],
-                password: [{ validator: checkPassword, trigger: 'change' }],
-                name: [{ validator: checkName, trigger: 'change' }],
-                frontId: [{ validator: checkId, trigger: 'change' }]
+                phone: [{ validator: checkPhone, trigger: ['change', 'blur'] }],
+                password: [{ validator: checkPassword, trigger: ['change', 'blur'] }],
+                name: [{ validator: checkName, trigger: ['change', 'blur'] }],
+                frontId: [{ validator: checkId, trigger: ['change', 'blur'] }]
                 // password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
             },
 
