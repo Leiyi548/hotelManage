@@ -163,6 +163,7 @@ export default {
             }
         };
 
+        // 验证身份证
         const checkIdCard = (rule, value, callback) => {
             if (!value) {
                 return callback(new Error('身份证不能为空'));

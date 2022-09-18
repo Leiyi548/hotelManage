@@ -1,237 +1,251 @@
 <template>
     <div>
         <!--  客户列表文字  -->
-        <div class="crumbs">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item> <i class="el-icon-lx-addressbook"></i> 预定列表 </el-breadcrumb-item>
+        <div class='crumbs'>
+            <el-breadcrumb separator='/'>
+                <el-breadcrumb-item><i class='el-icon-lx-addressbook'></i> 预定列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
 
         <!--  头部容器      -->
-        <div class="container">
-            <div class="handle-box">
-                <el-button round plain type="primary" icon="el-icon-delete" class="handle-del mr10" @click="delAllSelection"
-                    >批量删除
+        <div class='container'>
+            <div class='handle-box'>
+                <el-button round plain type='primary' icon='el-icon-delete' class='handle-del mr10'
+                           @click='delAllSelection'
+                >批量删除
                 </el-button>
-                <el-button plain round type="primary" icon="el-icon-s-home" @click="handCheckIn">直接入住</el-button>
+                <el-button plain round type='primary' icon='el-icon-s-home' @click='handCheckIn'>直接入住</el-button>
 
                 &nbsp;&nbsp;
                 <el-input
                     round
-                    v-model="bookMsgs.guestIdCard"
-                    placeholder="请输入身份证号搜索,直接回车即可"
-                    class="handle-input mr10"
+                    v-model='bookMsgs.guestIdCard'
+                    placeholder='请输入身份证号搜索,直接回车即可'
+                    class='handle-input mr10'
                     clearable
-                    prefix-icon="el-icon-search"
-                    @clear="handleSearch"
-                    @keydown.enter.native="handleSearch"
+                    prefix-icon='el-icon-search'
+                    @clear='handleSearch'
+                    @keydown.enter.native='handleSearch'
                 >
                 </el-input>
-                <el-button plain round style="float: right" type="primary" icon="el-icon-plus" @click="handBook">添加预定</el-button>
+                <el-button plain round style='float: right' type='primary' icon='el-icon-plus' @click='handBook'>
+                    添加预定
+                </el-button>
             </div>
 
             <!-- 主列表 -->
-            <el-table :data="tableData" style="width: 100%">
-                <el-table-column type="selection" width="55" align="center"></el-table-column>
-                <el-table-column prop="guestIdCard" label="身份证号" align="center" width="200"></el-table-column>
-                <el-table-column prop="resultRoom" label="房间号" align="center" width="200"></el-table-column>
-                <el-table-column prop="rank" label="预定房间级别" align="center" width="200"></el-table-column>
-                <el-table-column label="预计入住时间" width="180" align="center">
-                    <template slot-scope="scope">
-                        <i class="el-icon-time"></i>
-                        <span style="margin-left: 10px">{{ scope.row.fromTime }}</span>
+            <el-table :data='tableData' style='width: 100%' @selection-change='handleSelectionChange'>
+                <el-table-column type='selection' width='55' align='center'></el-table-column>
+                <el-table-column prop='guestIdCard' label='身份证号' align='center' width='200'></el-table-column>
+                <el-table-column prop='resultRoom' label='房间号' align='center' width='200'></el-table-column>
+                <el-table-column prop='rank' label='预定房间级别' align='center' width='200'></el-table-column>
+                <el-table-column label='预计入住时间' width='180' align='center'>
+                    <template slot-scope='scope'>
+                        <i class='el-icon-time'></i>
+                        <span style='margin-left: 10px'>{{ scope.row.fromTime }}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column label="预计退房时间" width="180" align="center">
-                    <template slot-scope="scope">
-                        <i class="el-icon-time"></i>
-                        <span style="margin-left: 10px">{{ scope.row.toTime }}</span>
+                <el-table-column label='预计退房时间' width='180' align='center'>
+                    <template slot-scope='scope'>
+                        <i class='el-icon-time'></i>
+                        <span style='margin-left: 10px'>{{ scope.row.toTime }}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column label="状态" align="center" width="200">
-                    <template slot-scope="scope">
+                <el-table-column label='状态' align='center' width='200'>
+                    <template slot-scope='scope'>
                         <!--已处理1 蓝色,未处理0 红色,已入住11 绿色-->
                         <el-tag
-                            v-if="scope.row.state === 11"
+                            v-if='scope.row.state === 11'
                             :type="scope.row.state === 11 ? 'success' : scope.row.state === 0 ? 'danger' : ''"
-                            >已入住
+                        >已入住
                         </el-tag>
                         <el-tag
-                            v-if="scope.row.state === 1"
+                            v-if='scope.row.state === 1'
                             :type="scope.row.state === 11 ? 'success' : scope.row.state === 0 ? 'danger' : ''"
-                            >已处理
+                        >已处理
                         </el-tag>
                         <el-tag
-                            v-if="scope.row.state === 0"
+                            v-if='scope.row.state === 0'
                             :type="scope.row.state === 11 ? 'success' : scope.row.state === 0 ? 'danger' : ''"
-                            >未处理
+                        >未处理
                         </el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="center">
-                    <template slot-scope="scope">
-                        <el-button size="mini" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑 </el-button>
-                        <el-button
-                            plain
-                            size="mini"
-                            type="danger"
-                            icon="el-icon-delete"
-                            @click="handleDelete(scope.$index, scope.row, scope.row.id)"
-                            >删除
+                <el-table-column label='操作' align='center'>
+                    <template slot-scope='scope'>
+                        <el-button size='mini' icon='el-icon-edit' @click='handleEdit(scope.$index, scope.row)'>编辑
                         </el-button>
                         <el-button
-                            size="mini"
-                            type="primary"
-                            icon="el-icon-bell"
                             plain
-                            @click="handleSolve(scope.$index, scope.row, scope.row.rank)"
-                            >处理
+                            size='mini'
+                            type='danger'
+                            icon='el-icon-delete'
+                            @click='handleDelete(scope.$index, scope.row, scope.row.id)'
+                        >删除
                         </el-button>
-                        <el-button plain type="success" size="mini" icon="el-icon-key" @click="handleIn(scope.row.id)">入住 </el-button>
+                        <el-button
+                            size='mini'
+                            type='primary'
+                            icon='el-icon-bell'
+                            plain
+                            @click='handleSolve(scope.$index, scope.row, scope.row.rank)'
+                        >处理
+                        </el-button>
+                        <el-button plain type='success' size='mini' icon='el-icon-key' @click='handleIn(scope.row.id)'>
+                            入住
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
 
             <!-- 添加弹出框 -->
-            <el-dialog title="添加" :visible.sync="addVisible" width="30%">
-                <el-form ref="form" :model="form" label-width="70px">
-                    <el-form-item label="用户名">
-                        <el-input v-model="form.name"></el-input>
+            <el-dialog title='添加' :visible.sync='addVisible' width='30%' :before-close='handleClose2'>
+                <el-form ref='form' :model='form' :rules='rules' label-width='70px'>
+                    <el-form-item label='用户名' prop='name'>
+                        <el-input v-model='form.name'></el-input>
                     </el-form-item>
-                    <el-form-item label="身份证号">
-                        <el-input v-model="form.idCard"></el-input>
+                    <el-form-item label='身份证号' prop='idCard'>
+                        <el-input v-model='form.idCard'></el-input>
                     </el-form-item>
-                    <el-form-item label="联系电话">
-                        <el-input v-model="form.contact"></el-input>
+                    <el-form-item label='联系电话' prop='phone'>
+                        <el-input v-model='form.contact'></el-input>
                     </el-form-item>
-                    <el-form-item label="房间级别">
-                        <el-select v-model="form.rank" placeholder="请选择">
-                            <el-option v-for="item in types" :key="item" :label="item" :value="item"> </el-option>
+                    <el-form-item label='房间级别'>
+                        <el-select v-model='form.rank' placeholder='请选择'>
+                            <el-option v-for='item in types' :key='item' :label='item' :value='item'></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="入住时间">
-                        <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="form.fromTime" type="date" placeholder="选择日期时间">
+                    <el-form-item label='入住时间'>
+                        <el-date-picker value-format='yyyy-MM-dd HH:mm:ss' v-model='form.fromTime' type='date'
+                                        placeholder='选择日期时间'>
                         </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="退房时间">
-                        <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="form.toTime" type="date" placeholder="选择日期时间">
+                    <el-form-item label='退房时间'>
+                        <el-date-picker value-format='yyyy-MM-dd HH:mm:ss' v-model='form.toTime' type='date'
+                                        placeholder='选择日期时间'>
                         </el-date-picker>
                     </el-form-item>
                 </el-form>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="addVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="saveBook">确 定</el-button>
+                <span slot='footer' class='dialog-footer'>
+                    <el-button @click='addVisible = false'>取 消</el-button>
+                    <el-button type='primary' @click='saveBook'>确 定</el-button>
                 </span>
             </el-dialog>
 
             <!-- 编辑弹出框 -->
-            <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-                <el-form ref="form" :model="form" label-width="70px">
-                    <el-form-item label="身份证号">
-                        <el-input v-model="form.guestIdCard" :disabled="true"></el-input>
+            <el-dialog title='编辑' :visible.sync='editVisible' width='30%' :before-close='handleClose'>
+                <el-form ref='form' :model='form' label-width='70px'>
+                    <el-form-item label='身份证号'>
+                        <el-input v-model='form.guestIdCard' :disabled='true'></el-input>
                     </el-form-item>
-                    <el-form-item label="房间级别">
-                        <el-select v-model="form.rank" placeholder="请选择">
-                            <el-option v-for="item in types" :key="item" :label="item" :value="item"> </el-option>
+                    <el-form-item label='房间级别'>
+                        <el-select v-model='form.rank' placeholder='请选择'>
+                            <el-option v-for='item in types' :key='item' :label='item' :value='item'></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="入住时间">
-                        <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="form.fromTime" type="date" placeholder="选择日期时间">
+                    <el-form-item label='入住时间'>
+                        <el-date-picker value-format='yyyy-MM-dd HH:mm:ss' v-model='form.fromTime' type='date'
+                                        placeholder='选择日期时间'>
                         </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="退房时间">
-                        <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" v-model="form.toTime" type="date" placeholder="选择日期时间">
+                    <el-form-item label='退房时间'>
+                        <el-date-picker value-format='yyyy-MM-dd HH:mm:ss' v-model='form.toTime' type='date'
+                                        placeholder='选择日期时间'>
                         </el-date-picker>
                     </el-form-item>
                 </el-form>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="editVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="saveEdit">确 定</el-button>
+                <span slot='footer' class='dialog-footer'>
+                    <el-button @click='editVisible = false'>取 消</el-button>
+                    <el-button type='primary' @click='saveEdit'>确 定</el-button>
                 </span>
             </el-dialog>
 
             <!--    处理弹出框    -->
-            <el-dialog title="处理" :visible.sync="solveVisible" width="30%">
-                <el-form ref="form" :model="form" label-width="70px">
-                    <el-table :data="roomTypeData" style="width: 100%">
-                        <el-table-column prop="roomId" label="房型编号" align="center"></el-table-column>
-                        <el-table-column prop="rank" label="房间级别" align="center"></el-table-column>
-                        <el-table-column prop="size" label="房间大小" align="center"></el-table-column>
-                        <el-table-column prop="maxNum" label="容纳人数" align="center"></el-table-column>
-                        <el-table-column prop="rent" label="房间单价" align="center"></el-table-column>
-                        <el-table-column prop="earnest" label="房间定金" align="center"></el-table-column>
+            <el-dialog title='处理' :visible.sync='solveVisible' width='30%' :before-close='handleClose3'>
+                <el-form ref='form' :model='form' label-width='70px'>
+                    <el-table :data='roomTypeData' style='width: 100%'>
+                        <el-table-column prop='roomId' label='房型编号' align='center'></el-table-column>
+                        <el-table-column prop='rank' label='房间级别' align='center'></el-table-column>
+                        <el-table-column prop='size' label='房间大小' align='center'></el-table-column>
+                        <el-table-column prop='maxNum' label='容纳人数' align='center'></el-table-column>
+                        <el-table-column prop='rent' label='房间单价' align='center'></el-table-column>
+                        <el-table-column prop='earnest' label='房间定金' align='center'></el-table-column>
                     </el-table>
                     <br />
                     <br />
-                    <el-form-item label="房间级别">
-                        <el-input v-model="form.rank" :disabled="true"></el-input>
+                    <el-form-item label='房间级别'>
+                        <el-input v-model='form.rank' :disabled='true'></el-input>
                     </el-form-item>
-                    <el-form-item label="空房间号">
-                        <el-select v-model="form.resultRoom" placeholder="请选择">
-                            <el-option v-for="item in optionsByClass" :key="item.roomId" :label="item.roomId" :value="item.roomId">
+                    <el-form-item label='空房间号'>
+                        <el-select v-model='form.resultRoom' placeholder='请选择'>
+                            <el-option v-for='item in optionsByClass' :key='item.roomId' :label='item.roomId'
+                                       :value='item.roomId'>
                             </el-option>
                         </el-select>
                     </el-form-item>
                 </el-form>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="solveVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="solveRoomId">确 定</el-button>
+                <span slot='footer' class='dialog-footer'>
+                    <el-button @click='solveVisible = false'>取 消</el-button>
+                    <el-button type='primary' @click='solveRoomId'>确 定</el-button>
                 </span>
             </el-dialog>
 
             <!-- 入住弹出框 -->
-            <el-dialog title="办理入住" :visible.sync="checkVisible" width="32%">
-                <el-form ref="form" :model="form" label-width="70px">
-                    <el-table :data="roomTypeData" style="width: 100%">
-                        <el-table-column prop="roomId" label="房型号" align="center"></el-table-column>
-                        <el-table-column prop="rank" label="房间级别" align="center"></el-table-column>
-                        <el-table-column prop="size" label="房间大小" align="center"></el-table-column>
-                        <el-table-column prop="maxNum" label="容纳人数" align="center"></el-table-column>
-                        <el-table-column prop="rent" label="房间单价" align="center"></el-table-column>
-                        <el-table-column prop="earnest" label="房间定金" align="center"></el-table-column>
+            <el-dialog title='办理入住' :visible.sync='checkVisible' width='32%'>
+                <el-form ref='form' :model='form' label-width='70px'>
+                    <el-table :data='roomTypeData' style='width: 100%'>
+                        <el-table-column prop='roomId' label='房型号' align='center'></el-table-column>
+                        <el-table-column prop='rank' label='房间级别' align='center'></el-table-column>
+                        <el-table-column prop='size' label='房间大小' align='center'></el-table-column>
+                        <el-table-column prop='maxNum' label='容纳人数' align='center'></el-table-column>
+                        <el-table-column prop='rent' label='房间单价' align='center'></el-table-column>
+                        <el-table-column prop='earnest' label='房间定金' align='center'></el-table-column>
                     </el-table>
                     <br />
 
-                    <el-form-item label="用户名">
-                        <el-input v-model="form.name"></el-input>
+                    <el-form-item label='用户名'>
+                        <el-input v-model='form.name'></el-input>
                     </el-form-item>
-                    <el-form-item label="身份证号">
-                        <el-input v-model="form.idCard"></el-input>
+                    <el-form-item label='身份证号'>
+                        <el-input v-model='form.idCard'></el-input>
                     </el-form-item>
-                    <el-form-item label="联系电话">
-                        <el-input v-model="form.contact"></el-input>
+                    <el-form-item label='联系电话'>
+                        <el-input v-model='form.contact'></el-input>
                     </el-form-item>
-                    <el-form-item label="空房间号">
-                        <el-select v-model="form.resultRoom" placeholder="请选择">
-                            <el-option v-for="item in options" :key="item.roomId" :label="item.roomId" :value="item.roomId"> </el-option>
+                    <el-form-item label='空房间号'>
+                        <el-select v-model='form.resultRoom' placeholder='请选择'>
+                            <el-option v-for='item in options' :key='item.roomId' :label='item.roomId'
+                                       :value='item.roomId'></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="入住时间">
-                        <el-date-picker value-format="yyyy-MM-dd" v-model="form.fromTime" type="date" placeholder="选择日期时间">
+                    <el-form-item label='入住时间'>
+                        <el-date-picker value-format='yyyy-MM-dd' v-model='form.fromTime' type='date'
+                                        placeholder='选择日期时间'>
                         </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="退房时间">
-                        <el-date-picker value-format="yyyy-MM-dd" v-model="form.toTime" type="date" placeholder="选择日期时间">
+                    <el-form-item label='退房时间'>
+                        <el-date-picker value-format='yyyy-MM-dd' v-model='form.toTime' type='date'
+                                        placeholder='选择日期时间'>
                         </el-date-picker>
                     </el-form-item>
                 </el-form>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="checkVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="CheckIn">确 定</el-button>
+                <span slot='footer' class='dialog-footer'>
+                    <el-button @click='checkVisible = false'>取 消</el-button>
+                    <el-button type='primary' @click='CheckIn'>确 定</el-button>
                 </span>
             </el-dialog>
 
             <!--  分页角标设置   -->
-            <div class="pagination">
+            <div class='pagination'>
                 <el-pagination
                     background
-                    layout="total, prev, pager, next"
-                    :current-page="bookMsgs.pageIndex"
-                    :page-size="bookMsgs.pageSize"
-                    :total="roomTypeData.length"
-                    @current-change="handlePageChange"
+                    layout='total, prev, pager, next'
+                    :current-page='bookMsgs.pageIndex'
+                    :page-size='bookMsgs.pageSize'
+                    :total='roomTypeData.length'
+                    @current-change='handlePageChange'
                 ></el-pagination>
             </div>
         </div>
@@ -240,10 +254,59 @@
 
 <script>
 import { fetchData2 } from '../../api/index';
+import { createLogger } from 'vuex';
 
 export default {
     name: 'ReserveTable',
     data() {
+        // 验证手机号码
+        const checkPhone = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('手机号不能为空'));
+            } else {
+                // 总结需要11位
+                // 第一位必须是1
+                // 第二个是34578
+                // 其余任意一个数字
+                const reg = /^1[0-9]\d{9}$/;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    return callback(new Error('请输入正确的手机号(11位，开头为1)'));
+                }
+            }
+        };
+        // 验证姓名
+        const checkName = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('姓名不能为空'));
+            } else {
+                // 中文
+                const reg = /^[\u4e00-\u9fa5]{2,4}$/;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    return callback(new Error('请输入正确的姓名（中文2-4位）'));
+                }
+            }
+        };
+
+        // 验证身份证
+        const checkIdCard = (rule, value, callback) => {
+            if (!value) {
+                return callback(new Error('身份证不能为空'));
+            } else {
+                // 身份证格式
+                // more information please see https://cloud.tencent.com/developer/article/1114323
+                const reg = /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$)/;
+                if (reg.test(value)) {
+                    callback();
+                } else {
+                    return callback(new Error('请输入正确的身份证号'));
+                }
+            }
+        };
+
         return {
             time: 'hello world',
             bookMsgs: {
@@ -272,7 +335,12 @@ export default {
             checkVisible: false,
             pageTotal: 50, //总共有多少条数据
             form: {},
-            idx: -1
+            idx: -1,
+            rules: {
+                phone: [{ validator: checkPhone, trigger: ['change', 'blur'] }],
+                name: [{ validator: checkName, trigger: ['change', 'blur'] }],
+                idCard: [{ validator: checkIdCard, trigger: ['change', 'blur'] }]
+            }
         };
     },
     created() {
@@ -296,8 +364,11 @@ export default {
         //获取所有预定信息
         getAllBookMsgs() {
             this.$http.get('http://localhost:8082/getAllBookMsgs').then((res) => {
-                // console.log(res);
-                this.tableData = res.data.data.bookMsgs;
+                if (res.data.data == null) {
+                    this.tableData = [];
+                } else {
+                    this.tableData = res.data.data.bookMsgs;
+                }
             });
         },
 
@@ -319,6 +390,25 @@ export default {
                 this.types = result;
                 //  console.log(this.types);
             });
+        },
+
+        handleClose() {
+            this.$message.info('取消编辑');
+            this.getAllBookMsgs();
+            this.editVisible = false;
+            done();
+        },
+
+        handleClose2() {
+            this.$message.info('取消添加');
+            this.addVisible = false;
+            done();
+        },
+
+        handleClose3() {
+            this.$message.info('取消处理');
+            this.solveVisible = false;
+            done();
         },
 
         handBook() {
@@ -343,53 +433,60 @@ export default {
                         }
                     });
                 })
-                .catch(() => {});
+                .catch(() => {
+                });
         },
 
         //添加预定信息
         saveBook() {
-            let fromTime = new Date(this.form.fromTime.replace(new RegExp('-', 'gm'), '/')).getTime();
-            let toTime = new Date(this.form.toTime.replace(new RegExp('-', 'gm'), '/')).getTime();
-            fromTime = fromTime + 43200000;
-            toTime = toTime + 43200000;
-            const days = Math.floor((toTime - fromTime) / (24 * 3600 * 1000));
-            console.log(days);
-            console.log('formTime: ' + fromTime);
-            console.log('toTime: ' + toTime);
-            if (days >= 1) {
-                this.$http
-                    .post(
-                        'http://localhost:8082/addBookMsg?contact=' +
-                            this.form.contact +
-                            '&fromTime=' +
-                            fromTime +
-                            '&id=0&idCard=' +
-                            this.form.idCard +
-                            '&name=' +
-                            this.form.name +
-                            '&toTime=' +
-                            toTime +
-                            '&rank=' +
-                            this.form.rank
-                    )
-                    .then((res) => {
-                        //console.log(res);
-                        if (res.data.code === 200) {
-                            //1.提示成功
-                            this.$message.success(`添加成功`);
-                            //2.关闭对话框
-                            this.addVisible = false;
-                            //3.更新视图
-                            this.getAllBookMsgs();
-                            //4.清空输入文本框
-                            this.form = {};
-                        } else {
-                            this.$message.warning('添加失败');
-                        }
-                    });
-            } else {
-                this.$message.warning('入住时间至少大于1天');
-            }
+            this.$refs['form'].validate((valid) => {
+                if (valid) {
+                    let fromTime = new Date(this.form.fromTime.replace(new RegExp('-', 'gm'), '/')).getTime();
+                    let toTime = new Date(this.form.toTime.replace(new RegExp('-', 'gm'), '/')).getTime();
+                    fromTime = fromTime + 43200000;
+                    toTime = toTime + 43200000;
+                    const days = Math.floor((toTime - fromTime) / (24 * 3600 * 1000));
+                    console.log(days);
+                    console.log('formTime: ' + fromTime);
+                    console.log('toTime: ' + toTime);
+                    if (days >= 1) {
+                        this.$http
+                            .post(
+                                'http://localhost:8082/addBookMsg?contact=' +
+                                this.form.contact +
+                                '&fromTime=' +
+                                fromTime +
+                                '&id=0&idCard=' +
+                                this.form.idCard +
+                                '&name=' +
+                                this.form.name +
+                                '&toTime=' +
+                                toTime +
+                                '&rank=' +
+                                this.form.rank
+                            )
+                            .then((res) => {
+                                //console.log(res);
+                                if (res.data.code === 200) {
+                                    //1.提示成功
+                                    this.$message.success(`添加成功`);
+                                    //2.关闭对话框
+                                    this.addVisible = false;
+                                    //3.更新视图
+                                    this.getAllBookMsgs();
+                                    //4.清空输入文本框
+                                    this.form = {};
+                                } else {
+                                    this.$message.warning('添加失败');
+                                }
+                            });
+                    } else {
+                        this.$message.warning('入住时间至少大于1天');
+                    }
+                } else {
+                    this.$message.warning('添加失败');
+                }
+            });
         },
 
         // 编辑操作
@@ -410,13 +507,13 @@ export default {
                 this.$http
                     .put(
                         'http://localhost:8082//updateBookMsg?fromTime=' +
-                            fromTime +
-                            '&id=' +
-                            this.form.id +
-                            '&rank=' +
-                            this.form.rank +
-                            '&toTime=' +
-                            toTime
+                        fromTime +
+                        '&id=' +
+                        this.form.id +
+                        '&rank=' +
+                        this.form.rank +
+                        '&toTime=' +
+                        toTime
                     )
                     .then((res) => {
                         //console.log(res);
@@ -454,17 +551,17 @@ export default {
                 this.$http
                     .post(
                         'http://localhost:8082/checkIn?contact=' +
-                            this.form.contact +
-                            '&fromTime=' +
-                            fromTime +
-                            '&idCard=' +
-                            this.form.idCard +
-                            '&name=' +
-                            this.form.name +
-                            '&toTime=' +
-                            toTime +
-                            '&roomId=' +
-                            this.form.resultRoom
+                        this.form.contact +
+                        '&fromTime=' +
+                        fromTime +
+                        '&idCard=' +
+                        this.form.idCard +
+                        '&name=' +
+                        this.form.name +
+                        '&toTime=' +
+                        toTime +
+                        '&roomId=' +
+                        this.form.resultRoom
                     )
                     .then((res) => {
                         //console.log(res);
@@ -559,19 +656,55 @@ export default {
             });
         },
 
-        // 多选操作
+        // // 多选操作
         handleSelectionChange(val) {
             this.multipleSelection = val;
+            this.delList = [];
+            for (let i = 0; i < val.length; i++) {
+                this.delList.push(val[i].id);
+            }
         },
+
+        getJsonLength() {
+            var length = 0;
+            for (var item in this.tableData) {
+                length++;
+            }
+            return length;
+        },
+
         delAllSelection() {
             const length = this.multipleSelection.length;
-            let str = '';
-            this.delList = this.delList.concat(this.multipleSelection);
-            for (let i = 0; i < length; i++) {
-                str += this.multipleSelection[i].name + ' ';
+            if (length == 0) {
+                this.$message.error('未选择内容');
+                return;
             }
-            this.$message.error(`删除了${str}`);
+            var i = 0;
+            // let str = '';
+            // this.delList = this.delList.concat(this.multipleSelection);
+            // for (let i = 0; i < length; i++) {
+            //     str += this.multipleSelection[i].name + ' ';
+            // }
+            // this.$message.error(`删除了${str}`);
+            for (i; i < this.delList.length; i++) {
+                this.$http.delete('http://localhost:8082/deleteBookMsg?id=' + this.delList[i]).then(res => {
+                    if (res.data.code === 200) {
+                        this.$message.success('删除成功');
+                        this.getAllBookMsgs();
+                    } else {
+                        this.$message.warning('删除失败');
+                        this.getAllBookMsgs();
+                        return;
+                    }
+                });
+            }
             this.multipleSelection = [];
+            // 更新删除后的数据
+            if (this.getJsonLength() == this.delList.length) {
+                this.tableData = [];
+            } else {
+                this.getAllBookMsgs();
+            }
         },
 
         // 分页导航

@@ -128,6 +128,7 @@ export default {
                 }
             }
         };
+
         // 验证手机号码
         const checkPhone = (rule, value, callback) => {
             if (!value) {
