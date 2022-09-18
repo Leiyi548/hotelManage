@@ -54,8 +54,8 @@ CREATE TABLE `book_msg`  (
 -- ----------------------------
 -- Records of book_msg
 -- ----------------------------
-INSERT INTO `book_msg` VALUES (15, '1', '2021-01-12 12:00:00', '2021-01-21 12:00:00', 'B', 1, '0001');
-INSERT INTO `book_msg` VALUES (16, '3', '2021-01-11 12:00:00', '2021-01-22 12:00:00', 'B', 11, '0002');
+INSERT INTO `book_msg` VALUES (15, '362502199989981452', '2021-01-12 12:00:00', '2021-01-21 12:00:00', 'B', 1, '0001');
+INSERT INTO `book_msg` VALUES (16, '362501200054962335', '2021-01-11 12:00:00', '2021-01-22 12:00:00', 'B', 11, '0002');
 
 -- ----------------------------
 -- Table structure for check_in
@@ -78,8 +78,8 @@ CREATE TABLE `check_in`  (
 -- ----------------------------
 -- Records of check_in
 -- ----------------------------
-INSERT INTO `check_in` VALUES (16, '2', '0003', '2021-01-11 12:00:00', '2021-01-13 12:00:00', 1);
-INSERT INTO `check_in` VALUES (17, '3', '0002', '2021-01-11 12:00:00', '2021-01-22 12:00:00', 1);
+INSERT INTO `check_in` VALUES (16, '362502199989981452', '0003', '2021-01-11 12:00:00', '2021-01-13 12:00:00', 1);
+INSERT INTO `check_in` VALUES (17, '362501200054962335', '0002', '2021-01-11 12:00:00', '2021-01-22 12:00:00', 1);
 
 -- ----------------------------
 -- Table structure for cost
@@ -211,7 +211,7 @@ CREATE TABLE `front`  (
 -- ----------------------------
 INSERT INTO `front` VALUES ('0001', '张雪萍', '123', '13361374723');
 INSERT INTO `front` VALUES ('0002', '连宇豪', '981028', '17360031807');
-INSERT INTO `front` VALUES ('0003', 'lujianbin', '981028', '18827099738');
+INSERT INTO `front` VALUES ('0003', '李华华', '981028', '18827099738');
 
 -- ----------------------------
 -- Table structure for guest
@@ -227,9 +227,9 @@ CREATE TABLE `guest`  (
 -- ----------------------------
 -- Records of guest
 -- ----------------------------
-INSERT INTO `guest` VALUES ('1', '1', '1');
-INSERT INTO `guest` VALUES ('2', '2', '2');
-INSERT INTO `guest` VALUES ('3', '3', '3');
+INSERT INTO `guest` VALUES ('362503199814782536', '张三丰', '13755987412');
+INSERT INTO `guest` VALUES ('362504200015697852', '张无忌', '15248355973');
+INSERT INTO `guest` VALUES ('362505200214895234', '张计科', '13254687956');
 
 -- ----------------------------
 -- Table structure for room
@@ -249,12 +249,12 @@ CREATE TABLE `room`  (
 -- ----------------------------
 -- Records of room
 -- ----------------------------
-INSERT INTO `room` VALUES ('0001', 53, 'B', 300, 200, 3, '撒擦擦');
-INSERT INTO `room` VALUES ('0002', 53.2, 'B', 500, 200, 2, '撒擦擦');
-INSERT INTO `room` VALUES ('0003', 53.2, 'A', 500, 200, 2, '撒擦擦');
-INSERT INTO `room` VALUES ('0004', 53.2, 'A', 501, 100, 2, '撒擦擦');
-INSERT INTO `room` VALUES ('0005', 53.2, 'A', 520, 100, 1, '撒擦擦');
-INSERT INTO `room` VALUES ('0006', 2, 'A', 2, 2, 2, '2');
+INSERT INTO `room` VALUES ('0001', 53, 'B', 300, 200, 3, '一楼');
+INSERT INTO `room` VALUES ('0002', 53.2, 'B', 500, 200, 2, '二楼');
+INSERT INTO `room` VALUES ('0003', 53.2, 'A', 500, 200, 2, '三楼');
+INSERT INTO `room` VALUES ('0004', 53.2, 'A', 501, 100, 2, '二楼');
+INSERT INTO `room` VALUES ('0005', 53.2, 'A', 520, 100, 1, '三楼');
+INSERT INTO `room` VALUES ('0006', 2, 'A', 2, 2, 2, '4楼');
 INSERT INTO `room` VALUES ('1', 22, 'C', 22, 22, 22, '二楼');
 
 SET FOREIGN_KEY_CHECKS = 1;

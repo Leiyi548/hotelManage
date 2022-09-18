@@ -98,4 +98,5 @@ interceptorconfig:
     - /css/**
     - /img/**
     - /fonts/**
+    - /updateBackgroundPwd
 
