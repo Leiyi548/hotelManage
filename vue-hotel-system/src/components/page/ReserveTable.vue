@@ -34,7 +34,7 @@
             </div>
 
             <!-- 主列表 -->
-            <el-table :data='tableData' style='width: 100%' @selection-change='handleSelectionChange'>
+            <el-table :data='tableData' style='width: 100%' @selection-change='handleSelectionChange' height='500'>
                 <el-table-column type='selection' width='55' align='center'></el-table-column>
                 <el-table-column prop='guestIdCard' label='身份证号' align='center' width='200'></el-table-column>
                 <el-table-column prop='resultRoom' label='房间号' align='center' width='200'></el-table-column>
@@ -244,7 +244,7 @@
                     layout='total, prev, pager, next'
                     :current-page='bookMsgs.pageIndex'
                     :page-size='bookMsgs.pageSize'
-                    :total='roomTypeData.length'
+                    :total='tableData.length'
                     @current-change='handlePageChange'
                 ></el-pagination>
             </div>

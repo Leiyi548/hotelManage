@@ -1,222 +1,230 @@
 <template>
     <div>
         <!--  客户列表文字  -->
-        <div class="crumbs">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item> <i class="el-icon-school"></i> 房间列表 </el-breadcrumb-item>
+        <div class='crumbs'>
+            <el-breadcrumb separator='/'>
+                <el-breadcrumb-item><i class='el-icon-school'></i> 房间列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
 
         <!--  头部容器      -->
-        <div class="container">
-            <div class="handle-box">
-                <el-button plain round type="primary" icon="el-icon-s-promotion" @click="getAllRooms">所有房间</el-button>
+        <div class='container'>
+            <div class='handle-box'>
+                <el-button plain round type='primary' icon='el-icon-s-promotion' @click='getAllRooms'>所有房间
+                </el-button>
                 &nbsp;
                 <el-dropdown>
-                    <el-button type="primary" round plain> 更多操作<i class="el-icon-arrow-down el-icon--right"></i> </el-button>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item @click.native="getHasBookedRoom">已预定房间</el-dropdown-item>
-                        <el-dropdown-item @click.native="getHasCheckedRoom">已入住房间</el-dropdown-item>
-                        <el-dropdown-item @click.native="getNUllRooms">剩余空房间</el-dropdown-item>
+                    <el-button type='primary' round plain> 更多操作<i class='el-icon-arrow-down el-icon--right'></i>
+                    </el-button>
+                    <el-dropdown-menu slot='dropdown'>
+                        <el-dropdown-item @click.native='getHasBookedRoom'>已预定房间</el-dropdown-item>
+                        <el-dropdown-item @click.native='getHasCheckedRoom'>已入住房间</el-dropdown-item>
+                        <el-dropdown-item @click.native='getNUllRooms'>剩余空房间</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
 
                 &nbsp;&nbsp;
                 <el-input
                     round
-                    v-model="roomMsgs.roomId"
-                    placeholder="请输入房间号搜索,直接回车即可"
-                    class="handle-input mr10"
+                    v-model='roomMsgs.roomId'
+                    placeholder='请输入房间号搜索,直接回车即可'
+                    class='handle-input mr10'
                     clearable
-                    prefix-icon="el-icon-search"
-                    @clear="handleSearch"
-                    @keydown.enter.native="handleSearch"
+                    prefix-icon='el-icon-search'
+                    @clear='handleSearch'
+                    @keydown.enter.native='handleSearch'
                 >
                 </el-input>
-                <el-button plain round style="float: right" type="primary" icon="el-icon-plus" @click="handBook">添加房间</el-button>
+                <el-button plain round style='float: right' type='primary' icon='el-icon-plus' @click='handBook'>
+                    添加房间
+                </el-button>
             </div>
 
             <!-- 主列表 -->
-            <el-table :data="tableData" style="width: 100%" border>
-                <el-table-column prop="roomId" label="房间号" align="center" width="150"></el-table-column>
-                <el-table-column prop="rank" label="房间级别" align="center" width="150"></el-table-column>
-                <el-table-column prop="size" label="房间大小" align="center" width="150"></el-table-column>
-                <el-table-column prop="maxNum" label="容纳人数" align="center" width="150"></el-table-column>
-                <el-table-column prop="rent" label="房间单价" align="center" width="150"></el-table-column>
-                <el-table-column prop="earnest" label="房间定金" align="center" width="150"></el-table-column>
-                <el-table-column prop="position" label="房间位置" align="center" width="150"></el-table-column>
+            <el-table :data='tableData' style='width: 100%' border height='500'>
+                <el-table-column prop='roomId' label='房间号' align='center' width='150'></el-table-column>
+                <el-table-column prop='rank' label='房间级别' align='center' width='150'></el-table-column>
+                <el-table-column prop='size' label='房间大小' align='center' width='150'></el-table-column>
+                <el-table-column prop='maxNum' label='容纳人数' align='center' width='150'></el-table-column>
+                <el-table-column prop='rent' label='房间单价' align='center' width='150'></el-table-column>
+                <el-table-column prop='earnest' label='房间定金' align='center' width='150'></el-table-column>
+                <el-table-column prop='position' label='房间位置' align='center' width='150'></el-table-column>
 
-                <el-table-column label="房间状态" align="center" width="100">
-                    <template slot-scope="scope">
+                <el-table-column label='房间状态' align='center' width='100'>
+                    <template slot-scope='scope'>
                         <el-tag
-                            v-if="scope.row.state === 1"
+                            v-if='scope.row.state === 1'
                             :type="scope.row.state === 1 ? 'success' : scope.row.state === 0 ? 'danger' : ''"
-                            >已入住
+                        >已入住
                         </el-tag>
                         <el-tag
-                            v-if="scope.row.state === -1"
+                            v-if='scope.row.state === -1'
                             :type="scope.row.state === 11 ? 'success' : scope.row.state === -1 ? 'danger' : ''"
-                            >空房
+                        >空房
                         </el-tag>
                         <el-tag
-                            v-if="scope.row.state === 0"
+                            v-if='scope.row.state === 0'
                             :type="scope.row.state === 11 ? 'success' : scope.row.state === 9 ? 'danger' : ''"
-                            >已预订
+                        >已预订
                         </el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="时间" width="180" align="center">
-                    <template slot-scope="scope">
-                        <i class="el-icon-time"></i>
-                        <span style="margin-left: 10px">{{ scope.row.time }}</span>
+                <el-table-column label='时间' width='180' align='center'>
+                    <template slot-scope='scope'>
+                        <i class='el-icon-time'></i>
+                        <span style='margin-left: 10px'>{{ scope.row.time }}</span>
                     </template>
                 </el-table-column>
 
-                <el-table-column label="操作" align="center">
-                    <template slot-scope="scope">
-                        <el-button size="mini" icon="el-icon-edit" v-if="name === 'admin'" @click="handleEdit(scope.$index, scope.row)"
-                            >编辑
+                <el-table-column label='操作' align='center'>
+                    <template slot-scope='scope'>
+                        <el-button size='mini' icon='el-icon-edit' v-if="name === 'admin'"
+                                   @click='handleEdit(scope.$index, scope.row)'
+                        >编辑
                         </el-button>
                         <el-button
                             plain
-                            size="mini"
-                            type="danger"
-                            icon="el-icon-delete"
+                            size='mini'
+                            type='danger'
+                            icon='el-icon-delete'
                             v-if="name === 'admin'"
-                            @click="handleDelete(scope.$index, scope.row, scope.row.roomId)"
-                            >删除
+                            @click='handleDelete(scope.$index, scope.row, scope.row.roomId)'
+                        >删除
                         </el-button>
                         <el-button
                             plain
-                            size="mini"
-                            icon="el-icon-coffee-cup"
+                            size='mini'
+                            icon='el-icon-coffee-cup'
                             v-if="name === 'admin'"
-                            @click="handleService(scope.row.roomId)"
-                            >消费
+                            @click='handleService(scope.row.roomId)'
+                        >消费
                         </el-button>
                         <el-button
                             plain
-                            size="mini"
-                            type="success"
-                            icon="el-icon-chat-round"
+                            size='mini'
+                            type='success'
+                            icon='el-icon-chat-round'
                             v-if="name === 'admin'"
-                            @click="inspect(scope.row.roomId)"
-                            >结算
+                            @click='inspect(scope.row.roomId)'
+                        >结算
                         </el-button>
-                        <el-button plain icon="el-icon-lx-exit" type="primary" v-if="name === 'admin'" @click="checkOut(scope.row.roomId)"
-                            >退房
+                        <el-button plain icon='el-icon-lx-exit' type='primary' v-if="name === 'admin'"
+                                   @click='checkOut(scope.row.roomId)'
+                        >退房
                         </el-button>
                     </template>
                 </el-table-column>
             </el-table>
 
             <!-- 编辑弹出框 -->
-            <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-                <el-form ref="form" :model="form" label-width="80px" :rules="rules">
-                    <el-form-item label="房间号" prop="roomId">
-                        <el-input v-model="form.roomId" placeholder="请输入房间编号"></el-input>
+            <el-dialog title='编辑' :visible.sync='editVisible' width='30%'>
+                <el-form ref='form' :model='form' label-width='80px' :rules='rules'>
+                    <el-form-item label='房间号' prop='roomId'>
+                        <el-input v-model='form.roomId' placeholder='请输入房间编号'></el-input>
                     </el-form-item>
-                    <el-form-item label="房间级别">
-                        <el-input v-model="form.rank" placeholder="分为A,B,C,D级"></el-input>
+                    <el-form-item label='房间级别'>
+                        <el-input v-model='form.rank' placeholder='分为A,B,C,D级'></el-input>
                     </el-form-item>
-                    <el-form-item label="房间大小" prop="size">
-                        <el-input v-model="form.size" placeholder="请输入正整数"></el-input>
+                    <el-form-item label='房间大小' prop='size'>
+                        <el-input v-model='form.size' placeholder='请输入正整数'></el-input>
                     </el-form-item>
-                    <el-form-item label="容纳人数" prop="maxNum">
-                        <el-input v-model="form.maxNum" placeholder="请输入正整数"></el-input>
+                    <el-form-item label='容纳人数' prop='maxNum'>
+                        <el-input v-model='form.maxNum' placeholder='请输入正整数'></el-input>
                     </el-form-item>
-                    <el-form-item label="房间单价" prop="rent">
-                        <el-input v-model="form.rent" placeholder="请输入正整数"></el-input>
+                    <el-form-item label='房间单价' prop='rent'>
+                        <el-input v-model='form.rent' placeholder='请输入正整数'></el-input>
                     </el-form-item>
-                    <el-form-item label="房间定金" prop="earnest">
-                        <el-input v-model="form.earnest" placeholder="请输入正整数"></el-input>
+                    <el-form-item label='房间定金' prop='earnest'>
+                        <el-input v-model='form.earnest' placeholder='请输入正整数'></el-input>
                     </el-form-item>
-                    <el-form-item label="房间位置">
-                        <el-input v-model="form.position"></el-input>
+                    <el-form-item label='房间位置'>
+                        <el-input v-model='form.position'></el-input>
                     </el-form-item>
                 </el-form>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="editVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="saveRoomEdit">确 定</el-button>
+                <span slot='footer' class='dialog-footer'>
+                    <el-button @click='editVisible = false'>取 消</el-button>
+                    <el-button type='primary' @click='saveRoomEdit'>确 定</el-button>
                 </span>
             </el-dialog>
 
             <!-- 添加弹出框 -->
-            <el-dialog title="添加" :visible.sync="addVisible" width="30%">
-                <el-form ref="form" :model="form" label-width="80px" :rules="rules">
-                    <el-form-item label="房间号" prop="roomId">
-                        <el-input v-model="form.roomId"></el-input>
+            <el-dialog title='添加' :visible.sync='addVisible' width='30%'>
+                <el-form ref='form' :model='form' label-width='80px' :rules='rules'>
+                    <el-form-item label='房间号' prop='roomId'>
+                        <el-input v-model='form.roomId'></el-input>
                     </el-form-item>
-                    <el-form-item label="房间级别">
-                        <el-input v-model="form.rank"></el-input>
+                    <el-form-item label='房间级别'>
+                        <el-input v-model='form.rank'></el-input>
                     </el-form-item>
-                    <el-form-item label="房间大小" prop="size">
-                        <el-input v-model="form.size" placeholder="请输入正整数"></el-input>
+                    <el-form-item label='房间大小' prop='size'>
+                        <el-input v-model='form.size' placeholder='请输入正整数'></el-input>
                     </el-form-item>
-                    <el-form-item label="容纳人数" prop="maxNum">
-                        <el-input v-model="form.maxNum" placeholder="请输入正整数"></el-input>
+                    <el-form-item label='容纳人数' prop='maxNum'>
+                        <el-input v-model='form.maxNum' placeholder='请输入正整数'></el-input>
                     </el-form-item>
-                    <el-form-item label="房间单价" prop="rent">
-                        <el-input v-model="form.rent" placeholder="请输入正整数"></el-input>
+                    <el-form-item label='房间单价' prop='rent'>
+                        <el-input v-model='form.rent' placeholder='请输入正整数'></el-input>
                     </el-form-item>
-                    <el-form-item label="房间定金" prop="earnest">
-                        <el-input v-model="form.earnest" placeholder="请输入正整数"></el-input>
+                    <el-form-item label='房间定金' prop='earnest'>
+                        <el-input v-model='form.earnest' placeholder='请输入正整数'></el-input>
                     </el-form-item>
-                    <el-form-item label="房间位置">
-                        <el-input v-model="form.position" placeholder="请输入房间位置"></el-input>
+                    <el-form-item label='房间位置'>
+                        <el-input v-model='form.position' placeholder='请输入房间位置'></el-input>
                     </el-form-item>
                 </el-form>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="addVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="saveRoom">确 定</el-button>
+                <span slot='footer' class='dialog-footer'>
+                    <el-button @click='addVisible = false'>取 消</el-button>
+                    <el-button type='primary' @click='saveRoom'>确 定</el-button>
                 </span>
             </el-dialog>
 
             <!--结算处理-->
-            <el-dialog title="消费结算" :visible.sync="inspectVisible" width="30%">
-                <el-form ref="form" :model="form" label-width="70px">
-                    <el-form-item label="总消费">
-                        <el-input v-model="form.toll"></el-input>
+            <el-dialog title='消费结算' :visible.sync='inspectVisible' width='30%'>
+                <el-form ref='form' :model='form' label-width='70px'>
+                    <el-form-item label='总消费'>
+                        <el-input v-model='form.toll'></el-input>
                     </el-form-item>
-                    <el-form-item label="已支付">
-                        <el-input v-model="form.hasSettle"></el-input>
+                    <el-form-item label='已支付'>
+                        <el-input v-model='form.hasSettle'></el-input>
                     </el-form-item>
-                    <el-form-item label="待支付">
-                        <el-input v-model="form.needSettle"></el-input>
+                    <el-form-item label='待支付'>
+                        <el-input v-model='form.needSettle'></el-input>
                     </el-form-item>
                 </el-form>
-                <span slot="footer" class="dialog-footer">
-                    <el-button @click="inspectVisible = false">取消支付</el-button>
-                    <el-button type="primary" @click="surePay">确认支付</el-button>
+                <span slot='footer' class='dialog-footer'>
+                    <el-button @click='inspectVisible = false'>取消支付</el-button>
+                    <el-button type='primary' @click='surePay'>确认支付</el-button>
                 </span>
             </el-dialog>
 
             <!-- 服务弹出框-->
-            <el-dialog title="消费列表" :visible.sync="serviceVisible" width="30%">
-                <el-table :data="serviceData" style="width: 100%" border>
-                    <el-table-column prop="id" label="消费编号" align="center"></el-table-column>
-                    <el-table-column prop="name" label="消费名称" align="center"></el-table-column>
-                    <el-table-column prop="money" label="消费金额" align="center"></el-table-column>
-                    <el-table-column label="操作" align="center">
-                        <template slot-scope="scope">
-                            <el-button plain size="mini" icon="el-icon-coffee-cup" @click="sureCost(scope.row.id)">订购 </el-button>
+            <el-dialog title='消费列表' :visible.sync='serviceVisible' width='30%'>
+                <el-table :data='serviceData' style='width: 100%' border>
+                    <el-table-column prop='id' label='消费编号' align='center'></el-table-column>
+                    <el-table-column prop='name' label='消费名称' align='center'></el-table-column>
+                    <el-table-column prop='money' label='消费金额' align='center'></el-table-column>
+                    <el-table-column label='操作' align='center'>
+                        <template slot-scope='scope'>
+                            <el-button plain size='mini' icon='el-icon-coffee-cup' @click='sureCost(scope.row.id)'>
+                                订购
+                            </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
-                <span slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="serviceVisible = false">订购完成</el-button>
+                <span slot='footer' class='dialog-footer'>
+                    <el-button type='primary' @click='serviceVisible = false'>订购完成</el-button>
                 </span>
             </el-dialog>
 
             <!--  分页角标设置   -->
-            <div class="pagination">
+            <div class='pagination'>
                 <el-pagination
                     background
-                    layout="total, prev, pager, next"
-                    :current-page="roomMsgs.pageIndex"
-                    :page-size="roomMsgs.pageSize"
-                    :total="tableData.length"
-                    @current-change="handlePageChange"
+                    layout='total, prev, pager, next'
+                    :current-page='roomMsgs.pageIndex'
+                    :page-size='roomMsgs.pageSize'
+                    :total='tableData.length'
+                    @current-change='handlePageChange'
                 ></el-pagination>
             </div>
         </div>
@@ -376,19 +384,19 @@ export default {
                 this.$http
                     .post(
                         'http://localhost:8082/addRoom?earnest=' +
-                            this.form.earnest +
-                            '&roomId=' +
-                            this.form.roomId +
-                            '&maxNum=' +
-                            this.form.maxNum +
-                            '&rank=' +
-                            this.form.rank +
-                            '&rent=' +
-                            this.form.rent +
-                            '&size=' +
-                            this.form.size +
-                            '&position=' +
-                            this.form.position
+                        this.form.earnest +
+                        '&roomId=' +
+                        this.form.roomId +
+                        '&maxNum=' +
+                        this.form.maxNum +
+                        '&rank=' +
+                        this.form.rank +
+                        '&rent=' +
+                        this.form.rent +
+                        '&size=' +
+                        this.form.size +
+                        '&position=' +
+                        this.form.position
                     )
                     .then(res => {
                         //console.log(res);
@@ -417,19 +425,19 @@ export default {
                 this.$http
                     .post(
                         'http://localhost:8082/addRoom?earnest=' +
-                            this.form.earnest +
-                            '&roomId=' +
-                            this.form.roomId +
-                            '&maxNum=' +
-                            this.form.maxNum +
-                            '&rank=' +
-                            this.form.rank +
-                            '&rent=' +
-                            this.form.rent +
-                            '&size=' +
-                            this.form.size +
-                            '&position=' +
-                            this.form.position
+                        this.form.earnest +
+                        '&roomId=' +
+                        this.form.roomId +
+                        '&maxNum=' +
+                        this.form.maxNum +
+                        '&rank=' +
+                        this.form.rank +
+                        '&rent=' +
+                        this.form.rent +
+                        '&size=' +
+                        this.form.size +
+                        '&position=' +
+                        this.form.position
                     )
                     .then(res => {
                         //console.log(res);
@@ -469,7 +477,8 @@ export default {
                             }
                         });
                     })
-                    .catch(() => {});
+                    .catch(() => {
+                    });
             } else {
                 this.$message.error('抱歉您没有该权限');
             }
@@ -491,11 +500,11 @@ export default {
             this.$http
                 .post(
                     'http://localhost:8082/addGuest?contact=' +
-                        this.form.contact +
-                        '&idCard=' +
-                        this.form.idCard +
-                        '&name=' +
-                        this.form.name
+                    this.form.contact +
+                    '&idCard=' +
+                    this.form.idCard +
+                    '&name=' +
+                    this.form.name
                 )
                 .then(res => {
                     //console.log(res);
