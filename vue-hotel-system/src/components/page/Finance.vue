@@ -1,40 +1,73 @@
 <template>
     <div>
         <!--  客户列表文字  -->
-        <div class="crumbs">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item> <i class="el-icon-school"></i> 财务报表 </el-breadcrumb-item>
+        <div class='crumbs'>
+            <el-breadcrumb separator='/'>
+                <el-breadcrumb-item><i class='el-icon-school'></i> 财务报表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
 
         <!-- 主列表 -->
-        <el-table :data="tableData" style="width: 100%" border :default-sort="{ prop:'year',order:'descending' }">
+        <el-table :data='tableData' style='width: 100%' border :default-sort="{ prop:'year',order:'descending' }">
             <el-table-column
-                prop="year"
-                label="年份"
-                align="center"
+                prop='year'
+                label='年份'
+                align='center'
                 sortable
                 :filters="[
                     { text: '2021', value: '2021' },
                     { text: '2022', value: '2022' }
                 ]"
-                :filter-method="filterHandler"
+                :filter-method='filterHandler'
             ></el-table-column>
-            <el-table-column prop="month" label="月份" align="center"></el-table-column>
-            <el-table-column prop="moneyTotal" label="收入" align="center"></el-table-column>
+            <el-table-column prop='month' label='月份' align='center'></el-table-column>
+            <el-table-column prop='moneyTotal' label='收入' align='center'></el-table-column>
         </el-table>
-        <p align="right">2021年共收入{{ this.tableData2[2021] }}</p>
-        <p align="right">2022年共收入{{ this.tableData2[2022] }}</p>
+        <!-- 在特定情况显示数据 -->
+        <el-badge :value='this.tableData2[2018]' class='item' v-if='this.tableData[2018]' type='primary'>
+            <el-button>2018年共收入</el-button>
+        </el-badge>
+        <el-badge :value='this.tableData2[2019]' class='item' v-if='this.tableData[2019]' type='primary'>
+            <el-button>2019年共收入</el-button>
+        </el-badge>
+        <el-badge :value='this.tableData2[2020]' class='item' v-if='this.tableData[2019]' type='primary'>
+            <el-button>2020年共收入</el-button>
+        </el-badge>
+        <el-badge :value='this.tableData2[2021]' class='item' v-if='this.tableData[2019]' type='primary'>
+            <el-button>2021年共收入</el-button>
+        </el-badge>
+        <el-badge :value='this.tableData2[2022]' class='item' v-if='this.tableData[2019]' type='primary'>
+            <el-button>2022年共收入</el-button>
+        </el-badge>
+        <!--        <el-badge :value='1000' class='item' type='primary'>-->
+        <!--            <el-button>2022年共收入</el-button>-->
+        <!--        </el-badge>-->
+        <!--        <el-badge :value='1000' class='item' type='primary'>-->
+        <!--            <el-button>2022年共收入</el-button>-->
+        <!--        </el-badge>-->
+        <!--        <el-badge :value='1000' class='item' type='primary'>-->
+        <!--            <el-button>2022年共收入</el-button>-->
+        <!--        </el-badge>-->
+        <!--        <el-badge :value='1000' class='item' type='primary'>-->
+        <!--            <el-button>2022年共收入</el-button>-->
+        <!--        </el-badge>-->
+        <!--        <el-badge :value='1000' class='item' type='primary'>-->
+        <!--            <el-button>2022年共收入</el-button>-->
+        <!--        </el-badge>-->
+        <!--        <p align='right' v-if='this.tableData2[2019]'>2019年共收入{{ this.tableData2[2021] }}</p>-->
+        <!--        <p align='right' v-if='this.tableData2[2020]'>2020年共收入{{ this.tableData2[2022] }}</p>-->
+        <!--        <p align='right' v-if='this.tableData2[2021]'>2021年共收入{{ this.tableData2[2021] }}</p>-->
+        <!--        <p align='right' v-if='this.tableData2[2022]'>2022年共收入{{ this.tableData2[2022] }}</p>-->
 
         <!--  分页角标设置   -->
-        <div class="pagination">
+        <div class='pagination'>
             <el-pagination
                 background
-                layout="total, prev, pager, next"
-                :current-page="costTypes.pageIndex"
-                :page-size="costTypes.pageSize"
-                :total="tableData.length"
-                @current-change="handlePageChange"
+                layout='total, prev, pager, next'
+                :current-page='costTypes.pageIndex'
+                :page-size='costTypes.pageSize'
+                :total='tableData.length'
+                @current-change='handlePageChange'
             ></el-pagination>
         </div>
     </div>
@@ -103,6 +136,11 @@ export default {
 </script>
 
 <style scoped>
+.item {
+    float: left;
+    margin: 15px;
+}
+
 .handle-box {
     margin-bottom: 20px;
 }
