@@ -25,7 +25,7 @@ CREATE TABLE `background`  (
                                `back_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '后台管理的工号',
                                `password` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '后台登录密码',
                                PRIMARY KEY (`back_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of background
@@ -37,19 +37,19 @@ INSERT INTO `background` VALUES ('admin', '981028');
 -- ----------------------------
 DROP TABLE IF EXISTS `book_msg`;
 CREATE TABLE `book_msg`  (
-                             `id` int(50) NOT NULL AUTO_INCREMENT COMMENT '预定信息id',
+                             `id` int NOT NULL AUTO_INCREMENT COMMENT '预定信息id',
                              `guest_id_card` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户的身份证号',
-                             `from_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '预计入住时间',
-                             `to_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '预计退房时间',
+                             `from_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '预计入住时间',
+                             `to_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '预计退房时间',
                              `rank` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '预定的级别，分A,B,C,D级，级别一次降低',
-                             `state` int(10) NOT NULL DEFAULT 0 COMMENT '预定处理状态，0代表未处理，1代表已处理,11代表已入住(失效)',
+                             `state` int NOT NULL DEFAULT 0 COMMENT '预定处理状态，0代表未处理，1代表已处理,11代表已入住(失效)',
                              `result_room` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '预定到的房间',
                              PRIMARY KEY (`id`) USING BTREE,
-                             INDEX `type_id`(`rank`) USING BTREE,
-                             INDEX `guest_id_card`(`guest_id_card`) USING BTREE,
-                             INDEX `result_room`(`result_room`) USING BTREE,
+                             INDEX `type_id`(`rank` ASC) USING BTREE,
+                             INDEX `guest_id_card`(`guest_id_card` ASC) USING BTREE,
+                             INDEX `result_room`(`result_room` ASC) USING BTREE,
                              CONSTRAINT `book_msg_ibfk_1` FOREIGN KEY (`guest_id_card`) REFERENCES `guest` (`id_card`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of book_msg
@@ -57,23 +57,24 @@ CREATE TABLE `book_msg`  (
 INSERT INTO `book_msg` VALUES (15, '362503199814782536', '2022-09-12 12:00:00', '2022-09-25 12:00:00', 'B', 1, '0001');
 INSERT INTO `book_msg` VALUES (16, '362504200015697852', '2022-09-18 12:00:00', '2022-09-28 12:00:00', 'B', 1, '0002');
 INSERT INTO `book_msg` VALUES (17, '362505200214895234', '2022-09-19 12:00:00', '2022-09-26 12:00:00', 'B', 1, '0003');
+
 -- ----------------------------
 -- Table structure for check_in
 -- ----------------------------
 DROP TABLE IF EXISTS `check_in`;
 CREATE TABLE `check_in`  (
-                             `id` int(20) NOT NULL AUTO_INCREMENT COMMENT '入住情况的id',
+                             `id` int NOT NULL AUTO_INCREMENT COMMENT '入住情况的id',
                              `guest_id_card` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '客户的身份证号',
                              `room_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '房间号',
-                             `from_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '入住日期',
-                             `to_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '预计退房时间',
-                             `state` int(10) NOT NULL COMMENT '状态，0代表已退房，1代表正在入住',
+                             `from_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '入住日期',
+                             `to_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '预计退房时间',
+                             `state` int NOT NULL COMMENT '状态，0代表已退房，1代表正在入住',
                              PRIMARY KEY (`id`) USING BTREE,
-                             INDEX `guest_id_card`(`guest_id_card`) USING BTREE,
-                             INDEX `room_id`(`room_id`) USING BTREE,
+                             INDEX `guest_id_card`(`guest_id_card` ASC) USING BTREE,
+                             INDEX `room_id`(`room_id` ASC) USING BTREE,
                              CONSTRAINT `check_in_ibfk_1` FOREIGN KEY (`guest_id_card`) REFERENCES `guest` (`id_card`) ON DELETE RESTRICT ON UPDATE RESTRICT,
                              CONSTRAINT `check_in_ibfk_2` FOREIGN KEY (`room_id`) REFERENCES `room` (`room_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of check_in
@@ -87,17 +88,17 @@ INSERT INTO `check_in` VALUES (18, '362505200214895234', '0003', '2022-09-19 12:
 -- ----------------------------
 DROP TABLE IF EXISTS `cost`;
 CREATE TABLE `cost`  (
-                         `id` int(20) NOT NULL AUTO_INCREMENT COMMENT '消费信息的id',
-                         `cost_type_id` int(20) NOT NULL COMMENT '消费的名称',
+                         `id` int NOT NULL AUTO_INCREMENT COMMENT '消费信息的id',
+                         `cost_type_id` int NOT NULL COMMENT '消费的名称',
                          `room_id` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '房间的id',
-                         `num` int(10) NOT NULL DEFAULT 1 COMMENT '数量',
-                         `state` int(20) NOT NULL DEFAULT 0 COMMENT '状态，0表示未结算，1表示已结算，11表示该次入住的用户全部结算',
+                         `num` int NOT NULL DEFAULT 1 COMMENT '数量',
+                         `state` int NOT NULL DEFAULT 0 COMMENT '状态，0表示未结算，1表示已结算，11表示该次入住的用户全部结算',
                          PRIMARY KEY (`id`) USING BTREE,
-                         INDEX `cost_type_id`(`cost_type_id`) USING BTREE,
-                         INDEX `room_id`(`room_id`) USING BTREE,
+                         INDEX `cost_type_id`(`cost_type_id` ASC) USING BTREE,
+                         INDEX `room_id`(`room_id` ASC) USING BTREE,
                          CONSTRAINT `cost_ibfk_2` FOREIGN KEY (`cost_type_id`) REFERENCES `cost_type` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
                          CONSTRAINT `cost_ibfk_3` FOREIGN KEY (`room_id`) REFERENCES `room` (`room_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 72 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 72 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of cost
@@ -119,16 +120,32 @@ INSERT INTO `cost` VALUES (16, 8, '0003', 1, 11);
 INSERT INTO `cost` VALUES (17, 9, '0003', 1, 11);
 INSERT INTO `cost` VALUES (18, 13, '0002', 1, 11);
 INSERT INTO `cost` VALUES (19, 14, '0003', 1, 11);
+
+-- ----------------------------
+-- Table structure for cost_time
+-- ----------------------------
+DROP TABLE IF EXISTS `cost_time`;
+CREATE TABLE `cost_time`  (
+                              `id` int NOT NULL AUTO_INCREMENT COMMENT '主键',
+                              `cost_id` int NULL DEFAULT NULL COMMENT 'cost表id',
+                              `time` datetime NULL DEFAULT NULL COMMENT '时间',
+                              PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of cost_time
+-- ----------------------------
+
 -- ----------------------------
 -- Table structure for cost_type
 -- ----------------------------
 DROP TABLE IF EXISTS `cost_type`;
 CREATE TABLE `cost_type`  (
-                              `id` int(50) NOT NULL AUTO_INCREMENT COMMENT '消费类型的id',
+                              `id` int NOT NULL AUTO_INCREMENT COMMENT '消费类型的id',
                               `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '消费项目的名称',
                               `money` float NOT NULL COMMENT '金额',
                               PRIMARY KEY (`id`, `name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of cost_type
@@ -158,7 +175,7 @@ CREATE TABLE `front`  (
                           `password` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '前台管理的登录密码',
                           `phone` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '前台管理员的电话',
                           PRIMARY KEY (`front_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of front
@@ -176,7 +193,7 @@ CREATE TABLE `guest`  (
                           `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '客户的姓名',
                           `contact` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '客户的联系方式',
                           PRIMARY KEY (`id_card`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of guest
@@ -190,36 +207,37 @@ INSERT INTO `guest` VALUES ('362505200214895234', '张计科', '13254687956');
 -- ----------------------------
 DROP TABLE IF EXISTS `menu`;
 CREATE TABLE `menu`  (
-                         `dish_id` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+                         `dish_id` int NOT NULL AUTO_INCREMENT COMMENT '菜品id',
                          `dish_name` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-                         `dish_price` decimal(10, 2) NOT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+                         `dish_price` decimal(10, 2) NOT NULL,
+                         PRIMARY KEY (`dish_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
-INSERT INTO `menu` VALUES ('1', '手撕包菜', 25.00);
-INSERT INTO `menu` VALUES ('2', '小炒杏鲍菇', 35.00);
-INSERT INTO `menu` VALUES ('3', '瘦肉炖鸽子', 56.00);
-INSERT INTO `menu` VALUES ('4', '臭豆腐烧四季豆', 32.00);
-INSERT INTO `menu` VALUES ('5', '银鱼蒸水蛋', 30.00);
-INSERT INTO `menu` VALUES ('6', '自制鸡肉卷', 35.00);
-INSERT INTO `menu` VALUES ('7', '大娃菜肉馅芥麦饺子', 36.00);
-INSERT INTO `menu` VALUES ('8', '双色花馒头', 10.00);
-INSERT INTO `menu` VALUES ('9', '杂菇蒸鸡', 45.00);
-INSERT INTO `menu` VALUES ('10', '凉拌金针菇葱丝', 29.00);
-INSERT INTO `menu` VALUES ('11', '红糖糍粑', 26.00);
-INSERT INTO `menu` VALUES ('12', '茴香肉包', 20.00);
-INSERT INTO `menu` VALUES ('13', '牛肉拌粉', 22.00);
-INSERT INTO `menu` VALUES ('14', '瓜丝麦饼', 22.00);
-INSERT INTO `menu` VALUES ('15', '韭菜鸡蛋素水饺', 20.00);
-INSERT INTO `menu` VALUES ('16', '墨鱼老鸭汤煮粉', 26.00);
-INSERT INTO `menu` VALUES ('17', '日式风味鳕鱼西京烧', 88.00);
-INSERT INTO `menu` VALUES ('18', '番茄虾尾意面', 42.00);
-INSERT INTO `menu` VALUES ('19', '萌能烤榴莲', 46.00);
-INSERT INTO `menu` VALUES ('20', '法式烤羊排', 47.00);
-INSERT INTO `menu` VALUES ('21', '西兰花鸡腿肉沙拉', 43.00);
-INSERT INTO `menu` VALUES ('22', '芒果鸡蛋三明治', 42.00);
+INSERT INTO `menu` VALUES (1, '手撕包菜', 25.00);
+INSERT INTO `menu` VALUES (2, '小炒杏鲍菇', 35.00);
+INSERT INTO `menu` VALUES (3, '瘦肉炖鸽子', 56.00);
+INSERT INTO `menu` VALUES (4, '臭豆腐烧四季豆', 32.00);
+INSERT INTO `menu` VALUES (5, '银鱼蒸水蛋', 30.00);
+INSERT INTO `menu` VALUES (6, '自制鸡肉卷', 35.00);
+INSERT INTO `menu` VALUES (7, '大娃菜肉馅芥麦饺子', 36.00);
+INSERT INTO `menu` VALUES (8, '双色花馒头', 10.00);
+INSERT INTO `menu` VALUES (9, '杂菇蒸鸡', 45.00);
+INSERT INTO `menu` VALUES (10, '凉拌金针菇葱丝', 29.00);
+INSERT INTO `menu` VALUES (11, '红糖糍粑', 26.00);
+INSERT INTO `menu` VALUES (12, '茴香肉包', 20.00);
+INSERT INTO `menu` VALUES (13, '牛肉拌粉', 22.00);
+INSERT INTO `menu` VALUES (14, '瓜丝麦饼', 22.00);
+INSERT INTO `menu` VALUES (15, '韭菜鸡蛋素水饺', 20.00);
+INSERT INTO `menu` VALUES (16, '墨鱼老鸭汤煮粉', 26.00);
+INSERT INTO `menu` VALUES (17, '日式风味鳕鱼西京烧', 88.00);
+INSERT INTO `menu` VALUES (18, '番茄虾尾意面', 42.00);
+INSERT INTO `menu` VALUES (19, '萌能烤榴莲', 46.00);
+INSERT INTO `menu` VALUES (20, '法式烤羊排', 47.00);
+INSERT INTO `menu` VALUES (21, '西兰花鸡腿肉沙拉', 43.00);
+INSERT INTO `menu` VALUES (22, '芒果鸡蛋三明治', 42.00);
 
 -- ----------------------------
 -- Table structure for reserver
@@ -229,13 +247,40 @@ CREATE TABLE `reserver`  (
                              `reserver_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
                              `reserver_tel` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
                              `eater_num` int NULL DEFAULT NULL,
-                             `desk_num` int NULL DEFAULT NULL
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+                             `desk_num` int NULL DEFAULT NULL,
+                             INDEX `reserver_name`(`reserver_name` ASC) USING BTREE,
+                             INDEX `reserver_tel`(`reserver_tel` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of reserver
 -- ----------------------------
 INSERT INTO `reserver` VALUES ('黄家', '15212356656', 5, 1);
+
+-- ----------------------------
+-- Table structure for reserver_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `reserver_menu`;
+CREATE TABLE `reserver_menu`  (
+                                  `id` int NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+                                  `reserver_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '预订人姓名',
+                                  `reserver_tel` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '预订人电话',
+                                  `dish_id` int NULL DEFAULT NULL COMMENT '菜品id',
+                                  `state` int NULL DEFAULT NULL COMMENT '结账状态  0 未结账 1 结账',
+                                  PRIMARY KEY (`id`) USING BTREE,
+                                  INDEX `reserver_menu_ibfk_1`(`reserver_name` ASC) USING BTREE,
+                                  INDEX `reserver_menu_ibfk_2`(`reserver_tel` ASC) USING BTREE,
+                                  INDEX `reserver_menu_ibfk_3`(`dish_id` ASC) USING BTREE,
+                                  CONSTRAINT `reserver_menu_ibfk_1` FOREIGN KEY (`reserver_name`) REFERENCES `reserver` (`reserver_name`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+                                  CONSTRAINT `reserver_menu_ibfk_2` FOREIGN KEY (`reserver_tel`) REFERENCES `reserver` (`reserver_tel`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+                                  CONSTRAINT `reserver_menu_ibfk_3` FOREIGN KEY (`dish_id`) REFERENCES `menu` (`dish_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of reserver_menu
+-- ----------------------------
+INSERT INTO `reserver_menu` VALUES (1, '黄家', '15212356656', 1, 0);
+
 -- ----------------------------
 -- Table structure for room
 -- ----------------------------
@@ -246,10 +291,10 @@ CREATE TABLE `room`  (
                          `rank` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '级别，分A,B,C,D级，级别一次降低',
                          `rent` double NOT NULL COMMENT '租金，单位是人民币元',
                          `earnest` double NOT NULL COMMENT '入住定金，单位是人民币元',
-                         `max_num` int(5) NOT NULL COMMENT '最大人数',
+                         `max_num` int NOT NULL COMMENT '最大人数',
                          `position` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '地理位置',
                          PRIMARY KEY (`room_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = COMPACT;
 
 -- ----------------------------
 -- Records of room
@@ -259,8 +304,8 @@ INSERT INTO `room` VALUES ('0002', 53.2, 'B', 300, 90, 2, '二楼');
 INSERT INTO `room` VALUES ('0003', 53.2, 'B', 400, 30, 2, '三楼');
 INSERT INTO `room` VALUES ('0004', 53.2, 'A', 500, 70, 2, '二楼');
 
-
 SET FOREIGN_KEY_CHECKS = 1;
+
 
 
 -- 创建时间时间映射表
