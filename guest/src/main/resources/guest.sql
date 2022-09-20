@@ -186,6 +186,57 @@ INSERT INTO `guest` VALUES ('362504200015697852', '张无忌', '15248355973');
 INSERT INTO `guest` VALUES ('362505200214895234', '张计科', '13254687956');
 
 -- ----------------------------
+-- Table structure for menu
+-- ----------------------------
+DROP TABLE IF EXISTS `menu`;
+CREATE TABLE `menu`  (
+                         `dish_id` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+                         `dish_name` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+                         `dish_price` decimal(10, 2) NOT NULL
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of menu
+-- ----------------------------
+INSERT INTO `menu` VALUES ('1', '手撕包菜', 25.00);
+INSERT INTO `menu` VALUES ('2', '小炒杏鲍菇', 35.00);
+INSERT INTO `menu` VALUES ('3', '瘦肉炖鸽子', 56.00);
+INSERT INTO `menu` VALUES ('4', '臭豆腐烧四季豆', 32.00);
+INSERT INTO `menu` VALUES ('5', '银鱼蒸水蛋', 30.00);
+INSERT INTO `menu` VALUES ('6', '自制鸡肉卷', 35.00);
+INSERT INTO `menu` VALUES ('7', '大娃菜肉馅芥麦饺子', 36.00);
+INSERT INTO `menu` VALUES ('8', '双色花馒头', 10.00);
+INSERT INTO `menu` VALUES ('9', '杂菇蒸鸡', 45.00);
+INSERT INTO `menu` VALUES ('10', '凉拌金针菇葱丝', 29.00);
+INSERT INTO `menu` VALUES ('11', '红糖糍粑', 26.00);
+INSERT INTO `menu` VALUES ('12', '茴香肉包', 20.00);
+INSERT INTO `menu` VALUES ('13', '牛肉拌粉', 22.00);
+INSERT INTO `menu` VALUES ('14', '瓜丝麦饼', 22.00);
+INSERT INTO `menu` VALUES ('15', '韭菜鸡蛋素水饺', 20.00);
+INSERT INTO `menu` VALUES ('16', '墨鱼老鸭汤煮粉', 26.00);
+INSERT INTO `menu` VALUES ('17', '日式风味鳕鱼西京烧', 88.00);
+INSERT INTO `menu` VALUES ('18', '番茄虾尾意面', 42.00);
+INSERT INTO `menu` VALUES ('19', '萌能烤榴莲', 46.00);
+INSERT INTO `menu` VALUES ('20', '法式烤羊排', 47.00);
+INSERT INTO `menu` VALUES ('21', '西兰花鸡腿肉沙拉', 43.00);
+INSERT INTO `menu` VALUES ('22', '芒果鸡蛋三明治', 42.00);
+
+-- ----------------------------
+-- Table structure for reserver
+-- ----------------------------
+DROP TABLE IF EXISTS `reserver`;
+CREATE TABLE `reserver`  (
+                             `reserver_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+                             `reserver_tel` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+                             `eater_num` int NULL DEFAULT NULL,
+                             `desk_num` int NULL DEFAULT NULL
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of reserver
+-- ----------------------------
+INSERT INTO `reserver` VALUES ('黄家', '15212356656', 5, 1);
+-- ----------------------------
 -- Table structure for room
 -- ----------------------------
 DROP TABLE IF EXISTS `room`;
