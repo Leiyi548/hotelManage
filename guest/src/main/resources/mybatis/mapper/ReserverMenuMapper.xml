@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guest.mapper.ReserverMenuMapper">
+
+<!--增加多个订单  未验证可能存在问题-->
+    <insert id="addDishes" parameterType="java.util.List">
+        <foreach collection="list" item="reserverMenu">
+            INSERT INTO reserver_menu
+            (
+            <trim suffixOverrides=",">
+                <if test="reserverMenu.reserver_name!=null">
+                    reserver_name,
+                </if>
+                <if test="reserverMenu.reserver_tel!=null">
+                    reserver_tel,
+                </if>
+                <if test="reserverMenu.dish_id!=null">
+                    dish_id,
+                </if>
+                <if test="reserverMenu.state!=null">
+                    state,
+                </if>
+
+            </trim>
+            )
+            VALUES
+            (
+            <trim suffixOverrides=",">
+                <if test="reserverMenu.reserver_name!=null">
+                    #{reserverMenu.reserver_name},
+                </if>
+                <if test="reserverMenu.reserver_tel!=null">
+                    #{reserverMenu.reserver_tel},
+                </if>
+                <if test="reserverMenu.dish_id!=null">
+                    #{reserverMenu.dish_id},
+                </if>
+                <if test="reserverMenu.state!=null">
+                    #{reserverMenu.state},
+                </if>
+
+            </trim>
+            );
+        </foreach>
+    </insert>
+
+<!--    以下是通过手机号查询点了什么菜 ，用数据库验证了可以-->
+    <select id="searchByTelAndState" resultType="com.guest.pojo.po.Menu">
+         select hotel.menu.dish_id,hotel.menu.dish_name,hotel.menu.dish_price,hotel.menu.dish_price from hotel.menu
+         left join hotel.reserver_menu rm on menu.dish_id = rm.dish_id
+         where reserver_tel=#{reserver_tel} and state=0
+    </select>
+<!--将已支付的 账单状态位置为1  表示已支付完成  数据库验证可以-->
+    <update id="finishBill" parameterType="com.guest.pojo.vo.ReserverMenu">
+        update hotel.reserver_menu
+        set state=1
+        where reserver_tel=#{reserver_tel} and state=0
+    </update>
+</mapper>
