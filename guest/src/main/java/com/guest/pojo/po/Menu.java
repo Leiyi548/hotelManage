@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Menu extends Model<Menu> {
     @TableId(value = "dish_id")
-    String dish_id;//菜编号
+    int dish_id;//菜编号
     String dish_name;//菜名
     float dish_price;//菜价
 
