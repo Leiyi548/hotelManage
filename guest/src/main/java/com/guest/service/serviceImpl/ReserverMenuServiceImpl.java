@@ -1,4 +1,5 @@
 package com.guest.service.serviceImpl;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.guest.mapper.ReserverMenuMapper;
 import com.guest.pojo.po.Menu;
 import com.guest.pojo.vo.ReserverMenu;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ReserverMenuServiceImpl  implements ReserverMenuService {
+public class ReserverMenuServiceImpl extends ServiceImpl<ReserverMenuMapper,ReserverMenu> implements ReserverMenuService {
     @Autowired
     ReserverMenuMapper reserverMenuMapper;
 
