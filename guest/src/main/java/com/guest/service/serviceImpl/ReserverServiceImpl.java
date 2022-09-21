@@ -11,10 +11,16 @@ import org.springframework.stereotype.Service;
 public class ReserverServiceImpl extends ServiceImpl<ReserverMapper,Reserver> implements ReserverService {
     @Autowired
     ReserverMapper reserverMapper;
-
     //增加预定信息
     @Override
     public int addReserver(Reserver reserver) {
         return reserverMapper.addReserver(reserver);
     }
+
+    @Override
+    public Reserver getReserverByName(String ReserverName) {
+        return reserverMapper.getReserverByName(ReserverName);
+    }
+
+
 }

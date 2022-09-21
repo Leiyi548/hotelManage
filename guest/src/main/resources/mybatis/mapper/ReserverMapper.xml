@@ -7,5 +7,9 @@
         VALUES (#{reserverName},#{reserverTel},#{eaterNum},#{deskNum});
     </insert>
 
+    <select id="getReserverByName"  parameterType="string" resultType="Reserver">
+        select * form reserver
+        where reserver_name=#{ReserverName}
+    </select>
 
 </mapper>
