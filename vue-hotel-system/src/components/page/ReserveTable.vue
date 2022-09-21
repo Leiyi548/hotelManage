@@ -506,7 +506,7 @@ export default {
             if (days >= 1) {
                 this.$http
                     .put(
-                        'http://localhost:8082//updateBookMsg?fromTime=' +
+                        'http://localhost:8082/updateBookMsg?fromTime=' +
                         fromTime +
                         '&id=' +
                         this.form.id +
