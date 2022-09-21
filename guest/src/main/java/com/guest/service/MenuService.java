@@ -1,7 +1,6 @@
 package com.guest.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.guest.pojo.po.Cost;
 import com.guest.pojo.po.Menu;
 import org.springframework.stereotype.Service;
 

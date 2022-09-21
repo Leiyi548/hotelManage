@@ -2,6 +2,8 @@
 mybatis-plus:
  mapper-locations: classpath:mybatis/mapper/*.xml
  type-aliases-package: com.guest.pojo
+ configuration:
+   log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 # 连接数据库
 spring:
   thymeleaf:
@@ -9,7 +11,7 @@ spring:
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://localhost:3306/hotel?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/guest1?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowMultiQueries=TRUE
 #    url: jdbc:mysql://10.0.0.3:3306/guest?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource

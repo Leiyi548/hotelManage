@@ -8,4 +8,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ReserverService extends IService<Reserver> {
    int addReserver(Reserver reserver);
+
 }
