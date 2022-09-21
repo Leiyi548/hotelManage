@@ -1,5 +1,6 @@
 package com.guest.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.guest.pojo.po.Menu;
 import com.guest.pojo.vo.ReserverMenu;
 import org.apache.ibatis.annotations.Mapper;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Mapper
 @Repository
-public interface ReserverMenuMapper {
+public interface ReserverMenuMapper extends BaseMapper<ReserverMenu> {
     //增加一些列菜单信息，并将其所有state位 置为0  再进入此页面前统一将state=0；
     int addDishes(List<ReserverMenu> reserverMenu);
 
