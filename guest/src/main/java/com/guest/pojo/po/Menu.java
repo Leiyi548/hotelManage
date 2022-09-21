@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class Menu extends Model<Menu> {
     int dish_id;//菜编号
     String dish_name;//菜名
-    double dish_price;//菜价
+    float dish_price;//菜价
 
 }

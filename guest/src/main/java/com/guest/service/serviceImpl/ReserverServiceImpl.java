@@ -5,6 +5,9 @@ import com.guest.mapper.ReserverMapper;
 import com.guest.pojo.po.Reserver;
 import com.guest.service.ReserverService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
 public class ReserverServiceImpl extends ServiceImpl<ReserverMapper,Reserver> implements ReserverService {
     @Autowired
     ReserverMapper reserverMapper;
@@ -17,6 +20,11 @@ public class ReserverServiceImpl extends ServiceImpl<ReserverMapper,Reserver> im
     @Override
     public Reserver getReserverByName(String ReserverName) {
         return reserverMapper.getReserverByName(ReserverName);
+    }
+
+    @Override
+    public int updateReserverState(String ReserverName, String ReserverTel) {
+      return   reserverMapper.updateReserverState(ReserverName,ReserverTel);
     }
 
 

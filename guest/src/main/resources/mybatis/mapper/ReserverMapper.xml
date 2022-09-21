@@ -8,7 +8,7 @@
     </insert>
 
     <select id="getReserverByName"  parameterType="string" resultType="Reserver">
-        select * form reserver
+        select * from reserver
         where reserver_name=#{ReserverName}
     </select>
 

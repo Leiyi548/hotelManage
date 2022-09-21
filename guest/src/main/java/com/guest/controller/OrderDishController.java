@@ -1,3 +1,4 @@
+/*
 package com.guest.controller;
 
 import com.guest.pojo.dto.OrderDish;
@@ -18,11 +19,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+*/
 /**
  * @author xinyuan
  * @Version 1.0
  * @date 2022/9/21  上午 10:48
- **/
+ **//*
+
 @RestController
 @Api(tags = "点菜和结账")
 public class OrderDishController {
@@ -90,3 +93,4 @@ public class OrderDishController {
         return new Response(ResponseMsg.ILLEGAL_OPERATION);
     }
 }
+*/

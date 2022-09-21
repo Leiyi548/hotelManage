@@ -12,9 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Reserver extends Model<Reserver> {
 
-    String reserverName;//预订人姓名
-    String reserverTel;//预订人号码
-    Integer eaterNum;//就餐人数
-    Integer deskNum;//就餐餐桌号
+    private String reserverName;//预订人姓名
+    private String reserverTel;//预订人号码
+    private Integer eaterNum;//就餐人数
+    private Integer deskNum;//就餐餐桌号
+    private Double money; // 金额
+    private int state; // 状态
 
 }

@@ -11,9 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReserverMenu {
     @TableId(value = "id",type = IdType.AUTO)
-    Integer id;
-    String reserver_name;//预订人姓名
-    String reserver_tel;//预订人电话
-    Integer dish_id;//菜品id
-    int state;//结账状态  1结账  0未结账
+    private Integer id;
+    private String reserverName;//预订人姓名
+    private String reserverTel;//预订人电话
+    private String dishName;//菜品姓名
+    private Integer num;
+    private Double price;
 }
