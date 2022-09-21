@@ -14,5 +14,6 @@ public class ReserverMenu {
     String reserver_name;//预订人姓名
     String reserver_tel;//预订人电话
     int dish_id;//菜品id
-    int state;//结账状态  1结账  0未结账
+    int num;//菜品数量
+    double price;//菜品价格
 }
