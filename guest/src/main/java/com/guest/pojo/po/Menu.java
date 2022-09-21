@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Menu extends Model<Menu> {
-    @TableId(value = "dish_id")
     int dish_id;//菜编号
     String dish_name;//菜名
     double dish_price;//菜价

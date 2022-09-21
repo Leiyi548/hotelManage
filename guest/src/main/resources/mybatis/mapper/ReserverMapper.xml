@@ -4,20 +4,12 @@
 
     <insert id="addReserver"  parameterType="Reserver">
         insert into reserver(reserver_name, reserver_tel, eater_num, desk_num)
-        VALUES (#{reserver_name},#{reserver_tel},#{eater_num},#{desk_num});
+        VALUES (#{reserverName},#{reserverTel},#{eaterNum},#{deskNum});
     </insert>
 
-    <select id="searchReserverByName" resultType="com.guest.pojo.po.Reserver">
-        SELECT * FROM reserver WHERE reserver_name like concat('%',#{reserver_name},'%')
+    <select id="getReserverByName"  parameterType="string" resultType="Reserver">
+        select * form reserver
+        where reserver_name=#{ReserverName}
     </select>
 
-    <delete id="deleteReserverByTel">
-        DELETE reserver,reserver_menu from reserver
-            LEFT JOIN reserver_menu ON reserver.reserver_tel=reserver_menu.reserver_tel
-        WHERE reserver.reserver_tel=#{reserver_tel}
-    </delete>
-
-    <delete id="deleteReserverByTel2">
-        DELETE from reserver WHERE reserver_tel=#{reserver_tel}
-    </delete>
 </mapper>

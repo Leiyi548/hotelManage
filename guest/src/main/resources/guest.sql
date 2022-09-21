@@ -248,6 +248,8 @@ CREATE TABLE `reserver`  (
                              `reserver_tel` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
                              `eater_num` int NULL DEFAULT NULL,
                              `desk_num` int NULL DEFAULT NULL,
+                             `state` int NULL DEFAULT NULL,
+                             `money` double NULL DEFAULT NULL,
                              INDEX `reserver_name`(`reserver_name` ASC) USING BTREE,
                              INDEX `reserver_tel`(`reserver_tel` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
@@ -255,7 +257,7 @@ CREATE TABLE `reserver`  (
 -- ----------------------------
 -- Records of reserver
 -- ----------------------------
-INSERT INTO `reserver` VALUES ('黄家', '15212356656', 5, 1);
+INSERT INTO `reserver` VALUES ('黄家', '15212356656', 5, 1, 0, 100);
 
 -- ----------------------------
 -- Table structure for reserver_menu
@@ -266,7 +268,8 @@ CREATE TABLE `reserver_menu`  (
                                   `reserver_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '预订人姓名',
                                   `reserver_tel` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '预订人电话',
                                   `dish_id` int NULL DEFAULT NULL COMMENT '菜品id',
-                                  `state` int NULL DEFAULT NULL COMMENT '结账状态  0 未结账 1 结账',
+                                  `num` int NULL DEFAULT NULL,
+                                  `price` double NULL DEFAULT NULL,
                                   PRIMARY KEY (`id`) USING BTREE,
                                   INDEX `reserver_menu_ibfk_1`(`reserver_name` ASC) USING BTREE,
                                   INDEX `reserver_menu_ibfk_2`(`reserver_tel` ASC) USING BTREE,
@@ -274,12 +277,13 @@ CREATE TABLE `reserver_menu`  (
                                   CONSTRAINT `reserver_menu_ibfk_1` FOREIGN KEY (`reserver_name`) REFERENCES `reserver` (`reserver_name`) ON DELETE RESTRICT ON UPDATE RESTRICT,
                                   CONSTRAINT `reserver_menu_ibfk_2` FOREIGN KEY (`reserver_tel`) REFERENCES `reserver` (`reserver_tel`) ON DELETE RESTRICT ON UPDATE RESTRICT,
                                   CONSTRAINT `reserver_menu_ibfk_3` FOREIGN KEY (`dish_id`) REFERENCES `menu` (`dish_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of reserver_menu
 -- ----------------------------
-INSERT INTO `reserver_menu` VALUES (1, '黄家', '15212356656', 1, 0);
+INSERT INTO `reserver_menu` VALUES (1, '黄家', '15212356656', 1, 2, 25);
+INSERT INTO `reserver_menu` VALUES (2, '黄家', '15212356656', 2, 1, 35);
 
 -- ----------------------------
 -- Table structure for room

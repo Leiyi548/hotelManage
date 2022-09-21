@@ -51,8 +51,8 @@
          where reserver_tel=#{reserver_tel} and state=0
     </select>
 <!--将已支付的 账单状态位置为1  表示已支付完成  数据库验证可以-->
-    <update id="finishBill" parameterType="com.guest.pojo.vo.ReserverMenu">
-        update hotel.reserver_menu
+    <update id="finishBill">
+        update reserver_menu
         set state=1
         where reserver_tel=#{reserver_tel} and state=0
     </update>

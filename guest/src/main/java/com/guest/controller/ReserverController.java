@@ -30,6 +30,8 @@ public class ReserverController {
     @Autowired
     BackgroundService backgroundService;
 
+
+
     // 存预定人信息 防止前端无法存储
     public static Reserver reserver;
 
