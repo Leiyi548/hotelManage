@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReserverMapper  extends BaseMapper<Reserver> {
    int addReserver(Reserver reserver);
-
+   Reserver getReserverByName(String ReserverName);
 }
