@@ -51,7 +51,7 @@ public class CaterController {
     public Response getAllReservers(HttpServletRequest request){
         String num=(String) request.getAttribute("num");
         if(backgroundService.getById(num) != null || frontService.getById(num) != null){
-            List<Reserver> reservers=reserverService.list();
+            List<Reserver> reservers = reserverService.list();
             if(reservers!=null && reservers.size()>0){
                 Map<String,Object> resultMap=new HashMap<>();
                 resultMap.put("reservers",reservers);

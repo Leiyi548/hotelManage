@@ -1,5 +1,6 @@
 package com.guest.pojo.po;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.AllArgsConstructor;
@@ -11,10 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Reserver extends Model<Reserver> {
 
-    String reserver_name;//预订人姓名
-    @TableId(value = "reserver_tel")
-    String reserver_tel;//预订人号码
-    Integer eater_num;//就餐人数
-    Integer desk_num;//就餐餐桌号
+    String reserverName;//预订人姓名
+    String reserverTel;//预订人号码
+    Integer eaterNum;//就餐人数
+    Integer deskNum;//就餐餐桌号
 
 }

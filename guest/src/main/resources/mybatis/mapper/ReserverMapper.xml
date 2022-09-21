@@ -4,7 +4,7 @@
 
     <insert id="addReserver"  parameterType="Reserver">
         insert into reserver(reserver_name, reserver_tel, eater_num, desk_num)
-        VALUES (#{reserver_name},#{reserver_tel},#{eater_num},#{desk_num});
+        VALUES (#{reserverName},#{reserverTel},#{eaterNum},#{deskNum});
     </insert>
 
 
