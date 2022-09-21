@@ -40,6 +40,11 @@ export default new Router({
                     meta: { title: '房间列表' }
                 },
                 {
+                    path: '/food',
+                    component: () => import(/* webpackChunkName: "table" */ '../components/page/Food.vue'),
+                    meta: { title: '餐桌列表' }
+                },
+                {
                     path: '/cost',
                     component: () => import(/* webpackChunkName: "tabs" */ '../components/page/Cost.vue'),
                     meta: { title: '消费管理' }

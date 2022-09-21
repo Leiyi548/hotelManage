@@ -3,7 +3,7 @@
         <!--  客户列表文字  -->
         <div class='crumbs'>
             <el-breadcrumb separator='/'>
-                <el-breadcrumb-item><i class='el-icon-school'></i> 房间列表</el-breadcrumb-item>
+                <el-breadcrumb-item><i class='el-icon-lx-recharge'></i> 消费管理</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
 

@@ -92,8 +92,6 @@ export default {
         var checkPassword = (rule, value, callback) => {
             if (value !== this.form.oldPassword) {
                 callback(new Error('密码错误，请重新输入！'));
-            } else if (value.length < 3 || value > 16) {
-                callback(new Error('密码长度不符！'));
             } else {
                 callback();
             }

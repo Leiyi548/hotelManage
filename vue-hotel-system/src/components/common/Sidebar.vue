@@ -79,6 +79,11 @@ export default {
                     title: '客户列表'
                 },
                 {
+                    icon: 'el-icon-fork-spoon',
+                    index: 'food',
+                    title: '餐桌列表'
+                },
+                {
                     icon: 'el-icon-lx-recharge',
                     index: 'cost',
                     title: '消费管理'
