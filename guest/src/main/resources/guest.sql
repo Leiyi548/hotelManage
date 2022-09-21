@@ -248,8 +248,8 @@ CREATE TABLE `reserver`  (
                              `reserver_tel` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
                              `eater_num` int NULL DEFAULT NULL,
                              `desk_num` int NULL DEFAULT NULL,
-                             `state` int NULL DEFAULT NULL,
-                             `money` double NULL DEFAULT NULL,
+                             `state` int NULL DEFAULT 0,
+                             `money` double NULL DEFAULT 0,
                              INDEX `reserver_name`(`reserver_name` ASC) USING BTREE,
                              INDEX `reserver_tel`(`reserver_tel` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
@@ -267,20 +267,21 @@ CREATE TABLE `reserver_menu`  (
                                   `id` int NOT NULL AUTO_INCREMENT COMMENT '自增主键',
                                   `reserver_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '预订人姓名',
                                   `reserver_tel` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '预订人电话',
-                                  `dish_id` int NULL DEFAULT NULL COMMENT '菜品id',
+                                  `dish_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '菜品名称',
                                   `num` int NULL DEFAULT NULL,
                                   `price` double NULL DEFAULT NULL,
                                   PRIMARY KEY (`id`) USING BTREE,
                                   INDEX `reserver_menu_ibfk_1`(`reserver_name` ASC) USING BTREE,
                                   INDEX `reserver_menu_ibfk_2`(`reserver_tel` ASC) USING BTREE,
-                                  INDEX `reserver_menu_ibfk_3`(`dish_id` ASC) USING BTREE
+                                  INDEX `reserver_menu_ibfk_3`(`dish_name` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of reserver_menu
 -- ----------------------------
-INSERT INTO `reserver_menu` VALUES (1, '黄家', '15212356656', 1, 2, 25);
-INSERT INTO `reserver_menu` VALUES (2, '黄家', '15212356656', 2, 1, 35);
+INSERT INTO `reserver_menu` VALUES (1, '黄家', '15212356656', '手撕白菜', 2, 25);
+INSERT INTO `reserver_menu` VALUES (2, '黄家', '15212356656', '爆炒杏鲍菇', 1, 35);
+
 
 -- ----------------------------
 -- Table structure for room
