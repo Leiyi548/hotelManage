@@ -164,7 +164,7 @@
                     <el-table-column prop='num' label='菜品数量' align='center' width='200' />
                     <el-table-column prop='price' label='菜品价格' align='center' width='200' />
                 </el-table>
-                <p align='right' style='margin:10px;color:red; '>￥{{ this.currentMoney }}</p>
+                <p align='right' style='margin:10px;color:red; '>￥{{ this.newCurrentMoney }}</p>
             </el-dialog>
             <!--详情弹出框结束-->
         </div>
@@ -604,20 +604,20 @@ export default {
                     '&reserverTel=' + row.reserverTel
                 ).then((res) => {
                     if (res.data.code === 200) {
-                        console.log('===res===');
-                        console.log(res);
-                        console.log('===res end===');
+                        // console.log('===res===');
+                        // console.log(res);
+                        // console.log('===res end===');
                         this.detailsData = res.data.data.list;
-                        console.log('===detailsData');
-                        console.log(this.detailsData);
-                        console.log('===');
+                        // console.log('===detailsData');
+                        // console.log(this.detailsData);
+                        // console.log('===');
+                        // 更新总价格
+                        this.newCurrentMoney = 0;
+                        for (var item in this.detailsData) {
+                            this.newCurrentMoney += this.detailsData[item].price;
+                        }
                     }
                 });
-            }
-            // 更新总价格
-            this.newCurrentMoney = 0;
-            for (var item in this.detailsData) {
-                this.newCurrentMoney += this.detailsData[item].price;
             }
             // 更新数据库内容
             this.$http.put(
