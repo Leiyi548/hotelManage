@@ -109,7 +109,7 @@
                     <el-form-item label='身份证号' prop='idCard'>
                         <el-input v-model='form.idCard'></el-input>
                     </el-form-item>
-                    <el-form-item label='联系电话' prop='phone'>
+                    <el-form-item label='联系电话' prop='contact'>
                         <el-input v-model='form.contact'></el-input>
                     </el-form-item>
                     <el-form-item label='房间级别'>
@@ -337,7 +337,7 @@ export default {
             form: {},
             idx: -1,
             rules: {
-                phone: [{ validator: checkPhone, trigger: ['change', 'blur'] }],
+                contact: [{ validator: checkPhone, trigger: ['change', 'blur'] }],
                 name: [{ validator: checkName, trigger: ['change', 'blur'] }],
                 idCard: [{ validator: checkIdCard, trigger: ['change', 'blur'] }]
             }
