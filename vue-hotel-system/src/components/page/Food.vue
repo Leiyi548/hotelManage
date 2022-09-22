@@ -164,7 +164,7 @@
                     <el-table-column prop='num' label='菜品数量' align='center' width='200' />
                     <el-table-column prop='price' label='菜品价格' align='center' width='200' />
                 </el-table>
-                <p align='right' style='margin:10px;color:red; '>￥{{ foodMoneySum }}</p>
+                <p align='right' style='margin:10px;color:red; '>￥{{ this.currentMoney }}</p>
             </el-dialog>
             <!--详情弹出框结束-->
         </div>
@@ -433,6 +433,7 @@ export default {
                     selected: false
                 }
             ],
+            // 点餐总金额
             foodMoneySum: 0,
             // 当前点餐的人姓名
             currentGuestName: '',
@@ -442,6 +443,10 @@ export default {
             currentGuestNum: '',
             // 当前桌号
             currentDeskNum: '',
+            // 当前总金额
+            currentMoney: '',
+            // 删除名额列表
+            delList: [],
             rules: {
                 name: [{ validator: checkName, trigger: ['change', 'blur'] }],
                 telephone: [{ validator: checkPhone, trigger: ['change', 'blur'] }],
@@ -452,14 +457,9 @@ export default {
     },
     created() {
         this.getAllReserverMsg();
-        this.getAllDetailMsg();
     },
     methods: {
 
-        // 获得所有
-        getAllDetailMsg() {
-            // TODO: 获得detail数据
-        },
         // 获得所有预定信息
         getAllReserverMsg() {
             this.$http.get('http://localhost:8082/getAllReservers').then((res) => {
@@ -477,7 +477,7 @@ export default {
         // 搜索信息: 根据姓名搜索
         handleSearch() {
             console.log(this.foodMsgs.name);
-            // TODO: 搜索信息: 根据姓名搜索
+            // DONE: 搜索信息: 根据姓名搜索
             this.$http.get('http://localhost:8082/fuzzyReserver?reserverName=' + this.foodMsgs.name).then((res => {
                 if (res.data.code === 200) {
                     console.log(res.data.data);
@@ -511,12 +511,20 @@ export default {
             });
         },
         // 多选操作
-        handleSelectionChange() {
+        handleSelectionChange(val) {
             this.multipleSelection = val;
             this.delList = [];
             for (let i = 0; i < val.length; i++) {
                 this.delList.push(val[i].reserverName);
             }
+        },
+        // 获得json长度
+        getJsonLength() {
+            var length = 0;
+            for (var item in this.tableData) {
+                length++;
+            }
+            return length;
         },
         // 删除多选信息
         delAllSelection() {
@@ -527,9 +535,28 @@ export default {
             }
             var i = 0;
             for (i; i < this.delList.length; i++) {
-                // TODO: 删除多选内容
+                // DONE: 删除多选内容
+                this.$http.get(
+                    'http://localhost:8082/deleteReserver?reserverName=' +
+                    this.delList[i]
+                ).then((res) => {
+                    if (res.data.code === 200) {
+                        //1.提示成功
+                        this.$message.success(`删除成功`);
+                        //更新数据
+                        this.getAllReserverMsg();
+                    } else {
+                        this.$message.danger(`删除失败`);
+                    }
+                });
             }
-            // TODO: 更新删除后的数据
+            // DONE: 更新删除后的数据
+            this.multipleSelection = [];
+            if (this.getJsonLength() == this.delList.length) {
+                this.tableData = [];
+            } else {
+                this.getAllReserverMsg();
+            }
         },
         // 编辑操作
         handleEdit(index, row) {
@@ -542,7 +569,7 @@ export default {
             this.$confirm('确定要删除吗？', '提示', {
                 type: 'warning'
             })
-                // TODO: 单向删除
+                // DONE: 单向删除
                 .then(() => {
                     // 删除语句写在这
                     this.$http.get(
@@ -551,7 +578,7 @@ export default {
                     ).then((res) => {
                         if (res.data.code === 200) {
                             //1.提示成功
-                            this.$message.success(`修改成功`);
+                            this.$message.success(`删除成功`);
                             //更新数据
                             this.getAllReserverMsg();
                         } else {
@@ -562,6 +589,7 @@ export default {
         },
         // 详情操作
         handleDetails(index, row) {
+            this.currentMoney = row.money;
             if (row.state === 0) {
                 this.$message.warning('请先点餐');
             } else {
@@ -595,8 +623,10 @@ export default {
             this.currentGuestPhone = this.form.reserverTel;
             this.currentDeskNum = this.form.deskNum;
             this.currentEaterNum = this.form.eaterNum;
-            // alert(this.currentGuestName);
+            this.currentMoney = this.form.money;
+            // 显示点餐
             this.orderVisible = true;
+            // alert(this.currentGuestName);
         },
         // 重置属性
         resetSelected() {
@@ -687,7 +717,7 @@ export default {
                     console.log('点餐金额：' + this.foodTable[item].foodMoney);
                     console.log('===');
 
-                    // TODO: 传输数据给后端数据库
+                    // DONE: 传输数据给后端数据库
                     this.$http.post('http://localhost:8082/orderMenu?reserverName=' +
                         this.currentGuestName +
                         '&reserverTel=' + this.currentGuestPhone +
@@ -705,27 +735,28 @@ export default {
                 // 1. 提示成功
                 // this.$message.success(`点餐成功`);
                 this.orderVisible = false;
-                this.$message.success(`点餐成功`);
+                // this.$message.success(`点餐成功`);
                 // 2. 更新数据库
-                // this.$http.put(
-                //     'http://localhost:8082/updateReserver?reserverName=' +
-                //     this.currentGuestName +
-                //     '&reserverTel=' + this.currentGuestPhone +
-                //     '&eaterNum=' + this.currentEaterNum +
-                //     '&deskNum=' + this.currentDeskNum
-                //     // '&'
-                // ).then((res) => {
-                //     if (res.data.code === 200) {
-                //         //1.提示成功
-                //         this.$message.success(`点餐成功`);
-                //         //3.更新视图
-                //         this.getAllBookMsgs();
-                //         //4.清空输入文本框
-                //         this.form = {};
-                //     } else {
-                //         this.$message.warning('点餐失败');
-                //     }
-                // });
+                this.$http.put(
+                    'http://localhost:8082/updateReserver?reserverName=' +
+                    this.currentGuestName +
+                    '&reserverTel=' + this.currentGuestPhone +
+                    '&eaterNum=' + this.currentEaterNum +
+                    '&deskNum=' + this.currentDeskNum +
+                    '&money=' + this.foodMoneySum
+                    // '&'
+                ).then((res) => {
+                    if (res.data.code === 200) {
+                        //1.提示成功
+                        this.$message.success(`点餐成功`);
+                        //3.更新视图
+                        this.getAllBookMsgs();
+                        //4.清空输入文本框
+                        this.form = {};
+                    } else {
+                        this.$message.warning('点餐失败');
+                    }
+                });
             }
         },
         // 详情信息弹出框的关闭
