@@ -17,9 +17,6 @@ import java.util.Date;
  * <p>
  *  Jwt工具类
  * </p>
- *
- * @author 张雪萍
- * @since 2020-11-27
  */
 @Data
 @Component

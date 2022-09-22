@@ -10,9 +10,6 @@ import java.util.List;
  * <p>
  *  服务类
  * </p>
- *
- * @author 张雪萍
- * @since 2020-12-02
  */
 @Service
 public interface CostTypeService extends IService<CostType> {

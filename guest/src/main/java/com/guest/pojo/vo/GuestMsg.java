@@ -9,9 +9,6 @@ import lombok.NoArgsConstructor;
  * <p>
  * 客户的身份信息和入住信息
  * </p>
- *
- * @author 张雪萍
- * @since 2020-12-02
  */
 @Data
 @NoArgsConstructor

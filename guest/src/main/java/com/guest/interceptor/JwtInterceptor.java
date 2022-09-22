@@ -14,9 +14,6 @@ import javax.servlet.http.HttpServletResponse;
  * <p>
  *  自定义拦截器，和Jwt配套使用完成用户鉴权
  * </p>
- *
- * @author 张雪萍
- * @since 2020-11-27
  */
 public class JwtInterceptor implements HandlerInterceptor {
     @Autowired

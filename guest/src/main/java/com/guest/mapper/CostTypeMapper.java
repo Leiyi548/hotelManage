@@ -11,9 +11,6 @@ import java.util.List;
  * <p>
  *  Mapper 接口
  * </p>
- *
- * @author 张雪萍
- * @since 2020-12-02
  */
 @Mapper
 @Repository

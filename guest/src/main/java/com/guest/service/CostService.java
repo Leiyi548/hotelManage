@@ -11,9 +11,6 @@ import java.util.List;
  * <p>
  *  服务类
  * </p>
- *
- * @author 张雪萍
- * @since 2020-11-27
  */
 @Service
 public interface CostService extends IService<Cost> {

@@ -8,9 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * <p>
  *  前端控制器
  * </p>
- *
- * @author 张雪萍
- * @since 2020-11-27
  */
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
