@@ -27,9 +27,6 @@ import java.util.Map;
  * <p>
  *  前端控制器
  * </p>
- *
- * @author 张雪萍
- * @since 2020-12-02
  */
 @CrossOrigin
 @Transactional

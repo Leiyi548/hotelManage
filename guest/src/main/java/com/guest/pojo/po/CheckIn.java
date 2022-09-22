@@ -13,9 +13,6 @@ import java.time.LocalDateTime;
  * <p>
  * 入住情况
  * </p>
- *
- * @author 张雪萍
- * @since 2020-11-27
  */
 @Data
 @NoArgsConstructor

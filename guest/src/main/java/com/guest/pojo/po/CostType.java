@@ -13,9 +13,6 @@ import java.io.Serializable;
  * <p>
  * 消费类型
  * </p>
- *
- * @author 张雪萍
- * @since 2020-12-02
  */
 @Data
 @AllArgsConstructor
