@@ -445,6 +445,8 @@ export default {
             currentDeskNum: '',
             // 当前总金额
             currentMoney: '',
+            // 详情信息总金额
+            newCurrentMoney: '',
             // 删除名额列表
             delList: [],
             rules: {
@@ -613,11 +615,9 @@ export default {
                 });
             }
             // 更新总价格
-            this.currentMoney = 0;
+            this.newCurrentMoney = 0;
             for (var item in this.detailsData) {
-                this.currentMoney += this.detailsData[item].price;
-                // console.log(this.detailsData[item]);
-                console.log('currentGuestName: ' + this.currentGuestName);
+                this.newCurrentMoney += this.detailsData[item].price;
             }
             // 更新数据库内容
             this.$http.put(
@@ -626,7 +626,7 @@ export default {
                 '&reserverTel=' + row.reserverTel +
                 '&eaterNum=' + row.eaterNum +
                 '&deskNum=' + row.deskNum +
-                '&money=' + this.currentMoney +
+                '&money=' + this.newCurrentMoney +
                 '&state=1'
             ).then((res) => {
                 if (res.data.code === 200) {
