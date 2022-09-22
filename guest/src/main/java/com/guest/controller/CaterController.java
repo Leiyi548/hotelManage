@@ -81,14 +81,14 @@ public class CaterController {
             @ApiResponse(code=40104,message="非法操作, 试图操作不属于自己的数据")
     })
     public  Response updateReserver(HttpServletRequest request,String reserverName,
-                                    String reserverTel,int eaterNum,int deskNum){
+                                    String reserverTel,int eaterNum,int deskNum,Double money){
         String num = (String) request.getAttribute("num");
         Reserver reserver=reserverService.getReserverByName(reserverName);
         if(backgroundService.getById(num) != null){
             reserver.setReserverTel(reserverTel);
             reserver.setDeskNum(deskNum);
             reserver.setEaterNum(eaterNum);
-
+            reserver.setMoney(money);
             QueryWrapper queryWrapper = new QueryWrapper();
             queryWrapper.eq("reserver_name",reserverName);
             reserverService.update(reserver,queryWrapper);
