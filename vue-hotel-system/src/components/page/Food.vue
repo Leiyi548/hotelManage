@@ -111,7 +111,7 @@
             <el-dialog title='编辑' :visible.sync='editVisible' width='30%' :before-close='handleClose'>
                 <el-form ref='form' :model='form' label-width='70px'>
                     <el-form-item label='用户名' prop='name'>
-                        <el-input v-model='form.reserverName'></el-input>
+                        <el-input v-model='form.reserverName' disabled></el-input>
                     </el-form-item>
                     <el-form-item label='电话号码' prop='telephone'>
                         <el-input v-model='form.reserverTel'></el-input>
@@ -124,7 +124,7 @@
                     </el-form-item>
                 </el-form>
                 <span slot='footer' class='dialog-footer'>
-                    <el-button @click='addVisible = false'>取 消</el-button>
+                    <el-button @click='handleClose'>取 消</el-button>
                     <el-button type='primary' @click='saveEdit'>确 定</el-button>
                 </span>
             </el-dialog>
@@ -483,7 +483,7 @@ export default {
             this.$http.get('http://localhost:8082/fuzzyReserver?reserverName=' + this.foodMsgs.name).then((res => {
                 if (res.data.code === 200) {
                     console.log(res.data.data);
-                    // this.tableData = res.data.data
+                    this.tableData = res.data.data.list;
                 } else {
                     this.$message.error('抱歉没有该数据');
                 }
@@ -491,12 +491,14 @@ export default {
         },
         // 保存编辑修改
         saveEdit() {
+            // console.log(this.form);
             this.$http.put(
                 'http://localhost:8082/updateReserver?reserverName=' +
                 this.form.reserverName +
                 '&reserverTel=' + this.form.reserverTel +
                 '&eaterNum=' + this.form.eaterNum +
-                '&deskNum=' + this.form.deskNum
+                '&deskNum=' + this.form.deskNum +
+                '&state=1' + this.form.state
             ).then((res) => {
                 if (res.data.code === 200) {
                     //1.提示成功
@@ -614,7 +616,7 @@ export default {
                         // 更新总价格
                         this.newCurrentMoney = 0;
                         for (var item in this.detailsData) {
-                            this.newCurrentMoney += this.detailsData[item].price;
+                            this.newCurrentMoney += this.detailsData[item].price * this.detailsData[item].num;
                         }
                     }
                 });
