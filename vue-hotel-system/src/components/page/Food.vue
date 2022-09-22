@@ -589,6 +589,9 @@ export default {
         },
         // 详情操作
         handleDetails(index, row) {
+            console.log('==row==');
+            console.log(row);
+            console.log('==row end==');
             this.currentMoney = row.money;
             if (row.state === 0) {
                 this.$message.warning('请先点餐');
@@ -609,6 +612,33 @@ export default {
                     }
                 });
             }
+            // 更新总价格
+            this.currentMoney = 0;
+            for (var item in this.detailsData) {
+                this.currentMoney += this.detailsData[item].price;
+                // console.log(this.detailsData[item]);
+                console.log('currentGuestName: ' + this.currentGuestName);
+            }
+            // 更新数据库内容
+            this.$http.put(
+                'http://localhost:8082/updateReserver?reserverName=' +
+                row.reserverName +
+                '&reserverTel=' + row.reserverTel +
+                '&eaterNum=' + row.eaterNum +
+                '&deskNum=' + row.deskNum +
+                '&money=' + this.currentMoney +
+                '&state=1'
+            ).then((res) => {
+                if (res.data.code === 200) {
+                    //1.提示成功
+                    // this.$message.success(`点餐成功`);
+                    //3.更新视图
+                    this.getAllReserverMsg();
+                } else {
+                    // this.$message.warning('点餐失败');
+                }
+            });
+
         },
         // 点餐操作
         handleOrder(index, row) {
@@ -674,7 +704,6 @@ export default {
             // 缺少恢复数据
             // this.getAllBookMsgs();
             this.editVisible = false;
-            done();
         },
         // 添加弹出框的关闭
         handleClose2() {
@@ -682,7 +711,6 @@ export default {
             // 缺少恢复数据
             // this.getAllBookMsgs();
             this.addVisible = false;
-            done();
         },
         // 点餐弹出框的关闭
         handleClose3() {
@@ -695,7 +723,6 @@ export default {
             this.$refs.foodTable.clearSelection();
             this.multipleSelection = [];
             this.orderVisible = false;
-            done();
         },
         // 将点餐信息发送
         submitInformation() {
@@ -732,32 +759,32 @@ export default {
                         }
                     });
                 }
-                // 1. 提示成功
-                // this.$message.success(`点餐成功`);
-                this.orderVisible = false;
-                // this.$message.success(`点餐成功`);
-                // 2. 更新数据库
-                this.$http.put(
-                    'http://localhost:8082/updateReserver?reserverName=' +
-                    this.currentGuestName +
-                    '&reserverTel=' + this.currentGuestPhone +
-                    '&eaterNum=' + this.currentEaterNum +
-                    '&deskNum=' + this.currentDeskNum +
-                    '&money=' + this.foodMoneySum
-                    // '&'
-                ).then((res) => {
-                    if (res.data.code === 200) {
-                        //1.提示成功
-                        this.$message.success(`点餐成功`);
-                        //3.更新视图
-                        this.getAllBookMsgs();
-                        //4.清空输入文本框
-                        this.form = {};
-                    } else {
-                        this.$message.warning('点餐失败');
-                    }
-                });
             }
+            // 2.更新数据库
+            this.$http.put(
+                'http://localhost:8082/updateReserver?reserverName=' +
+                this.currentGuestName +
+                '&reserverTel=' + this.currentGuestPhone +
+                '&eaterNum=' + this.currentEaterNum +
+                '&deskNum=' + this.currentDeskNum +
+                '&money=' + this.foodMoneySum +
+                '&state=1'
+            ).then((res) => {
+                if (res.data.code === 200) {
+                    //1.提示成功
+                    // this.$message.success(`点餐成功`);
+                    //3.更新视图
+                    this.getAllReserverMsg();
+                    //4.清空输入文本框
+                    this.form = {};
+                } else {
+                    this.$message.warning('点餐失败');
+                }
+            });
+            // 1. 提示成功
+            this.$message.success(`点餐成功`);
+            // 2. 关闭点餐框
+            this.orderVisible = false;
         },
         // 详情信息弹出框的关闭
         handleClose4() {
@@ -765,7 +792,6 @@ export default {
             // 缺少恢复数据
             // this.getAllBookMsgs();
             this.detailsVisible = false;
-            done();
         },
         // 添加预定信息
         addReserver() {
