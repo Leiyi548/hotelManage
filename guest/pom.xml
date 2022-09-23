@@ -119,6 +119,16 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
+
+<!--        PageHelper-->
+        <!-- 分页
+      https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

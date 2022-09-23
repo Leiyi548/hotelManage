@@ -1,6 +1,9 @@
 package com.guest.controller;
 
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.guest.pojo.po.Cost;
 import com.guest.pojo.po.CostType;
 import com.guest.pojo.vo.*;
@@ -20,7 +23,7 @@ import java.util.*;
  * <p>
  *  前端控制器
  * </p>
- */
+
 @CrossOrigin
 @Transactional
 @RestController
@@ -34,6 +37,8 @@ public class CostController {
     private CostTypeService costTypeService;
     @Autowired
     private JwtUtill jwtUtill;
+
+    public static final int PAGE_SIZE = 6;
 
     @PostMapping("/addCost")
     @ApiOperation(value="添加/修改消费记录")
@@ -220,23 +225,36 @@ public class CostController {
      */
     @RequestMapping("/financialStatement")
     @ApiOperation("消费报表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="page",value="页数",required=false),
+    })
     @ApiResponses({
             @ApiResponse(code=200,message="请求成功"),
             @ApiResponse(code=40002,message="数据不存在"),
             @ApiResponse(code=40104,message="非法操作, 试图操作不属于自己的数据")
     })
-    public Response financialStatement() {
+    public Response financialStatement(Integer page) {
+         page = page == null ? 1 : page;
         List<MoneyTable> financialStatements = costService.getFinancialStatement();
         // 计算总金额
         Double total = 0D;
         for (MoneyTable financialStatement : financialStatements) {
             total+=financialStatement.getMoney() * financialStatement.getNum();
         }
+        PageInfo pageInfo = pageForData(costService,page);
         Map resultMap = new HashMap();
         resultMap.put("total",total);
-        resultMap.put("list",financialStatements);
+        resultMap.put("pageInfo",pageInfo);
         return new Response().success(resultMap);
     }
+
+    public static PageInfo pageForData(CostService costService,Integer page) {
+       PageHelper.startPage(page, PAGE_SIZE);
+        List<MoneyTable> financialStatements = costService.getFinancialStatement();
+        PageInfo<MoneyTable> moneyTablePageInfo = new PageInfo<>(financialStatements);
+        return moneyTablePageInfo;
+    }
+
 
 
 
