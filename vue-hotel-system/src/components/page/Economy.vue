@@ -22,8 +22,11 @@
                     layout="total, prev, pager, next"
                     :current-page="costTypes.pageIndex"
                     :page-size="costTypes.pageSize"
-                    :total="tableData.length"
+                    :page-count="5"
+                    :total="costTypes.pageTotal"
                     @current-change="handlePageChange"
+                    @prev-click="handlePrev"
+                    @next-click="handleNext"
                 ></el-pagination>
             </div>
         </div>
@@ -39,7 +42,9 @@ export default {
                 id: '',
                 name: '',
                 money: '',
-                pageSize: 50
+                pageSize: 6,
+                pageIndex: 1,
+                pageTotal: ''
             },
 
             value: '',
@@ -59,6 +64,16 @@ export default {
         this.getAllfinancialStatement();
     },
     methods: {
+        // 上次点击
+        handlePrev() {
+            this.costTypes.pageIndex--;
+            // this.getAllfinancialStatement();
+        },
+        handleNext() {
+            this.costTypes.pageIndex++;
+            // this.getAllfinancialStatement();
+        },
+        // 下次点击
         //获取所有消费信息
         getAllCostType() {
             this.$http.get('http://localhost:8082/getAllCostType').then(res => {
@@ -67,9 +82,10 @@ export default {
             });
         },
         getAllfinancialStatement() {
-            this.$http.get('http://localhost:8082/financialStatement').then(res => {
-                console.log(res);
-                this.tableData = res.data.data.list;
+            this.$http.get('http://localhost:8082/financialStatement?page=' + this.costTypes.pageIndex).then(res => {
+                console.log(res.data.data.pageInfo.list);
+                this.tableData = res.data.data.pageInfo.list;
+                this.costTypes.pageTotal = res.data.data.pageInfo.total;
             });
         },
 
@@ -105,7 +121,7 @@ export default {
         // 分页导航
         handlePageChange(val) {
             this.$set(this.costTypes, 'pageIndex', val);
-            this.getAllCostType();
+            this.getAllfinancialStatement();
         }
     }
 };

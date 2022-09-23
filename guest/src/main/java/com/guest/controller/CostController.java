@@ -23,7 +23,10 @@ import java.util.*;
  * <p>
  *  前端控制器
  * </p>
-
+ *
+ * @author 张雪萍
+ * @since 2020-11-27
+ */
 @CrossOrigin
 @Transactional
 @RestController
@@ -55,10 +58,10 @@ public class CostController {
     public Response addCost(HttpServletRequest request, int id,int costTypeId,String roomId){
         String num = (String) request.getAttribute("num");
 //        if(frontService.getById(num) != null){
-            Cost cost = new Cost(id,costTypeId,roomId,1,0);
-            costService.saveOrUpdate(cost);
-            String token = jwtUtill.updateJwt(num);
-            return (new Response()).success(token);
+        Cost cost = new Cost(id,costTypeId,roomId,1,0);
+        costService.saveOrUpdate(cost);
+        String token = jwtUtill.updateJwt(num);
+        return (new Response()).success(token);
 //        }
 //        return new Response(ResponseMsg.ILLEGAL_OPERATION);
     }
@@ -78,9 +81,9 @@ public class CostController {
     public Response deleteCost(HttpServletRequest request,Integer id){
         String num = (String) request.getAttribute("num");
 //        if(frontService.getById(num) != null){
-            costService.removeById(id);
-            String token = jwtUtill.updateJwt(num);
-            return (new Response()).success(token);
+        costService.removeById(id);
+        String token = jwtUtill.updateJwt(num);
+        return (new Response()).success(token);
 //        }
 //        return new Response(ResponseMsg.ILLEGAL_OPERATION);
     }
@@ -131,31 +134,31 @@ public class CostController {
     public Response getCostByRoomId(HttpServletRequest request,String roomId){
         String num = (String) request.getAttribute("num");
 //        if( frontService.getById(num) != null){
-            List<Cost> costs = costService.getCostByRoomId(roomId);
-            List<Cost> costs1 = new ArrayList<>();
-            if(costs != null && costs.size()>0){
-                double hasSettle = 0;
-                double toll = 0;
-                for(Cost cost:costs){
-                    if(cost.getState() != 11){
-                        toll += costTypeService.getById(cost.getCostTypeId()).getMoney()*cost.getNum();
-                        if(cost.getState() == 1){
-                            hasSettle+=costTypeService.getById(cost.getCostTypeId()).getMoney()*cost.getNum();
-                        }
-                        costs1.add(cost);
+        List<Cost> costs = costService.getCostByRoomId(roomId);
+        List<Cost> costs1 = new ArrayList<>();
+        if(costs != null && costs.size()>0){
+            double hasSettle = 0;
+            double toll = 0;
+            for(Cost cost:costs){
+                if(cost.getState() != 11){
+                    toll += costTypeService.getById(cost.getCostTypeId()).getMoney()*cost.getNum();
+                    if(cost.getState() == 1){
+                        hasSettle+=costTypeService.getById(cost.getCostTypeId()).getMoney()*cost.getNum();
                     }
+                    costs1.add(cost);
                 }
-                double needSettle = toll - hasSettle;
-                Map<String,Object> resultMap = new HashMap<>();
-                String token = jwtUtill.updateJwt(num);
-                resultMap.put("costs1",costs1);
-                resultMap.put("toll",toll);
-                resultMap.put("hasSettle",hasSettle);
-                resultMap.put("needSettle",needSettle);
-                resultMap.put("token",token);
-                return (new Response()).success(resultMap);
             }
-            return new Response(ResponseMsg.NO_TARGET);
+            double needSettle = toll - hasSettle;
+            Map<String,Object> resultMap = new HashMap<>();
+            String token = jwtUtill.updateJwt(num);
+            resultMap.put("costs1",costs1);
+            resultMap.put("toll",toll);
+            resultMap.put("hasSettle",hasSettle);
+            resultMap.put("needSettle",needSettle);
+            resultMap.put("token",token);
+            return (new Response()).success(resultMap);
+        }
+        return new Response(ResponseMsg.NO_TARGET);
 //        }
 //        return new Response(ResponseMsg.ILLEGAL_OPERATION);
     }
@@ -177,10 +180,10 @@ public class CostController {
     public Response settleCostByRoomId(HttpServletRequest request,String roomId){
         String num = (String) request.getAttribute("num");
 //        if(frontService.getById(num) != null){
-            //将未结算的设置成已结算的
-            costService.settleCostByRoomId(roomId);
-            String token = jwtUtill.updateJwt(num);
-            return (new Response()).success(token);
+        //将未结算的设置成已结算的
+        costService.settleCostByRoomId(roomId);
+        String token = jwtUtill.updateJwt(num);
+        return (new Response()).success(token);
 //        }
 //        return new Response(ResponseMsg.ILLEGAL_OPERATION);
     }
@@ -205,15 +208,15 @@ public class CostController {
     public Response settleCostById(HttpServletRequest request,int id){
         String num = (String) request.getAttribute("num");
 //        if(frontService.getById(num) != null){
-            Cost cost = costService.getById(id);
-            if(cost != null){
-                cost.setState(1);
-                costService.saveOrUpdate(cost);
-                String token = jwtUtill.updateJwt(num);
-                return (new Response()).success(token);
+        Cost cost = costService.getById(id);
+        if(cost != null){
+            cost.setState(1);
+            costService.saveOrUpdate(cost);
+            String token = jwtUtill.updateJwt(num);
+            return (new Response()).success(token);
 
-            }
-            return new Response(ResponseMsg.NO_TARGET);
+        }
+        return new Response(ResponseMsg.NO_TARGET);
 //        }
 //        return new Response(ResponseMsg.ILLEGAL_OPERATION);
     }
@@ -234,7 +237,7 @@ public class CostController {
             @ApiResponse(code=40104,message="非法操作, 试图操作不属于自己的数据")
     })
     public Response financialStatement(Integer page) {
-         page = page == null ? 1 : page;
+        page = page == null ? 1 : page;
         List<MoneyTable> financialStatements = costService.getFinancialStatement();
         // 计算总金额
         Double total = 0D;
@@ -249,7 +252,7 @@ public class CostController {
     }
 
     public static PageInfo pageForData(CostService costService,Integer page) {
-       PageHelper.startPage(page, PAGE_SIZE);
+        PageHelper.startPage(page, PAGE_SIZE);
         List<MoneyTable> financialStatements = costService.getFinancialStatement();
         PageInfo<MoneyTable> moneyTablePageInfo = new PageInfo<>(financialStatements);
         return moneyTablePageInfo;
@@ -304,7 +307,7 @@ public class CostController {
                 }
 
             }
-    }
+        }
 
 
         Map resultMap = new HashMap();
@@ -313,4 +316,5 @@ public class CostController {
         return new Response().success(resultMap);
     }
 }
+
 
